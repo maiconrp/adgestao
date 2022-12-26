@@ -14,6 +14,17 @@ O AD Gestão é uma plataforma online de gerenciamento financeiro criada especia
 
 🎯 Integração entre congregações
 
+🎯 Emissão de relatórios financeiros
+
+🎯 Gerenciamento de tesoureiros e pastores
+
+🎯 Controle de pagamentos de contas e dívidas
+
+🎯 Sistema de alertas e lembretes
+
+🎯 Controle de acesso e permissões de usuários
+
+
 ## Etapas
 
 - [x] Pesquisa
