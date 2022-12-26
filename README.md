@@ -1,7 +1,7 @@
 # AD-Gestao
 
 <p align="justify">
-AD Gestão consiste em uma plataforma web para gestao finânceira em Instituições Religiosas. Seu objetivo é promover uma gestão eficiente, ágil e integrada nas igrejas, auxiliando na tomada de decisões e auxiliando no cumprimento das responsabilidades financeias do local. Espera-se substituir o uso de meios pouco eficazes na gestão, como papel e tabelas por um sistema de fácil uso e adequado às necessidades das congregações. 
+O AD Gestão é uma plataforma online de gerenciamento financeiro criada especialmente para instituições religiosas. Seu principal objetivo é facilitar e otimizar o processo de gestão financeira nas igrejas, proporcionando agilidade e integração em todas as etapas, desde a tomada de decisões até o cumprimento de responsabilidades financeiras. Com o AD Gestão, é possível substituir o uso de ferramentas pouco eficientes como papel e tabelas por um sistema moderno e fácil de usar, adaptado às necessidades e demandas das congregações.
 </p>
 
 ## Funcionalidades
