@@ -39,5 +39,5 @@ O AD Gestão é uma plataforma online de gerenciamento financeiro criada especia
 
 - [Bruno Reis](https://github.com/brunoreisx)
 - [Maicon Robert](https://github.com/maicon15rp)
-- [Paulo César](https://github.com/SonecaZzz)
+- [Paulo César](https://github.com/Soneca-Zzz)
 - Victor Fonteles
