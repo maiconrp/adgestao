@@ -29,7 +29,7 @@ O AD Gestão é uma plataforma online de gerenciamento financeiro criada especia
 
 - [x] Pesquisa
 - [x] Documentação
-- [ ] Levantamento de requsitos
+- [X] Levantamento de requsitos
 - [ ] Diagramação
 - [ ] Prototipagem
 - [ ] Codificação
