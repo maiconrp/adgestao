@@ -9,12 +9,12 @@ O projeto está dividido em várias pastas, cada uma contendo os arquivos releva
 [![Formulários](https://img.shields.io/badge/Formulários-darkgreen?style=for-the-badge&logo=file-alt&logoColor=white)](./formularios)
 
 
-* **`artigo`**: nesta pasta, você encontrará o artigo técnico que descreve o projeto e os resultados obtidos.
+* **`artigo`**: nesta pasta, você encontrará o artigo técnico que descreve o projeto.
 
 * **`diagrama de casos de uso`**: nesta pasta, você encontrará os diagramas de casos de uso que ilustram as interações entre os usuários e o sistema.
 
 * **`diagrama de classes`**: nesta pasta, você encontrará o diagrama de classes que mostra a estrutura do sistema e as relações entre as classes.
 
-* **`fluxograma financeiro`**: nesta pasta, você encontrará o fluxograma financeiro que detalha as etapas do processo de pagamento e as respectivas responsabilidades.
+* **`fluxograma financeiro`**: nesta pasta, você encontrará o fluxograma financeiro que detalha a estrutura de finanças atualmente utilizada no contexto de aplicação do sistema.
 
-* **`formulários`**: nesta pasta, você encontrará os formulários necessários para solicitar serviços ou obter informações adicionais.
+* **`formulários`**: nesta pasta, você encontrará os formulários utilizados para levantamento e validação dos requisitos.
