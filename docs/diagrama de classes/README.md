@@ -1,7 +1,7 @@
 # Diagrama de Classes
 
 | Classe              	| Descrição                                                                                                                             	|
-|---------------------	|---------------------------------------------------------------------------------------------------------------------------------------	|
+|:---------------------	|:---------------------------------------------------------------------------------------------------------------------------------------	|
 | Usuario             	| Classe responsável por armazenar informações de cadastro de usuários do sistema, como nome, email, cpf e senha.                       	|
 | Tesoureiro          	| Classe que representa o usuário responsável por gerenciar as finanças da igreja em que atua.                                          	|
 | Igreja              	| Classe que armazena informações sobre uma igreja, como localização, nome e tesoureiro local.                                          	|
