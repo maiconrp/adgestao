@@ -15,7 +15,7 @@
 <hr>
 <br>
 
-[![Diagrama de casos de uso](https://img.shields.io/badge/Diagrama%20de%20casos%20de%20uso-darkgreen?style=for-the-badge&logo=clipboard-list&logoColor=white)](./diagrama-de-casos-de-uso)
+[![Diagrama de casos de uso](https://img.shields.io/badge/Diagrama%20de%20casos%20de%20uso-darkgreen?style=for-the-badge&logo=clipboard-list&logoColor=white)](./diagrama%20de%20casos%20de%20uso)
 ```
 .
 ├── casos-de-uso-adgestão.mdj
@@ -26,7 +26,7 @@
 <hr>
 <br>
 
-[![Diagrama de classes](https://img.shields.io/badge/Diagrama%20de%20classes-darkgreen?style=for-the-badge&logo=project-diagram&logoColor=white)](./diagrama-de-classes)
+[![Diagrama de classes](https://img.shields.io/badge/Diagrama%20de%20classes-darkgreen?style=for-the-badge&logo=project-diagram&logoColor=white)](./diagrama%20de%20classes)
 ```
 .
 ├── classes-adgestao.jpg
@@ -38,7 +38,7 @@
 <hr>
 <br>
 
-[![Fluxograma financeiro](https://img.shields.io/badge/Fluxograma%20financeiro-darkgreen?style=for-the-badge&logo=cash-register&logoColor=white)](./fluxograma-financeiro)
+[![Fluxograma financeiro](https://img.shields.io/badge/Fluxograma%20financeiro-darkgreen?style=for-the-badge&logo=cash-register&logoColor=white)](./fluxograma%20financeiro)
 ```
 .
 ├── Fluxograma Financeiro Assembleia de Deus Missão.pdf
