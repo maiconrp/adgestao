@@ -70,7 +70,5 @@
 └── Validacao dos Requisitos
     ├── Questionario.pdf
     └── Resposta.pdf
-    
-
 ```
 > **Nesta pasta, você encontrará os formulários utilizados para levantamento e validação dos requisitos.**
