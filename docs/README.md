@@ -15,6 +15,18 @@
 <hr>
 <br>
 
+[![Documento de visão](https://img.shields.io/badge/Documento%20de%20visao-darkgreen?style=for-the-badge&logo=book&logoColor=white)](./documento%20de%20visao)
+```
+.
+├── Doc de visao.pdf
+└── README.md
+```
+
+> **Nesta pasta, você encontrará o objetivo do projeto, uma visão geral do contexto onde o projeto será efetivado, o mapeamento dos problemas, a visão geral da solução proposta, os atores envolvidos no sistema, os requisitos funcionais e por fim os requisitos não funcionais .**
+<hr>
+<br>
+
+
 [![Diagrama de casos de uso](https://img.shields.io/badge/Diagrama%20de%20casos%20de%20uso-darkgreen?style=for-the-badge&logo=clipboard-list&logoColor=white)](./diagrama%20de%20casos%20de%20uso)
 ```
 .
