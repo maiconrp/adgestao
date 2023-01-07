@@ -30,8 +30,8 @@
 ```
 .
 ├── classes-adgestao.jpg
-└── classes-adgestao.svg
-└── classes-adgestao.mdj
+├── classes-adgestao.svg
+├── classes-adgestao.mdj
 └── README.md
 ```
 > **Nesta pasta, você encontrará o diagrama de classes que mostra a estrutura do sistema e as relações entre as classes.**
@@ -68,7 +68,9 @@
 │   ├── Questionario.pdf
 │   └── Resposta.pdf
 └── Validacao dos Requisitos
-    └── Questionario.pdf
+    ├── Questionario.pdf
+    └── Resposta.pdf
+    
 
 ```
 > **Nesta pasta, você encontrará os formulários utilizados para levantamento e validação dos requisitos.**
