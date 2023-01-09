@@ -34,4 +34,4 @@ TesoureiroSede
 ```
 <hr>
 
-:bangbang: Os padrões de código fornecem um auxilio geral. Para nomear as classes, funções e variáveis, siga os diagramas sempre à risca. Você pode encontrá-los [aqui](https://github.com/maiconrp/AD-Gestao/docs)
+:bangbang: Os padrões de código fornecem um auxilio geral. Para nomear as classes, funções e variáveis, siga os diagramas sempre à risca. Você pode encontrá-los [aqui](https://github.com/maiconrp/AD-Gestao/tree/master/docs)
