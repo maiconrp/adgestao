@@ -1,6 +1,33 @@
 # Pull Requests
 :information_source: Um pull request é uma solicitação para adicionar as alterações de um branch a outro, geralmente um branch de desenvolvimento para o branch principal (por exemplo, o branch master). É uma forma de colaboração em projetos, pois permite que outras pessoas revisem e discutam as alterações antes que elas sejam integradas no projeto.
 
+<hr>
+
+## Como realizar um Pull Request
+Para criar um pull request, basta seguir os seguintes passos:
+
+* ✅ Crie uma branch para realizar as alterações no código.
+* ✅ Realize as alterações no código e faça os **commits necessários**.
+* ✅ Acesse o GitHub e navegue até a página do repositório.
+* ✅ Vá para `Pull requests`
+* ✅ Clique no botão *"New pull request"*.
+* ✅ Selecione a **branch de origem** e a **branch de destino**.
+* ✅ Insira uma descrição detalhada das alterações
+
+<hr> 
+
+## Importância de um bom pull request
+
+Fornecer uma descrição detalhada das alterações realizadas no código é importante por várias razões:
+
+* :information_source: **`Facilita a revisão do código`**: Quando outros membros da equipe têm uma descrição clara das alterações realizadas, eles podem verificar o código com mais facilidade e identificar possíveis problemas ou erros.
+
+* :information_source: **`Ajuda a documentar o código`**: As descrições detalhadas das alterações servem como uma forma de documentação do código, o que pode ser útil no futuro caso alguém precise entender ou modificar o código.
+
+* :information_source: **`Melhora a comunicação`**: Fornecer uma descrição detalhada das alterações ajuda a promover a comunicação eficaz entre os membros da equipe, garantindo que todos estejam alinhados e cientes das alterações realizadas no código.
+
+<hr>
+
 ## Guia para Pull Requests
 :information_source: Antes de fazer um pull request, é importante seguir alguns padrões para garantir que a integração do código seja suave e sem problemas. Aqui estão algumas dicas para criar um pull request de qualidade:
 
@@ -13,3 +40,52 @@
 * :bulb: **`Crie um título claro`**: Escreva um título claro e conciso para o pull request. Isso ajudará os outros membros da equipe a entender de uma olhada rápida o que foi alterado.
 
 * :bulb: **`Referência qualquer problema ou tarefa relacionada`**: Se o pull request estiver resolvendo um problema ou tarefa específica, inclua uma referência a ela no pull request
+
+<hr>
+
+## Template de Pull Request
+
+Um bom `Pull Request` deve fornecer informações suficientes para que os outros colaboradores possam **entender as alterações** realizadas e avaliar se elas são adequadas para serem integradas ao código principal. Para isso, siga sempre um modelo:
+
+<br>
+
+```
+## Descrição
+
+Descreva de maneira clara e concisa qual foi o objetivo das alterações realizadas.
+
+## Mudanças realizadas
+
+Descreva detalhadamente as alterações realizadas no código. 
+
+## Como testar
+
+Como os reviewers podem testar essas alterações?
+
+## Screenshots (opcional)
+
+Se aplicável, adicione screenshots da funcionalidade implementada para facilitar o entendimento.
+
+## Tipo de alteração
+
+- [ ] Correção de bug
+- [ ] Nova funcionalidade
+- [ ] Alteração de funcionalidade existente
+
+## Checklist
+
+- [ ] As alterações foram testadas?
+- [ ] A documentação foi atualizada?
+- [ ] As alterações seguem os padrões de código?
+- [ ] As alterações afetam a segurança?
+
+## Referências (opcional)
+
+Adicione links para issues ou pull requests relacionados.
+Para isso, utilize o número da issue ou pull request precedido pelo símbolo "#" na descrição do pull request. Por exemplo:
+
+"Este pull request corrige o problema descrito na issue #42 e também inclui a implementação sugerida no pull request #67."
+
+```
+
+Lembre-se de sempre preencher todos os itens da checklist antes de enviar o pull request, isso garantirá que as alterações sejam revisadas de maneira mais rápida e eficiente.
