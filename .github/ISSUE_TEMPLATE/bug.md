@@ -1,5 +1,5 @@
 ---
-name: 'Bug '
+name: Bug
 about: Reporte o erro para ser resolvido
 title: "[BUG]: "
 labels: bug
@@ -11,7 +11,6 @@ assignees: ''
 Uma descrição clara e concisa do que o erro é.
 
 ## Para reproduzir
-
 Etapas para reproduzir o comportamento:
 
 1 - Vá até '...'
