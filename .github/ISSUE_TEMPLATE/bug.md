@@ -2,7 +2,7 @@
 name: Bug
 about: Reporte o erro para ser resolvido
 title: "[BUG]: "
-labels: bug
+labels: bug, help wanted
 assignees: ''
 
 ---
