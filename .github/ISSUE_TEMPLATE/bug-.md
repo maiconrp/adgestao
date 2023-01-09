@@ -1,7 +1,7 @@
 ---
 name: 'Bug '
 about: Reporte o erro para ser resolvido
-title: "[BUG]"
+title: "[BUG]: "
 labels: bug
 assignees: ''
 
