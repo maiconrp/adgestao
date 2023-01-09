@@ -4,7 +4,6 @@
 O AD Gestão é uma plataforma online de gerenciamento financeiro criada especialmente para instituições religiosas. Seu principal objetivo é facilitar e otimizar o processo de gestão financeira nas igrejas, proporcionando agilidade e integração em todas as etapas, desde a tomada de decisões até o cumprimento de responsabilidades financeiras. Com o AD Gestão, é possível substituir o uso de ferramentas pouco eficientes como papel e tabelas por um sistema moderno e fácil de usar, adaptado às necessidades e demandas das congregações.
 </p>
 
-![forks](https://img.shields.io/github/forks/maiconrp/AD-Gestao.svg?color=white&style=for-the-badge)
 ![stars](https://img.shields.io/github/stars/maiconrp/AD-Gestao.svg?color=white&style=for-the-badge)
 ![Last Commit](https://img.shields.io/github/last-commit/maiconrp/AD-Gestao?display_timestamp=committer&color=white&style=for-the-badge)
 ![Commit Activy](https://img.shields.io/github/commit-activity/w/maiconrp/AD-Gestao?color=white&style=for-the-badge)
