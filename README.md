@@ -10,7 +10,7 @@ O AD Gestão é uma plataforma online de gerenciamento financeiro criada especia
 ![Issues](https://img.shields.io/github/issues/maiconrp/AD-Gestao?color=white&style=for-the-badge)
 ![Pull Requests](https://img.shields.io/github/issues-pr/maiconrp/AD-Gestao?color=white&style=for-the-badge)
 
-## Paulo
+## Funcionalidades
 ![Relação de membros e dizimistas](https://img.shields.io/badge/Relação%20de%20membros%20e%20dizimistas-white?style=for-the-badge&logo=clipboard-list&logoColor=white)
 ![Estatísticas financeiras](https://img.shields.io/badge/Estatísticas%20financeiras-3E3D3D?style=for-the-badge&logo=clipboard-list&logoColor=white)
 ![Integração entre congregações](https://img.shields.io/badge/Integração%20entre%20congregações-white?style=for-the-badge&logo=clipboard-list&logoColor=white)
