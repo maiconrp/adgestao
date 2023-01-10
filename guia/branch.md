@@ -102,3 +102,11 @@ hotfix/hash-de-senhas
 hotfix/vulnerabilidade-front
 ```
 <br>
+
+:white_check_mark: Branches testes: Prefixo **`teste/`** + ***assunto***:
+```
+teste/gitHub-actions
+teste/api-reamde
+teste/painel-issue
+```
+<br>
