@@ -58,6 +58,24 @@ git git merge <nome da branch>
 
 <hr>
 
+:seven: **Enviar uma branch ao repositório remoto**:
+
+Depois de criar uma nova branch no seu repositório local, você precisará fazer o **"push"** dessa branch para o repositório remoto no GitHub para que ela possa ser vista e colaborada por outras pessoas. Aqui está um exemplo de como você pode fazer isso usando o Git:
+
+1. *Verifique se você está na branch que deseja enviar:*
+```
+git branch -l
+```
+
+2. Faça o push da branch para o repositório remoto:
+```
+git push -u origin <nome-da-branch>
+```
+
+* Esse comando vai enviar a branch para o repositório remoto no GitHub, criando uma cópia dela lá. O parâmetro `-u` serve para estabelecer uma ligação entre a branch local e a remota, de forma que, a partir de então, você pode usar apenas _git push_ e _git pull_ para sincronizar as branches.
+* Depois disso, a branch nova deverá aparecer no repositório remoto e outros colaboradores poderão visualizá-la e fazer pull requests.
+<hr>
+
 ## Padrões para branches
 :information_source: Existem alguns padrões recomendados para nomear branches, de forma a facilitar a identificação das alterações realizadas. Alguns desses padrões incluem:
 
