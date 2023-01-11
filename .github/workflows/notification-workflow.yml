@@ -17,8 +17,8 @@ jobs:
         git config --global user.name "GitHub Actions"
     - name: Get issues
       run: |
-        response=$(curl -s -o /dev/null -w "%{http_code} %{url_effective}\n" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{github.repository}}/issues?state=open)
-        issues=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{github.repository}}/issues?state=open)
+        response=$(curl -s -o /dev/null -w "%{http_code} %{url_effective}\n" -H "Authorization: token ${{ secrets.TOKEN }}" https://api.github.com/repos/${{github.repository}}/issues?state=open)
+        issues=$(curl -s -H "Authorization: token ${{ secrets.TOKEN }}" https://api.github.com/repos/${{github.repository}}/issues?state=open)
     - name: Print Issues
       run: echo "$issues"
     - name: Print Response
