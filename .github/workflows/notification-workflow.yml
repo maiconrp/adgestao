@@ -18,6 +18,8 @@ jobs:
     - name: Get issues
       run: |
         issues=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{github.repository}}/issues?state=open)
+    - name: Print Issues
+      run: echo "$issues"
     - name: Pull changes
       run: git pull
     - name: Update NOTIFICATION
