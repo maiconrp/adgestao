@@ -2,7 +2,7 @@ name: Update NOTIFICATION v2
 on:
     push:
       branches:
-        - teste/github-actions
+        - master
     schedule:
       - cron: "0 * * * *"
 jobs:
