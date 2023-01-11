@@ -25,29 +25,24 @@
          git config --global user.email "github-actions@github.com"
          git config --global user.name "GitHub Actions"
     
-     - name: Pegar Issues
+     - name: Update NOTIFICATION
        run: |
          issue=$(curl --request GET \
          --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
          --header "content-type: application/json" \
          --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") | jq '.[] | .user.login + ": " + .title'
-    
-     - name: Pegar PRs
-       run: |
+         
          pullrequests=$(curl --request GET
           --url https://api.github.com/repos/maiconrp/AD-gestao/pulls
           --header "content-type: application/json"
           --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") | jq '.[] | .user.login + ": " + .title'
-     
-     - name: Pegar Commits
-       run: |
+         
          commits=$(curl --request GET
           --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open
           --header "content-type: application/json"
           --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") | jq '.[] | .commit.author.name + ": " + .commit.message'
-     
-      
-     - name: Update NOTIFICATION
-       run: |
-         printf $"""# Notificações\n\n### Issues:\n* **${{issue}}**\n\n\n### PRs:\n* **${{pullrequests}}**\n\n<hr>\n\n### Commits:\n* **${{commits}}:**""" > NOTIFICATION.md
+          
+         notification_template="""# Notificações\n\n### Issues:\n* **${{issue}}**\n\n\n### PRs:\n* **${{pullrequests}}**\n\n<hr>\n\n### Commits:\n* **${{commits}}:**"""
+
+         echo -e $notification_template > NOTIFICATION.md
          git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
