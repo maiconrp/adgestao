@@ -15,8 +15,10 @@
  ### Commits:
 |Autor|Mensagem|Data|
 |-----|--------|----|
-|Maicon Robert|[:pencil: docs: Add padrao de branch pra teste](https://github.com/maiconrp/AD-Gestao/commit/ded6f20d3b73d39b37cd0db7905b2f9482e061db)|2023-01-10T16:54:15Z
-|Maicon Robert|[:pencil: docs: Add enviar branch ao repo](https://github.com/maiconrp/AD-Gestao/commit/9756c6b47787a4c6828f72dcf1fb52b1efb0ff4e)|2023-01-10T16:51:01Z
-|Arkyh|[:bocks: docs: alterar Paulo para Funcionalidades](https://github.com/maiconrp/AD-Gestao/commit/d8afb044d1ba1018ffe4528c9b656db3f7056445)|2023-01-10T03:03:31Z
-|victorwilva|[:books: docs: Alterar Funcionalidades para Paulo](https://github.com/maiconrp/AD-Gestao/commit/0b8b02b26a39eb498562cdc469ebcdf157e3a20a)|2023-01-10T02:30:00Z
-|Maicon Robert|[:books: docs: Remover badge de forks](https://github.com/maiconrp/AD-Gestao/commit/4c0e68d086ee30d248883dc0f3fe4b80ff805ade)|2023-01-09T18:46:28Z
+|Maicon Robert|[:pencil: books: Add badge yml](https://github.com/maiconrp/AD-Gestao/commit/3193dfb41823d765a8f04bb5fbb7c50a79a08ca1)|2023-01-11T18:47:36Z
+|Maicon Robert|[:pencil: books: Add texto teste em Readme](https://github.com/maiconrp/AD-Gestao/commit/2bdf47eab46452eb06a2e72bae12f1bc23fbd923)|2023-01-11T18:44:32Z
+|Maicon Robert|[Merge pull request #3 from maiconrp/teste/github-actions
+
+Fluxo de notificações automatizados](https://github.com/maiconrp/AD-Gestao/commit/e371d0792d25adc995af6063dde5448fe5f594fe)|2023-01-11T18:35:52Z
+|Maicon Robert|[:wrench: chore/testes: Rename notification](https://github.com/maiconrp/AD-Gestao/commit/412d56b9ebba84c7cb53467a4163ca991694928e)|2023-01-11T18:08:25Z
+|Maicon Robert|[:wrench: chore/teste: Remover workflow absoleto](https://github.com/maiconrp/AD-Gestao/commit/77cbe5050039e9ed8f629827d5da68ab4f1999e7)|2023-01-11T18:06:30Z
