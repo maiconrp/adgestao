@@ -25,16 +25,12 @@ jobs:
         git config --global user.email "github-actions@github.com"
         git config --global user.name "GitHub Actions"
         
-    - name: Get issues
-      run: |
-        $(curl --request GET \
-        --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
-        --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") > data.json
-  
     - name: Update NOTIFICATION
       run: |
-        echo $(echo data.json | jq '.[] | {title: .title, authorID: .user.id}') >> NOTIFICATION.md
+        echo $(echo $(curl --request GET \
+        --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
+        --header "content-type: application/json" \
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") | jq '.[] | {title: .title, authorID: .user.id}') >> NOTIFICATION.md
         echo ${{ steps.get_issues.outputs.issues }}
         git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
       
