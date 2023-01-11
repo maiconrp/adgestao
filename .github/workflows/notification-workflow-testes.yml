@@ -26,16 +26,16 @@ jobs:
         issues=$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ' | head -n 5)
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ' | sed -e 's/\"//g' | head -n 5)
         pull_requests=$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/pulls \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ' | head -n 5)
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ' | sed -e 's/\"//g' | head -n 5)
         commits=$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "|" + .commit.author.name + "|" + "["+.commit.message+"]"+"("+.html_url+")" + "|"'  | sed -e 's/\"//g' | head -n 5)
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "|" + .commit.author.name + "|" + "["+.commit.message+"]"+"("+.html_url+")" + "|" + (date +"%d-%m-%Y" -d .commit.author.date)'  | sed -e 's/\"//g' | head -n 5)
 
-        notification_template="# Notificações\n\n### Issues:\n* $issues\n\n\n### PRs:\n* $pull_requests\n\n<hr>\n\n### Commits:\n|Autor|Mensagem|\n|-----|--------|\n$commits"
+        notification_template="# Notificações\n\n### Issues:\n* $issues\n\n\n### PRs:\n* $pull_requests\n\n<hr>\n\n### Commits:\n|Autor|Mensagem|Data|\n|-----|--------|----|\n$commits"
         echo -e "$notification_template" > NOTIFICATION.md
         git diff --quiet || git commit -am "🔧 Update NOTIFICATION with issues" && git push
