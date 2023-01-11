@@ -1,0 +1,28 @@
+name: Update README
+on:
+  push:
+    branches:
+      - teste/github-actions
+  schedule:
+    - cron: "0 * * * *"
+jobs:
+  update_readme:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up Git
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "GitHub Actions"
+        echo "machine github.com login ${{ secrets.TOKEN }}" > ~/.netrc
+    - name: Get issues
+      run: |
+        echo "::set-output name=issues::$(curl -s https://api.github.com/repos/${{github.repository}}/issues?state=open)"
+    - name: Update NOTIFICATION
+      run: |
+        echo "Updating README with issues..."
+        echo "${{ steps.get_issues.outputs.issues }}" >> NOTIFICATION.md
+        git add NOTIFICATION.md
+        git commit -am "Update NOTIFICATION with issues"
+        git push
