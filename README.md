@@ -22,6 +22,7 @@ AD Gestão é uma plataforma online de gerenciamento financeiro criada especialm
 ![Controle de acesso e permissões de usuários](https://img.shields.io/badge/Controle%20de%20usuários-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)
 
 ## Repositorio
+Teste
 
 ## Equipe
 > [![Icone de check](https://img.shields.io/badge/✔️-white?style=for-the-badge&logoColor=blue)
