@@ -26,31 +26,32 @@ jobs:
             git config --global user.name "GitHub Actions"
 
         - name: Pegar e formatar  Issues
-          run: |
-            filtro_issue='.[] | "|"+.labels[0].name +"|"+ .user.login +"|"+ "[" + .title +"]" + "(" + .html_url + ")" +"|"+ .created_at +"|"+.updated_at +"|"+ .closed_at'
+          run: |           
             issues=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
             --header "content-type: application/json" \
-            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq $filtro_issue | sed -e 's/\"//g' | head -n 5)
+            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "|"+.labels[0].name +"|"+ .user.login +"|"+ "[" + .title +"]" + "(" + .html_url + ")" +"|"+ .created_at +"|"+.updated_at +"|"+ .closed_at' | sed -e 's/\"//g' | head -n 5)
 
         - name: Pegar e formatar  Pull Requests
           run: |
-            filtro_pullrequest='.[] | .user.login + ": " + .title +"\n" '
             pull_requests=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/pulls \
             --header "content-type: application/json" \
-            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq $filtro_pullrequest | sed -e 's/\"//g' | head -n 5)
+            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ' | sed -e 's/\"//g' | head -n 5)
 
         - name: Pegar e formatar Commits
           run: |
-            filtro_commit='.[] | "|" + .commit.author.name + "|" + "["+.commit.message+"]"+"("+.html_url+")" + "|" + .commit.author.date'
             commits=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open \
             --header "content-type: application/json" \
-            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq $filtro_commit | sed -e 's/\"//g' | head -n 5)
+            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "|" + .commit.author.name + "|" + "["+.commit.message+"]"+"("+.html_url+")" + "|" + .commit.author.date' | sed -e 's/\"//g' | head -n 5)
   
         - name: Escrever no Arquivo
           run: |
-            notification_template="# Notificações\n\n### Issues:\n* $issues\n\n\n### PRs:\n* $pull_requests\n\n<hr>\n\n### Commits:\n|Autor|Mensagem|Data|\n|-----|--------|----|\n$commits"
+            issue_template="### Issues:\n|Label|Autor|Titulo|Criada|Atualizada|Fechada|\n|-----|-----|------|------|----------|-------|\n$issues\n\n\n"
+            pullrequest_template="###  PRs:\n|Autor|Titulo|\n|-----|------|\n$pull_requests\n\n\n"
+            commit_template="### Commits:\n|Autor|Mensagem|Data|\n|-----|--------|----|\n$commits"
+            
+            notification_template="# Notificações\n\n$issue_template $pullrequest_template $commit_template"
             echo -e "$notification_template" > NOTIFICATION.md
             git diff --quiet || git commit -am "🔧 Update NOTIFICATION with issues" && git push
