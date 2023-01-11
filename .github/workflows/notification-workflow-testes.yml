@@ -25,30 +25,21 @@ jobs:
             git config --global user.email "github-actions@github.com"
             git config --global user.name "GitHub Actions"
 
-        - name: Pegar e formatar  Issues
+        - name: Pegar e formatar dados
           run: |           
             issues=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
             --header "content-type: application/json" \
-            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "|"+.labels[0].name +"|"+ .user.login +"|"+ "[" + .title +"]" + "(" + .html_url + ")" +"|"+ .created_at +"|"+.updated_at +"|"+ .closed_at' | sed -e 's/\"//g' | head -n 5)
-
-        - name: Pegar e formatar  Pull Requests
-          run: |
+            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "|"+.labels[0].name +"|"+ .user.login +"|"+ "[" + .title +"]" + "(" + .html_url + ")" +"|"+ .created_at +"|"+.updated_at' | sed -e 's/\"//g' | head -n 5)
             pull_requests=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/pulls \
             --header "content-type: application/json" \
             --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ' | sed -e 's/\"//g' | head -n 5)
-
-        - name: Pegar e formatar Commits
-          run: |
             commits=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open \
             --header "content-type: application/json" \
             --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "|" + .commit.author.name + "|" + "["+.commit.message+"]"+"("+.html_url+")" + "|" + .commit.author.date' | sed -e 's/\"//g' | head -n 5)
-  
-        - name: Escrever no Arquivo
-          run: |
-            issue_template="### Issues:\n|Label|Autor|Titulo|Criada|Atualizada|Fechada|\n|-----|-----|------|------|----------|-------|\n$issues\n\n\n"
+            issue_template="### Issues:\n|Label|Autor|Titulo|Criada|Atualizada|\n|-----|-----|------|------|----------|\n$issues\n\n\n"
             pullrequest_template="###  PRs:\n|Autor|Titulo|\n|-----|------|\n$pull_requests\n\n\n"
             commit_template="### Commits:\n|Autor|Mensagem|Data|\n|-----|--------|----|\n$commits"
             
