@@ -9,6 +9,9 @@ jobs:
   update_notification:
     runs-on: ubuntu-latest
     steps:
+    - name: Install jq
+      run: sudo apt-get install -y jq
+
     - name: Checkout
       uses: actions/checkout@v3
       
@@ -24,25 +27,18 @@ jobs:
         
     - name: Get issues
       run: |
-       issues=$(curl --request GET \
+        $(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
         --header "content-type: application/json" \
         --header "Accept: application/vnd.github+json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}")
-
-
-    - name: Imprimir issue
-      run: |
-        echo $issues
-        
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") > data.json
+  
     - name: Update NOTIFICATION
       run: |
-        echo "$issues" >> NOTIFICATION.md
-        echo "Escreveu" >> NOTIFICATION.md
-        echo $(curl --request GET \
+        echo $(echo "$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
         --header "content-type: application/json" \
         --header "Accept: application/vnd.github+json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") >> NOTIFICATION.md
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}")" | jq '.[] | {title: .title, authorID: .user.id}') >> NOTIFICATION.md
         echo ${{ steps.get_issues.outputs.issues }}
         git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
