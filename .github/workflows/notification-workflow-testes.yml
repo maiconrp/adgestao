@@ -9,33 +9,49 @@ jobs:
   update_notification:
     runs-on: ubuntu-latest
     steps:
+    
     - name: Install jq
       run: sudo apt-get install -y jq
+    
     - name: Checkout
       uses: actions/checkout@v3
+    
     - name: Use Node.js 14
       uses: actions/setup-node@v3
       with:
         node-version: 14
+    
     - name: Set up Git
       run: |
         git config --global user.email "github-actions@github.com"
         git config --global user.name "GitHub Actions"
-    - name: Update NOTIFICATION
+    
+    - name: Pegar e formatar  Issues 
       run: |
         issues=$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ' | sed -e 's/\"//g' | head -n 5)
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '$filtro_issue' | sed -e 's/\"//g' | head -n 5)
+      env:
+        filtro_issue: '.[] | "|"+.labels[0].name +"|"+ .user.login +"|"+ "[" + .title +"]" + "(" + .html_url + ")" +"|"+ .created_at +"|"+.updated_at +"|"+ .closed_at'
+    
+    - name: Pegar e formatar  Pull Requests 
+      run: |        
         pull_requests=$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/pulls \
         --header "content-type: application/json" \
         --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ' | sed -e 's/\"//g' | head -n 5)
+    
+    - name: Pegar e formatar Commits 
+      run: |
         commits=$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open \
         --header "content-type: application/json" \
         --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "|" + .commit.author.name + "|" + "["+.commit.message+"]"+"("+.html_url+")" + "|" + .commit.author.date' | sed -e 's/\"//g' | head -n 5)
-
+    
+    - name: Escrever no Arquivo
+      run: |
         notification_template="# Notificações\n\n### Issues:\n* $issues\n\n\n### PRs:\n* $pull_requests\n\n<hr>\n\n### Commits:\n|Autor|Mensagem|Data|\n|-----|--------|----|\n$commits"
+        
         echo -e "$notification_template" > NOTIFICATION.md
         git diff --quiet || git commit -am "🔧 Update NOTIFICATION with issues" && git push
