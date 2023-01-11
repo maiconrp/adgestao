@@ -27,7 +27,7 @@ jobs:
 
         - name: Pegar e formatar  Issues
           run: |
-            filtro_issue = '.[] | "|"+.labels[0].name +"|"+ .user.login +"|"+ "[" + .title +"]" + "(" + .html_url + ")" +"|"+ .created_at +"|"+.updated_at +"|"+ .closed_at'
+            filtro_issue='.[] | "|"+.labels[0].name +"|"+ .user.login +"|"+ "[" + .title +"]" + "(" + .html_url + ")" +"|"+ .created_at +"|"+.updated_at +"|"+ .closed_at'
             issues=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
             --header "content-type: application/json" \
@@ -35,7 +35,7 @@ jobs:
 
         - name: Pegar e formatar  Pull Requests
           run: |
-            filtro_pullrequest = '.[] | .user.login + ": " + .title +"\n" '
+            filtro_pullrequest='.[] | .user.login + ": " + .title +"\n" '
             pull_requests=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/pulls \
             --header "content-type: application/json" \
