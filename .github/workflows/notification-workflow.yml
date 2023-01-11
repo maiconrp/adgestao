@@ -39,10 +39,10 @@ jobs:
       run: |
         echo "$issues" >> NOTIFICATION.md
         echo "Escreveu" >> NOTIFICATION.md
-        echo curl --request GET \
+        echo $(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
         --header "content-type: application/json" \
         --header "Accept: application/vnd.github+json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" >> NOTIFICATION.md
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") >> NOTIFICATION.md
         echo ${{ steps.get_issues.outputs.issues }}
         git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
