@@ -30,7 +30,7 @@
          issue=$(curl --request GET \
          --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
          --header "content-type: application/json" \
-         --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") | jq '.[] | .user.login + ": " + .title)
+         --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") | jq '.[] | .user.login + ": " + .title')
     
      - name: Pegar PRs
        run: |
