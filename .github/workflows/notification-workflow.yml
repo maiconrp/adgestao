@@ -1,4 +1,4 @@
-name: Update README
+name: Update NOTIFICATION
 on:
   push:
     branches:
@@ -15,14 +15,10 @@ jobs:
       run: |
         git config --global user.email "github-actions@github.com"
         git config --global user.name "GitHub Actions"
-        echo "machine github.com login ${{ secrets.TOKEN }}" > ~/.netrc
     - name: Get issues
       run: |
-        echo "issues = $(curl -s https://api.github.com/repos/${{github.repository}}/issues?state=open)" >> $GITHUB_OUTPUT
+        issues=$(curl -s -H "Authorization: token ${{ secrets.TOKEN }}" https://api.github.com/repos/${{github.repository}}/issues?state=open)
     - name: Update NOTIFICATION
       run: |
-        echo "Updating NOTIFICATION with issues..."
-        echo "${{ steps.get_issues.outputs.issues }}" >> NOTIFICATION.md
-        git add NOTIFICATION.md
-        git commit -am "🔧 github: Update NOTIFICATION with issues"
-        git push
+        echo "$issues" >> NOTIFICATION.md
+        git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update README with issues" && git push
