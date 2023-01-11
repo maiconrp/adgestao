@@ -9,6 +9,10 @@ jobs:
   update_readme:
     runs-on: ubuntu-latest
     steps:
+    - name: Use Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
     - name: Checkout
       uses: actions/checkout@v2
     - name: Set up Git
