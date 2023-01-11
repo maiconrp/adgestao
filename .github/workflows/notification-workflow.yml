@@ -35,10 +35,11 @@ jobs:
   
     - name: Update NOTIFICATION
       run: |
-        echo $(echo "$(curl --request GET \
-        --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
-        --header "content-type: application/json" \
-        --header "Accept: application/vnd.github+json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}")" | jq '.[] | {title: .title, authorID: .user.id}') >> NOTIFICATION.md
+        echo $(echo "$issues" | jq '.[] | {title: .title, authorID: .user.id}') >> NOTIFICATION.md
         echo ${{ steps.get_issues.outputs.issues }}
         git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
+      env:
+        issues: $(curl --request GET \ --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
+        --header "content-type: application/json" \
+        --header "Accept: application/vnd.github+json" \
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}")
