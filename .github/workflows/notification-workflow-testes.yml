@@ -26,15 +26,15 @@ jobs:
         issues=$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ')
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[0:3] | .user.login + ": " + .title +"\n" ')
         pull_requests=$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/pulls \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ')
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[0:3] | .user.login + ": " + .title +"\n" ')
         commits=$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "* " + .commit.author.name + ": " + .commit.message +"\n\n" ')
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[0:5] | "* " + .commit.author.name + ": " + .commit.message +"\n\n" ')
 
         notification_template="# Notificações\n\n### Issues:\n* $issues\n\n\n### PRs:\n* $pull_requests\n\n<hr>\n\n### Commits:\n$commits"
         echo -e "$notification_template" > NOTIFICATION.md
