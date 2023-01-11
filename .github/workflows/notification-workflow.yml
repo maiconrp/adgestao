@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@github-actions
+      
     - name: Use Node.js 14
       uses: actions/setup-node@v2
       with:
@@ -23,7 +24,7 @@ jobs:
         
     - name: Get issues
       run: |
-        issues=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.TOKEN_GITHUB_API }}" https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open)
+        issues=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open)
 
     - name: Imprimir issue
       run: |
