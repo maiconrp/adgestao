@@ -17,7 +17,9 @@ jobs:
         git config --global user.name "GitHub Actions"
     - name: Get issues
       run: |
-        issues=$(curl -s -H "Authorization: token ${{ secrets.TOKEN }}" https://api.github.com/repos/${{github.repository}}/issues?state=open)
+        issues=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{github.repository}}/issues?state=open)
+    - name: Pull changes
+      run: git pull
     - name: Update NOTIFICATION
       run: |
         echo "$issues" >> NOTIFICATION.md
