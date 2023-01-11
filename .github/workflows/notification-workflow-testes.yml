@@ -34,7 +34,7 @@ jobs:
         commits=$(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "|" + .commit.author.name + "|" + "["+.commit.message+"]"+"("+.html_url+")" + "|" + (date +"%d-%m-%Y" -d .commit.author.date)'  | sed -e 's/\"//g' | head -n 5)
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "|" + .commit.author.name + "|" + "["+.commit.message+"]"+"("+.html_url+")" + "|" + (date +"%d-%m-%Y" -d .commit.author.date)' + "|" | sed -e 's/\"//g' | head -n 5)
 
         notification_template="# Notificações\n\n### Issues:\n* $issues\n\n\n### PRs:\n* $pull_requests\n\n<hr>\n\n### Commits:\n|Autor|Mensagem|Data|\n|-----|--------|----|\n$commits"
         echo -e "$notification_template" > NOTIFICATION.md
