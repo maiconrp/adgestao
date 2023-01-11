@@ -30,7 +30,7 @@ jobs:
         echo $(echo $(curl --request GET \
         --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") | jq '.[] | {title: .title, authorID: .user.id}') >> NOTIFICATION.md
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") | jq '.[] | .title, .user.id') >> NOTIFICATION.md
         echo ${{ steps.get_issues.outputs.issues }}
         git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
       
