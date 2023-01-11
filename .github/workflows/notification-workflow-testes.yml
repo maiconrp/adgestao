@@ -49,5 +49,5 @@
       
      - name: Update NOTIFICATION
        run: |
-         echo $"""# Notificações\n\n### Issues:\n* **${issue}**\n\n\n### PRs:\n* **${pullrequests}**\n\n<hr>\n\n### Commits:\n* **${commits}:**""" > NOTIFICATION.md
+         printf $"""# Notificações\n\n### Issues:\n* **${{issue}}**\n\n\n### PRs:\n* **${{pullrequests}}**\n\n<hr>\n\n### Commits:\n* **${{commits}}:**""" > NOTIFICATION.md
          git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
