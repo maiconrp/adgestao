@@ -32,7 +32,7 @@ jobs:
         --header "content-type: application/json" \
         --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ')
         commits=$(curl --request GET \
-        --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open&per_page=5 \
+        --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open \
         --header "content-type: application/json" \
         --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "* " + .commit.author.name + ": " + "["+.commit.message+"]"+"("+.commit.url+")"  +"\n\n" ')
 
