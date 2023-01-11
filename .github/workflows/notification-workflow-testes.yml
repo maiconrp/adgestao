@@ -1,4 +1,4 @@
- name: Update NOTIFICATION
+ name: Update NOTIFICATION v2
  on:
    push:
      branches:
@@ -48,9 +48,9 @@
      
      - name: Monta template
        run:
-         notification_template = "# Notificações\n\n### Issues:\n* **${{issue}}**\n\n\n### PRs:\n* **${{pullrequests}}**\n\n<hr>\n\n### Commits:\n* **${{commits}}:**" 
+         notification_template:="# Notificações\n\n### Issues:\n* **${issue}**\n\n\n### PRs:\n* **${pullrequests}**\n\n<hr>\n\n### Commits:\n* **${commits}:**" 
        
      - name: Update NOTIFICATION
        run: |
-         echo ${{notification_template}} > NOTIFICATION.md
+         printf ${notification_template} > NOTIFICATION.md
          git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
