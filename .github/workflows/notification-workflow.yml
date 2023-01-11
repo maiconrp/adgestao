@@ -31,5 +31,5 @@ jobs:
         
     - name: Update NOTIFICATION
       run: |
-        echo "${{issues}}" >> NOTIFICATION.md
+        echo "$issues" >> NOTIFICATION.md
         git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
