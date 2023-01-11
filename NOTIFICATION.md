@@ -18,3 +18,4 @@
         printf "# Notificações\n * Ultima Issue\n * Ultima Pull Request\n * Ultimo Commit\n" > notification_template
         template = """
 -->
+"[BUG]: Teste de automatic notification issue" 60708311
