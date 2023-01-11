@@ -46,11 +46,8 @@
           --header "content-type: application/json"
           --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}") | jq '.[] | .commit.author.name + ": " + .commit.message'
      
-     - name: Monta template
-       run:
-         notification_template=$"""# Notificações\n\n### Issues:\n* **${issue}**\n\n\n### PRs:\n* **${pullrequests}**\n\n<hr>\n\n### Commits:\n* **${commits}:**"""
-       
+      
      - name: Update NOTIFICATION
        run: |
-         echo ${notification_template} > NOTIFICATION.md
+         echo $"""# Notificações\n\n### Issues:\n* **${issue}**\n\n\n### PRs:\n* **${pullrequests}**\n\n<hr>\n\n### Commits:\n* **${commits}:**""" > NOTIFICATION.md
          git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
