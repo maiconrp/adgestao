@@ -1,6 +1,7 @@
 ![BANNER_README](https://user-images.githubusercontent.com/60708311/211361317-8ed0ed0c-8be3-4621-84f2-249afb7cbe7f.png)
 
 [![Update NOTIFICATION v2](https://github.com/maiconrp/AD-Gestao/actions/workflows/notification-workflow.yml/badge.svg?branch=master&event=push)](https://github.com/maiconrp/AD-Gestao/actions/workflows/notification-workflow.yml)
+
 [![Badge em Desenvolvimento](https://img.shields.io/badge/Status-Prototipagem-green?logoColor=7834cd&labelColor=white&color=C2A334&style=for-the-badge)](https://github.com/maicon15rp/Music-Lyric-Download)
 ![stars](https://img.shields.io/github/stars/maiconrp/AD-Gestao.svg?labelColor=white&color=C2A334&style=for-the-badge)
 ![Issues](https://img.shields.io/github/issues/maiconrp/AD-Gestao?labelColor=white&color=C2A334&style=for-the-badge)
