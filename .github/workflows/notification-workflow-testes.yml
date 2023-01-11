@@ -31,7 +31,7 @@ jobs:
             issues=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
             --header "content-type: application/json" \
-            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '$filtro_issue' | sed -e 's/\"//g' | head -n 5)
+            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq $filtro_issue | sed -e 's/\"//g' | head -n 5)
 
         - name: Pegar e formatar  Pull Requests
           run: |
@@ -39,7 +39,7 @@ jobs:
             pull_requests=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/pulls \
             --header "content-type: application/json" \
-            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '$filtro_pullrequest' | sed -e 's/\"//g' | head -n 5)
+            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq $filtro_pullrequest | sed -e 's/\"//g' | head -n 5)
 
         - name: Pegar e formatar Commits
           run: |
@@ -47,7 +47,7 @@ jobs:
             commits=$(curl --request GET \
             --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open \
             --header "content-type: application/json" \
-            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '$filtro_commit' | sed -e 's/\"//g' | head -n 5)
+            --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq $filtro_commit | sed -e 's/\"//g' | head -n 5)
   
         - name: Escrever no Arquivo
           run: |
