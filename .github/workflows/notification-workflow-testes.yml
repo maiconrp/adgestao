@@ -24,17 +24,17 @@ jobs:
     - name: Update NOTIFICATION
       run: |
         issues=$(curl --request GET \
-        --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open \
+        --url https://api.github.com/repos/maiconrp/AD-gestao/issues?state=open&per_page=5 \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[:3] | .user.login + ": " + .title +"\n" ')
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ')
         pull_requests=$(curl --request GET \
-        --url https://api.github.com/repos/maiconrp/AD-gestao/pulls \
+        --url https://api.github.com/repos/maiconrp/AD-gestao/pulls?per_page=5 \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[:3] | .user.login + ": " + .title +"\n" ')
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | .user.login + ": " + .title +"\n" ')
         commits=$(curl --request GET \
-        --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open \
+        --url https://api.github.com/repos/maiconrp/AD-gestao/commits?state=open&per_page=5 \
         --header "content-type: application/json" \
-        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[:5] | "* " + .commit.author.name + ": " + .commit.message +"\n\n" ')
+        --header "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" | jq '.[] | "* " + .commit.author.name + ": " + .commit.message +"\n\n" ')
 
         notification_template="# Notificações\n\n### Issues:\n* $issues\n\n\n### PRs:\n* $pull_requests\n\n<hr>\n\n### Commits:\n$commits"
         echo -e "$notification_template" > NOTIFICATION.md
