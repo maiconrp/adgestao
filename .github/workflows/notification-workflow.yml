@@ -18,11 +18,11 @@ jobs:
         echo "machine github.com login ${{ secrets.TOKEN }}" > ~/.netrc
     - name: Get issues
       run: |
-        echo "::set-output name=issues::$(curl -s https://api.github.com/repos/${{github.repository}}/issues?state=open)"
+        echo "issues = $(curl -s https://api.github.com/repos/${{github.repository}}/issues?state=open)" >> $GITHUB_OUTPUT
     - name: Update NOTIFICATION
       run: |
-        echo "Updating README with issues..."
+        echo "Updating NOTIFICATION with issues..."
         echo "${{ steps.get_issues.outputs.issues }}" >> NOTIFICATION.md
         git add NOTIFICATION.md
-        git commit -am "Update NOTIFICATION with issues"
+        git commit -am "🔧 github: Update NOTIFICATION with issues"
         git push
