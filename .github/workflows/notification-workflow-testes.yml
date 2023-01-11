@@ -48,7 +48,7 @@
      
      - name: Monta template
        run:
-         notification_template:="# Notificações\n\n### Issues:\n* **${issue}**\n\n\n### PRs:\n* **${pullrequests}**\n\n<hr>\n\n### Commits:\n* **${commits}:**" 
+         notification_template=$"""# Notificações\n\n### Issues:\n* **${issue}**\n\n\n### PRs:\n* **${pullrequests}**\n\n<hr>\n\n### Commits:\n* **${commits}:**"""
        
      - name: Update NOTIFICATION
        run: |
