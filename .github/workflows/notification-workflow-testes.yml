@@ -52,5 +52,5 @@
        
      - name: Update NOTIFICATION
        run: |
-         printf ${notification_template} > NOTIFICATION.md
+         echo ${{notification_template}} > NOTIFICATION.md
          git diff --quiet && echo "Nothing to commit" || git commit -am "🔧 Update NOTIFICATION with issues" && git push
