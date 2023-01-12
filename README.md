@@ -24,7 +24,18 @@ AD Gestão é uma plataforma online de gerenciamento financeiro criada especialm
 ![Controle de acesso e permissões de usuários](https://img.shields.io/badge/Controle%20de%20usuários-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)
 
 ## Repositorio
-Teste
+⬜ Neste repositório você encontrará a seguinte estrutura de pastas:
+ 
+[![.github](https://img.shields.io/badge/📁-.github-C2A334?style=for-the-badge&logo=clipboard-list&labelColor=white)](./.github)
+> **Pasta com os arquivos de configuração do repositório, como *templates de issues* ou *workflows***
+
+[![Docs](https://img.shields.io/badge/📁-Docs-C2A334?style=for-the-badge&logo=clipboard-list&labelColor=white)](./docs)
+> **Pasta com a documentação do projeto, incluindo *diagramas*, *formulários*, *artigos*, dentre outros.**
+
+[![Guia](https://img.shields.io/badge/📁-Guia-C2A334?style=for-the-badge&logo=clipboard-list&labelColor=white)](./guia)
+> **Pasta com guias sobre *branches*, *commits* *pull requests* e etc, para nortear e padronizar o trabalho em equipe no repositório**
+
+<hr>
 
 ## Equipe
 > [![Icone de check](https://img.shields.io/badge/✔️-white?style=for-the-badge&logoColor=blue)
