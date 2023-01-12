@@ -41,51 +41,12 @@ Fornecer uma descrição detalhada das alterações realizadas no código é imp
 
 * :bulb: **`Referência qualquer problema ou tarefa relacionada`**: Se o pull request estiver resolvendo um problema ou tarefa específica, inclua uma referência a ela no pull request
 
+* :bulb: **`Preencha o template`**: Sempre preencha o template ao realizat sua pull requests, ele auxilia a equipe a entender quais alterações foram realizadas de maneira mais concisa e eficaz
+
 <hr>
 
 ## Template de Pull Request
 
-Um bom `Pull Request` deve fornecer informações suficientes para que os outros colaboradores possam **entender as alterações** realizadas e avaliar se elas são adequadas para serem integradas ao código principal. Para isso, siga sempre um modelo:
-
-<br>
-
-```
-## Descrição
-
-Descreva de maneira clara e concisa qual foi o objetivo das alterações realizadas.
-
-## Mudanças realizadas
-
-Descreva detalhadamente as alterações realizadas no código. 
-
-## Como testar
-
-Como os reviewers podem testar essas alterações?
-
-## Screenshots (opcional)
-
-Se aplicável, adicione screenshots da funcionalidade implementada para facilitar o entendimento.
-
-## Tipo de alteração
-
-- [ ] Correção de bug
-- [ ] Nova funcionalidade
-- [ ] Alteração de funcionalidade existente
-
-## Checklist
-
-- [ ] As alterações foram testadas?
-- [ ] A documentação foi atualizada?
-- [ ] As alterações seguem os padrões de código?
-- [ ] As alterações afetam a segurança?
-
-## Referências (opcional)
-
-Adicione links para issues ou pull requests relacionados.
-Para isso, utilize o número da issue ou pull request precedido pelo símbolo "#" na descrição do pull request. Por exemplo:
-
-"Este pull request corrige o problema descrito na issue #42 e também inclui a implementação sugerida no pull request #67."
-
-```
+Um bom `Pull Request` deve fornecer informações suficientes para que os outros colaboradores possam **entender as alterações** realizadas e avaliar se elas são adequadas para serem integradas ao código principal. Para isso, este repositório conta com um **template de pull request**, ele é exibido como corpo da descrição ao realizar um pull request. 
 
 Lembre-se de sempre preencher todos os itens da checklist antes de enviar o pull request, isso garantirá que as alterações sejam revisadas de maneira mais rápida e eficiente.
