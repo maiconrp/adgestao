@@ -2,7 +2,7 @@
 
 [![Update NOTIFICATION v2](https://github.com/maiconrp/AD-Gestao/actions/workflows/notification-workflow.yml/badge.svg?branch=master&event=push)](https://github.com/maiconrp/AD-Gestao/actions/workflows/notification-workflow.yml)
 
-[![Badge em Desenvolvimento](https://img.shields.io/badge/Status-Prototipagem-green?logoColor=7834cd&labelColor=white&color=C2A334&style=for-the-badge)](https://github.com/maicon15rp/Music-Lyric-Download)
+[![Badge em Desenvolvimento](https://img.shields.io/badge/Status-Prototipagem-green?logoColor=7834cd&labelColor=white&color=C2A334&style=for-the-badge)](https://github.com/maicon15rp/AD-Gestao)
 ![stars](https://img.shields.io/github/stars/maiconrp/AD-Gestao.svg?labelColor=white&color=C2A334&style=for-the-badge)
 ![Issues](https://img.shields.io/github/issues/maiconrp/AD-Gestao?labelColor=white&color=C2A334&style=for-the-badge)
 ![Pull Requests](https://img.shields.io/github/issues-pr/maiconrp/AD-Gestao?labelColor=white&color=C2A334&style=for-the-badge)
@@ -24,7 +24,7 @@ AD Gestão é uma plataforma online de gerenciamento financeiro criada especialm
 ![Controle de acesso e permissões de usuários](https://img.shields.io/badge/Controle%20de%20usuários-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)
 
 ## Repositorio
-⬜ Neste repositório você encontrará a seguinte estrutura de pastas:
+ Neste repositório você encontrará a seguinte estrutura de pastas:
  
 [![.github](https://img.shields.io/badge/📁-.github-C2A334?style=for-the-badge&logo=clipboard-list&labelColor=white)](./.github)
 > **Pasta com os arquivos de configuração do repositório, como *templates de issues* ou *workflows***
