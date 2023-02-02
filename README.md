@@ -1,7 +1,5 @@
 ![BANNER_README](https://user-images.githubusercontent.com/60708311/211361317-8ed0ed0c-8be3-4621-84f2-249afb7cbe7f.png)
 
-[![Update NOTIFICATION v2](https://github.com/maiconrp/AD-Gestao/actions/workflows/notification-workflow.yml/badge.svg?branch=master&event=push)](https://github.com/maiconrp/AD-Gestao/actions/workflows/notification-workflow.yml)
-
 [![Badge em Desenvolvimento](https://img.shields.io/badge/Status-Prototipagem-green?logoColor=7834cd&labelColor=white&color=C2A334&style=for-the-badge)](https://github.com/maicon15rp/AD-Gestao)
 ![stars](https://img.shields.io/github/stars/maiconrp/AD-Gestao.svg?labelColor=white&color=C2A334&style=for-the-badge)
 ![Issues](https://img.shields.io/github/issues/maiconrp/AD-Gestao?labelColor=white&color=C2A334&style=for-the-badge)
@@ -38,12 +36,7 @@ AD Gestão é uma plataforma online de gerenciamento financeiro criada especialm
 <hr>
 
 ## Equipe
-> [![Icone de check](https://img.shields.io/badge/✔️-white?style=for-the-badge&logoColor=blue)
-![Pesquisa](https://img.shields.io/badge/Bruno%20Reis-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)](https://github.com/brunoreisx)
-[![Icone de check](https://img.shields.io/badge/✔️-white?style=for-the-badge&logoColor=blue)
-![Documentação](https://img.shields.io/badge/Maicon%20Robert-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)](https://github.com/maiconrp)
-[![Icone de check](https://img.shields.io/badge/✔️-white?style=for-the-badge&logoColor=blue)
-![Levantamento de requsitos](https://img.shields.io/badge/Paulo%20César-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)](https://github.com/Soneca-Zzz)
-[![Icone de check](https://img.shields.io/badge/✔️-white?style=for-the-badge&logoColor=blue)
-![Diagramação](https://img.shields.io/badge/Victor%20Fonteles-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)](https://github.com/Voctor-367)
-
+[![Pesquisa](https://img.shields.io/badge/Bruno%20Reis-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)](https://github.com/brunoreisx)
+[![Levantamento de requsitos](https://img.shields.io/badge/Paulo%20César-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)](https://github.com/Soneca-Zzz)
+[![Diagramação](https://img.shields.io/badge/Victor%20Fonteles-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)](https://github.com/Voctor-367)
+[![Documentação](https://img.shields.io/badge/Maicon%20Robert-C2A334?style=for-the-badge&logo=clipboard-list&logoColor=white)](https://github.com/maiconrp)
