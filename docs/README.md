@@ -67,8 +67,9 @@
 │   ├── Anexo 2 - Controle Financeiro Local.pdf
 │   ├── Questionario.pdf
 │   └── Resposta.pdf
-└── Validacao dos Requisitos
-    ├── Questionario.pdf
-    └── Resposta.pdf
+├── Validacao dos Requisitos
+|   ├── Questionario.pdf
+|   └── Resposta.pdf
+└── README.md
 ```
 > **Nesta pasta, você encontrará os formulários utilizados para levantamento e validação dos requisitos.**
