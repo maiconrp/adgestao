@@ -1,6 +1,6 @@
 ## `Docs` Ad Gestão - Sistema Financeiro para Igrejas
 
-#### O projeto está dividido em várias pastas, cada uma contendo os arquivos relevantes para a respectiva etapa do projeto:
+O projeto está dividido em várias pastas, cada uma contendo os arquivos relevantes para a respectiva etapa do projeto:
 
 <hr>
 
