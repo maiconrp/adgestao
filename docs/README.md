@@ -11,7 +11,9 @@
 └── README.md
 ```
 
-> **Nesta pasta, você encontrará o artigo técnico que descreve o projeto.**
+```
+📄 Artigo técnico que descreve o projeto.
+```
 <hr>
 <br>
 
@@ -22,46 +24,50 @@
 └── casos-de-uso-adgestao.jpg
 └── README.md
 ```
-> **Nesta pasta, você encontrará os diagramas de casos de uso que ilustram as interações entre os usuários e o sistema.**
+```
+📄 Diagramas de casos de uso que ilustram as interações entre os usuários e o sistema.
+```
 <hr>
 <br>
 
 [![Diagrama de classes](https://img.shields.io/badge/Diagrama%20de%20classes-darkgreen?style=for-the-badge&logo=project-diagram&logoColor=white)](./diagrama%20de%20classes)
 ```
-.
 ├── classes-adgestao.jpg
 ├── classes-adgestao.svg
 ├── classes-adgestao.mdj
 └── README.md
 ```
-> **Nesta pasta, você encontrará o diagrama de classes que mostra a estrutura do sistema e as relações entre as classes.**
+```
+📄 Diagrama de classes que mostra a estrutura do sistema e as relações entre as classes.
+```
 <hr>
 <br>
 
 [![Documento de visão](https://img.shields.io/badge/Documento%20de%20visao-darkgreen?style=for-the-badge&logo=book&logoColor=white)](./documento%20de%20visao)
 ```
-.
 ├── Doc de visao.pdf
 └── README.md
 ```
 
-> **Nesta pasta, você encontrará o objetivo do projeto, uma visão geral do contexto onde o projeto será efetivado, o mapeamento dos problemas, a visão geral da solução proposta, os atores envolvidos no sistema, os requisitos funcionais e por fim os requisitos não funcionais .**
+```
+📄 Objetivo, contexto, problemas, solução, atores, requisitos funcionais e não funcionais.
+```
 <hr>
 <br>
 
 [![Fluxograma financeiro](https://img.shields.io/badge/Fluxograma%20financeiro-darkgreen?style=for-the-badge&logo=cash-register&logoColor=white)](./fluxograma%20financeiro)
 ```
-.
 ├── Fluxograma Financeiro Assembleia de Deus Missão.pdf
 └── README.md
 ```
-> **Nesta pasta, você encontrará o fluxograma financeiro que detalha a estrutura de finanças atualmente utilizada no contexto de aplicação do sistema.**
+```
+📄 Fluxograma financeiro que detalha a estrutura de finanças atualmente utilizada no contexto de aplicação do sistema.
+```
 <hr>
 <br>
 
 [![Formulários](https://img.shields.io/badge/Formulários-darkgreen?style=for-the-badge&logo=file-alt&logoColor=white)](./formularios)
 ```
-.
 ├── Análise da Estrutura Financeira
 │   ├── Anexo 1 - Relatório Financeiro.pdf
 │   ├── Anexo 2 - Controle Financeiro Local.pdf
@@ -72,4 +78,7 @@
 |   └── Resposta.pdf
 └── README.md
 ```
-> **Nesta pasta, você encontrará os formulários utilizados para levantamento e validação dos requisitos.**
+```
+📄 Formulários utilizados para levantamento e validação dos requisitos.
+```
+
