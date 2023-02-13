@@ -2,8 +2,8 @@ version: 2
 # Versão do arquivo de configuração do Dependabot
 
 updates:
-  - package-ecosystem: "pypi"
-    # Ecosistema de pacotes que será atualizado, neste caso, PyPI
+  - package-ecosystem: "pip"
+    # Ecosistema de pacotes que será atualizado, neste caso, pip
     
     directory: "/code" 
     # Diretório onde está localizado o arquivo requirements.txt
