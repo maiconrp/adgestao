@@ -2,7 +2,7 @@
 
 Obrigado por dedicar seu tempo para contribuir para este projeto!
 
-:information_source: Antes de começar a contribuir, verifique a pasta `guia`, disponível aqui, que contém informações importantes sobre padrões de código, ramificações, commits, problemas e solicitações de pull do projeto. Isso garantirá que suas contribuições estejam alinhadas aos objetivos e padrões do projeto. 
+:information_source: Antes de começar a contribuir, verifique o [**nosso guia**](https://github.com/maiconrp/adgestao/tree/master/guia), que contém informações importantes sobre padrões de código, ramificações, commits, problemas e solicitações de pull do projeto. Isso garantirá que suas contribuições estejam alinhadas aos objetivos e padrões do projeto. 
 
 ❔ Se você tiver alguma dúvida ou precisar de esclarecimentos sobre qualquer coisa, sinta-se à vontade para abrir uma questão ou entrar em contato diretamente com os mantenedores do projeto.
 
