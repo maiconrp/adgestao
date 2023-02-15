@@ -37,6 +37,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Meus apps
+    "igreja",
+    "usuario",
+    "relatorio",
+    
+    # Utils
+    "multiselectfield"
 ]
 
 MIDDLEWARE = [
