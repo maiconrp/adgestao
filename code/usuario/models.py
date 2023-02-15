@@ -1,37 +1,120 @@
 from django.db import models
 from django.contrib.auth.models import User
+from igreja.models import Igreja
 
-class Usuario(User):
-    cpf = models.CharField(max_length=13, unique=True, primarykey=True)
-    telefone = models.CharField(max_length=20)
+class SolicitacaoCadastro(User):
+    cpf = models.CharField(
+        max_length=13, 
+        unique=True, 
+        primary_key=True,
+        blank=False, 
+        null=False,
+    )
+    telefone = models.CharField(
+        max_length=20,
+        blank=False, 
+        null=False
+    )
     igreja = models.ForeignKey(
         Igreja,
-        on_delete=models.D0_NOTHING,
+        on_delete=models.DO_NOTHING,
+        related_name='Usuario'
+    )
+    situacao = models.CharField(
+        max_length=20,
+        blank=False, 
+        null=False
+    )
+    horario = models.DateTimeField(
+        auto_now_add=True
+    )
+
+
+class Usuario(User):
+    cpf = models.CharField(
+        max_length=13, 
+        unique=True, 
+        primary_key=True,
+        blank=False, 
+        null=False,
+    )
+    telefone = models.CharField(
+        max_length=20,
+        blank=False, 
+        null=False
+    )
+    igreja = models.ForeignKey(
+        Igreja,
+        on_delete=models.DO_NOTHING,
         related_name='Usuario'
     )
     
     def __str__(self):
         return self.username
 
-class TesoureiroLocal(Usuario):
+    def solicitar_adastro(self, nome, email, cpf, senha, telefone=None, igreja=None):
+        """
+        Método responsável por permitir que um usuário solicite cadastro no sistema.
+        Recebe o nome, email, CPF, senha, telefone e igreja do usuário como parâmetros.
+        """
+        # Implementação da lógica para solicitar cadastro
+
+    def acompanhar_cadastro(self, cpf):
+        """
+        Método responsável por permitir que um usuário acompanhe o status de seu cadastro no sistema.
+        Recebe o CPF do usuário como parâmetro.
+        """
+        # Implementação da lógica para acompanhar cadastro
+
+    def atualizar_cadastro(self, nome=None, email=None, cpf=None, senha=None, telefone=None, igreja=None):
+        """
+        Método responsável por permitir que um usuário atualize seus dados de cadastro no sistema.
+        Recebe o nome, email, CPF, senha, telefone e igreja do usuário como parâmetros (opcional).
+        """
+        # Implementação da lógica para atualizar cadastro
+
+    def realizar_login(self):
+        """
+        Método responsável por realizar o login de um usuário no sistema.
+        Recebe o email e a senha do usuário como parâmetros.
+        """
+        # Implementação da lógica para realizar o login
+
+    def realizar_logout(self):
+        """
+        Método responsável por realizar o logout do usuário atual no sistema.
+        """
+        # Implementação da lógica para realizar o logout
 
 
-    def queijo(self):
-        pass
+class Tesoureiro(Usuario):
     
+    def __str__(self):
+        return self.username
+    
+    
+class TesoureiroSede(Tesoureiro):
 
-class TesoureiroSede(Usuario):
+    def __str__(self):
+        return self.username
+    
+    def avaliar_solicitacao_cadastro(self, nome=None, email=None, cpf=None, senha=None):
+        pass
 
+    def gerenciar_usuario(self, nome=None, email=None, cpf=None, senha=None):
+        pass
 
-    def ela(self):
+    def adicionar_igreja(self, Igreja): # igreja = dados da igreja
+        pass
+
+    def autorizar_alteracao(self, nome=None, email=None, cpf=None, senha=None):
         pass
 
 
 class Pastor(Usuario):
 
-
-    def muie_dos_outro(self):
-        pass
+    def __str__(self):
+        return self.username
     
 
 

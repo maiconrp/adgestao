@@ -1,6 +1,7 @@
+from django.contrib.auth.models import User
 from django.db import models
 from multiselectfield import MultiSelectField
-from django.contrib.auth.models import User
+from sede.models import Relatorio
 
 class Igreja(models.Model):
     """
@@ -62,9 +63,9 @@ class Membro(User):
         null=False,
     )
     sexo = MultiSelectField(
+        choices=SEXO_CHOICES,
         max_length=20, 
         max_choices=1,
-        choices=SEXO_CHOICES,
         blank=False, 
         null=False,
     )
@@ -227,3 +228,7 @@ class Dizimo(Financa):
         max_digits=10, 
         decimal_places=2
     )
+
+   
+class RelatorioMensal(Relatorio):
+    pass
