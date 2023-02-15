@@ -52,7 +52,7 @@ class Usuario(User):
     def __str__(self):
         return self.username
 
-    def solicitar_adastro(self, nome, email, cpf, senha, telefone=None, igreja=None):
+    def solicitar_cadastro(self, nome, email, cpf, senha, telefone=None, igreja=None):
         """
         Método responsável por permitir que um usuário solicite cadastro no sistema.
         Recebe o nome, email, CPF, senha, telefone e igreja do usuário como parâmetros.
