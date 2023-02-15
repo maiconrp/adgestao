@@ -32,7 +32,7 @@ Este projeto será desenvolvido utilizando as seguintes tecnologias:
 * **JavaScript**: Adiciona interatividade e dinamismo às páginas da web.
 
 ## Contribuir
-Para contribuir veja o [nosso guia][guia]
+Para contribuir veja o [guia de contribuição][contributing]
 
 <hr>
 
@@ -42,4 +42,4 @@ Para contribuir veja o [nosso guia][guia]
 [![Diagramação](https://img.shields.io/badge/Victor%20Fonteles-413f3d?style=for-the-badge&logo=clipboard-list&logoColor=white)](https://github.com/Voctor-367)
 [![Documentação](https://img.shields.io/badge/Maicon%20Robert-413f3d?style=for-the-badge&logo=clipboard-list&logoColor=white)](https://github.com/maiconrp)
 
-[guia]: https://github.com/maiconrp/adgestao/tree/master/guia#readme
+[contributing]: https://github.com/maiconrp/adgestao/blob/master/CONTRIBUTING.md
