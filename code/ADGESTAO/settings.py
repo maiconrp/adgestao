@@ -40,10 +40,7 @@ INSTALLED_APPS = [
     # Meus apps
     "igreja",
     "usuario",
-    "relatorio",
-    
-    # Utils
-    "multiselectfield"
+    "multiselectfield",
 ]
 
 MIDDLEWARE = [
