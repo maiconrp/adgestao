@@ -20,7 +20,8 @@ def solicitar_cadastro(request):
     else:
         form_solicitacao = SolicitacaoCadastroForm()
         
-    return render(request, '\solicitacoes\solicitar.html', {'form_solicitacao': form_solicitacao})
+    return render(request, 'solicitacoes/solicitar.html', {'form_solicitacao': form_solicitacao})
+
 
 def acompanhar_cadastro(request):
     
@@ -54,7 +55,7 @@ def acompanhar_cadastro(request):
     else:
         return render(request, 'solicitacao/acompanhar.html', {})
 
-@has_permission('autorizar_solicitacao')
+
 def autorizar_solicitacao(request, cpf):
     solicitacao = get_object_or_404(SolicitacaoCadastro, cpf=cpf)
     solicitacao.situacao = 'Autorizado' # Define a situação como autorizado
@@ -91,12 +92,11 @@ def autorizar_solicitacao(request, cpf):
             igreja=solicitacao.igreja
         )
         tesoureiro_sede.save()
-        assign_role(tesoureiro_sede, TesoureiroSedeRole)
+        assign_role(tesoureiro_sede, TesoureiroSede)
 
     return HttpResponseRedirect('solicitacoes/')
 
 
-@has_permission('negar_solicitacao')
 def negar_solicitacao(request, cpf):
     solicitacao = get_object_or_404(SolicitacaoCadastro, cpf=cpf)
     solicitacao.situacao = 'Negado' # Define a situação como negado
