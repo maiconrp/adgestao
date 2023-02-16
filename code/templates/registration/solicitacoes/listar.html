@@ -1,0 +1,43 @@
+
+{% block content %}
+    <h2>Solicitações de Cadastro Pendentes</h2>
+
+    {% if solicitacoes %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Igreja</th>
+                    <th scope="col">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for solicitacao in solicitacoes %}
+                    <tr>
+                        <td>{{ solicitacao.cpf }}</td>
+                        <td>{{ solicitacao.nome }}</td>
+                        <td>{{ solicitacao.email }}</td>
+                        <td>{{ solicitacao.telefone }}</td>
+                        <td>{{ solicitacao.igreja }}</td>
+                        <td>
+                            <form action="{% url 'autorizar_solicitacao' solicitacao.cpf %}" method="POST">
+                                {% csrf_token %}
+                                <button class="btn btn-success" type="submit">Autorizar</button>
+                            </form>
+
+                            <form action="{% url 'negar_solicitacao' solicitacao.cpf %}" method="POST">
+                                {% csrf_token %}
+                                <button class="btn btn-danger" type="submit">Negar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhuma solicitação de cadastro pendente no momento.</p>
+    {% endif %}
+{% endblock %}

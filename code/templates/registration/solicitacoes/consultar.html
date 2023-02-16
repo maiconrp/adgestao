@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Pesquisar Solicitação</title>
+</head>
+<body>
+	<form method="post" {% url 'solicitacao:acompanhar_cadastro'%}>
+		{% csrf_token %}
+		<label for="cpf">Digite o CPF para pesquisar:</label>
+		<input type="text" name="cpf" id="cpf" required>
+		<input type="submit" value="Pesquisar">
+	</form>
+
+	{% if solicitacao %}
+		<h2>Informações da Solicitação</h2>
+		<p>Nome: {{ solicitacao.nome }}</p>
+		<p>CPF: {{ solicitacao.cpf }}</p>
+		<p>E-mail: {{ solicitacao.email }}</p>
+		<p>Telefone: {{ solicitacao.telefone }}</p>
+		<p>Situação: {{ solicitacao.situacao }}</p>
+	{% endif %}
+</body>
+</html>
