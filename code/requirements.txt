@@ -2,6 +2,7 @@ asgiref==3.6.0
 Django==4.1.6
 django-bootstrap-form==3.4
 django-discover-runner==1.0
+django-multiselectfield==0.1.12
 django-role-permissions==3.1.1
 six==1.16.0
 sqlparse==0.4.3
