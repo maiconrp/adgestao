@@ -1,0 +1,8 @@
+{% if solicitacao %}
+    <h2>Informações da Solicitação</h2>
+    <p>Nome: {{ solicitacao.nome }}</p>
+    <p>CPF: {{ solicitacao.cpf }}</p>
+    <p>E-mail: {{ solicitacao.email }}</p>
+    <p>Telefone: {{ solicitacao.telefone }}</p>
+    <p>Situação: {{ solicitacao.situacao }}</p>
+{% endif %}

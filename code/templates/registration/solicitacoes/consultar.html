@@ -5,7 +5,7 @@
 	<title>Pesquisar Solicitação</title>
 </head>
 <body>
-	<form method="post" {% url 'solicitacao:acompanhar_cadastro'%}>
+	<form method="post" {% url 'usuario:acompanhar_cadastro' %}>
 		{% csrf_token %}
 		<label for="cpf">Digite o CPF para pesquisar:</label>
 		<input type="text" name="cpf" id="cpf" required>
