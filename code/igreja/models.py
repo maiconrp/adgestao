@@ -223,12 +223,54 @@ class Dizimo(Financa):
     Atributos:
         valor_dizimo (DecimalField): o valor do dízimo doado
     """
-
-    valor_dizimo = models.DecimalField(
+    membro = models.ForeignKey(
+        Membro, 
+        on_delete=models.SET_DEFAULT, 
+        default=None, related_name='dizimos'
+    )
+    
+    valor = models.DecimalField(
         max_digits=10, 
         decimal_places=2
-    )
+        )
+    # outros campos
+
+    def get_membro_nome(self):
+        return self.membro.nome if self.membro else "Membro Excluido"
 
    
 class RelatorioMensal(Relatorio):
-    pass
+    pagamento_obreiro = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2
+    )
+    
+    missoes_sede = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2
+    )
+    
+    fundo_convencional = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2
+    )
+    
+    saldo = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2
+    )
+    
+    ofertas = models.ManyToManyField(
+        Oferta,
+        related_name="RelatorioGeral"
+        )
+    
+    dizimos = models.ManyToManyField(
+        Dizimo, 
+        related_name="RelatorioGeral"
+        )
+    
+    saidas = models.ManyToManyField(
+        Saida, 
+        related_name="RelatorioGeral"
+        )

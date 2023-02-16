@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Relatorio(models.Model):
     """
     Modelo base para relatórios.
@@ -27,11 +28,25 @@ class Relatorio(models.Model):
         Filtra o relatório por período.
         """
         return self
+    
+    
+class RelatorioGeral(Relatorio):
+    """
+    Modelo para relatório geral de entrada e saída de caixa.
+    """
+    
+    # relação de composição com a classe Entradas
+    
+    data_inicio = models.DateField(
+        blank=False,
+        null=False
+    )
 
-class Entradas(models.Model):
-    """
-    Modelo para entradas de caixa.
-    """
+    data_fim = models.DateField(
+        blank=False,
+        null=False
+    )
+
     entradas_sede = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -52,18 +67,7 @@ class Entradas(models.Model):
         blank=False,
         null=False
     )
-
-    def __str__(self):
-        """
-        Retorna a representação do objeto em forma de string.
-        """
-        return self
-
-
-class Saidas(models.Model):
-    """
-    Modelo para saídas de caixa.
-    """
+    
     saidas_sede = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -112,28 +116,7 @@ class Saidas(models.Model):
         blank=True,
         null=True,
     )
-
-    def __str__(self):
-        """
-        Retorna a representação do objeto em forma de string.
-        """
-        return self
-
-
-class RelatorioGeral(Relatorio):
-    """
-    Modelo para relatório geral de entrada e saída de caixa.
-    """
-    data_inicio = models.DateField(
-        blank=False,
-        null=False
-    )
-
-    data_fim = models.DateField(
-        blank=False,
-        null=False
-    )
-
+    
     saldo = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -141,8 +124,10 @@ class RelatorioGeral(Relatorio):
         null=False
     )
 
+
     def __str__(self):
         """
         Retorna a representação do objeto em forma de string.
         """
         return f"Relatório: {self.data_inicio} - {self.data_fim}"
+

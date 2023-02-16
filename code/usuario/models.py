@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from igreja.models import Igreja
+from multiselectfield import MultiSelectField
 
 class SolicitacaoCadastro(User):
     cpf = models.CharField(
@@ -18,7 +19,7 @@ class SolicitacaoCadastro(User):
     igreja = models.ForeignKey(
         Igreja,
         on_delete=models.DO_NOTHING,
-        related_name='Usuario'
+        related_name='SolcitacaoCadastro'
     )
     situacao = models.CharField(
         max_length=20,
@@ -31,6 +32,12 @@ class SolicitacaoCadastro(User):
 
 
 class Usuario(User):
+    FUNCAO_CHOICES = (
+        ("P", "Pastor"),
+        ("T", "Tesoureiro"),
+        ("TS", "Tesoureiro Sede"),
+    )
+    
     cpf = models.CharField(
         max_length=13, 
         unique=True, 
@@ -47,6 +54,14 @@ class Usuario(User):
         Igreja,
         on_delete=models.DO_NOTHING,
         related_name='Usuario'
+    )
+    
+    funcao = MultiSelectField(
+        choices=FUNCAO_CHOICES,
+        max_length=20, 
+        max_choices=1,
+        blank=False, 
+        null=False,
     )
     
     def __str__(self):
