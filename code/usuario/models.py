@@ -4,6 +4,20 @@ from igreja.models import Igreja
 from multiselectfield import MultiSelectField
 
 class SolicitacaoCadastro(User):
+    FUNCAO_CHOICES = (
+        ("P", "Pastor"),
+        ("T", "Tesoureiro"),
+        ("TS", "Tesoureiro Sede"),
+    )
+    
+    funcao = MultiSelectField(
+        choices=FUNCAO_CHOICES,
+        max_length=20, 
+        max_choices=1,
+        blank=False, 
+        null=False,
+    )
+    
     cpf = models.CharField(
         max_length=13, 
         unique=True, 

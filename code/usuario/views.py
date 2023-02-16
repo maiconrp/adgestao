@@ -20,7 +20,7 @@ def solicitar_cadastro(request):
     else:
         form_solicitacao = SolicitacaoCadastroForm()
         
-    return render(request, 'solicitacoes/solicitar.html', {'form_solicitacao': form_solicitacao})
+    return render(request, 'registration/solicitacoes/solicitar.html', {'form_solicitacao': form_solicitacao})
 
 
 def acompanhar_cadastro(request):
@@ -49,11 +49,11 @@ def acompanhar_cadastro(request):
             'solicitacao': solicitacao
         }
         
-        return render(request, 'solicitacao/acompanhar.html', context)
+        return render(request, 'registration/solicitacoes/consultar.html', context)
         
         
     else:
-        return render(request, 'solicitacao/acompanhar.html', {})
+        return render(request, 'registration/solicitacoes/consultar.html', {})
 
 
 def autorizar_solicitacao(request, cpf):
@@ -103,5 +103,4 @@ def negar_solicitacao(request, cpf):
     solicitacao.save()
 
     return HttpResponseRedirect('solicitacoes/')
-
 
