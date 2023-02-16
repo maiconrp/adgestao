@@ -1,0 +1,482 @@
+.header{
+    width: 100%;
+    margin-left: 0;
+    box-shadow: 0 0.3em 1em rgba(0, 20, 20, 0.7);
+    height: auto;
+    background-color: rgb(40, 133, 102);
+}
+
+.header img{
+    width: 3.2vw;
+    height: 3vw;
+    border-radius: 1vw;
+}
+
+.header a{
+    margin-top: 0.8vw;
+    text-decoration: none;
+    font: 600 1.1vw Gantari;
+    color: white;
+}
+
+.logo-IFBA img{
+    justify-content: center;
+    text-align:LEFT;
+    margin-left: 3vw;
+    width: 4.8vw;
+    height: 4vw;
+    border-radius: 01vw;
+
+}
+
+.card{
+    height: 35vw; 
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-family: Gantari;
+    text-decoration-color: rgb(66, 165, 132);
+    border-radius: 0.4vw;
+    box-shadow: 0 10px 20px rgba(0.3, 0.3, 0.3, 0.3);  
+}
+
+.card-list{
+    height: auto;
+    padding: 2vw 5vw 2vw 5vw;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-family: Gantari;
+    text-decoration-color: rgb(66, 165, 132);
+    border-radius: 0.4vw;
+    box-shadow: 0 10px 20px rgba(0.3, 0.3, 0.3, 0.3);  
+}
+
+.card button{
+    font: 600 1vw Gantari;
+    width: 10vw;
+    height: 3vw;
+    border-radius: 0.4vw;
+    background: rgb(66, 165, 132);
+    transition: 0.3s;
+}
+
+.card button:hover{
+    background: rgb(80, 212, 168)
+}
+
+
+.img-lista img{
+    margin-top: 1.5vw;
+    width: 2vw;
+    height: 2vw;
+}
+
+.img-lista{
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 5.5vw;
+    height: 5vw;
+    background-color: rgb(66, 165, 132);
+    border-radius: 8rem;
+   
+}
+
+
+.lista-aberta a{
+    
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.buttons-nav{
+    height: 3.5vw;
+    display: flex;
+    padding: 0.5vw 2vw 0 0;
+    border-left: 1px solid rgb(245, 242, 242);
+}
+
+.buttons-nav li{
+    display: flex;
+}
+
+.buttons-nav span{
+    align-items: center;
+    text-align: center;
+    margin-left: 4vw;
+}
+
+.buttons-nav img{
+    width: 3.3vw;
+    height: 2.9vw;
+}
+
+.options-list button{
+    width: 11vw;
+    margin-left: 1.2vw;
+}
+
+.table-responsive img{
+    width: 1.3vw;
+    height: 1.2vw;
+}
+
+
+.table-responsive td{
+    border-bottom: 1px solid rgb(66, 165, 132);
+    border-radius: 3px;
+    width: 100vw;
+}
+
+h1, h2, p, span, h4, a{
+    text-align: center;
+    font-family: Gantari;
+    color: rgb(66, 165, 132);
+}
+
+.options-list button{
+    display: block;
+    margin-bottom: 2vw;
+}
+
+.border_bottom {
+    margin-top: 0;
+    margin-bottom: 2vw;
+    height: 2px;
+    background: rgb(66, 165, 132);
+    border-radius: 3px;
+
+}
+
+.row{
+     margin-left: -15px; 
+     margin-right: -15px; 
+}
+
+.a{
+   
+    font-family: Gantari;
+}
+
+.table{
+    border-bottom: 1px solid rgb(66, 165, 132);
+}
+
+.card-title {
+    margin-top: 3vw; 
+}
+
+form {
+    width: 27vw;
+    height: auto;
+    border-radius: 1.6rem;
+    padding: 2vw 4vw 2vw 4vw;
+    align-items: center;
+    background: rgba(241, 238, 238, 0.678);
+    box-shadow: 0 0 1.1em rgba(61, 58, 58, 0.6);
+  }
+
+  form .btn{
+    margin-top: 1vw;
+  }
+
+  .content-body h2{
+    margin-top: 3vw;
+    font: Gantari;
+    font-weight: 600;
+  }
+
+  .card form label{
+    font: 600 1.2vw Gantari;
+    display: block;
+    margin-bottom: 0.3vw;
+    margin-top: 1.3vw;
+}
+
+.card form input{
+    width: 15vw;
+    border: none;
+    background-color:  rgba(250, 244, 244, 0.678);
+    border-radius: 0.4vw;
+    border-bottom: 0.2vw solid rgb(66, 165, 132);
+    text-decoration: none;
+}
+
+.card form{
+    width: 25vw;
+    height: auto;
+}
+
+.search-filter{
+    width: auto;
+    height: auto;
+    border-radius: 1.6rem;
+    padding: 0;
+    align-items: center;
+    background: rgba(252, 251, 251, 0.678);
+    box-shadow: none; 
+}
+
+.search-filter input{
+    border: 0px;
+    border-bottom: 0.1vw solid rgb(66, 165, 132);
+}
+
+.float-left .btn-success{
+    width: 4.3vw;
+    height: 2vw;
+    transition: 0.3s;
+}
+
+.float-left .btn-success:hover{
+    background-color: rgb(55, 180, 118);
+}
+
+.float-right button{
+    height: 3.1vw;
+    width: 10vw;
+    background-color: rgb(235, 60, 60);
+    border-radius: 0.8vw;
+    border: none;
+    transition: 0.3s;
+    margin-left: 2vw;
+    color: aliceblue;
+   
+}
+
+.float-right button:hover{
+    background-color: rgb(230, 82, 82);
+}
+
+td button{
+    padding: 0.2vw 0.8vw 0.2vw 0.8vw;
+    height: auto;
+    width: auto;
+    border-radius: 0.8vw;
+    border: none;
+    transition: 0.3s;
+    margin-left: 2vw;
+}
+
+td .baixar-lista{
+    background-color: rgb(55, 180, 118);
+}
+
+
+td .baixar-lista:hover{
+    background-color: rgb(72, 202, 137);
+}
+
+td .excluir-lista{
+    background-color: rgb(235, 60, 60);
+}
+
+td .excluir-lista:hover{
+    background-color: rgb(230, 82, 82);
+}
+
+.search-filter input{
+    width: 3vw;    
+}
+
+
+form .search{
+    width: 2vw;
+}
+
+.row th{
+    font: 600 1.3vw Gantari;
+}
+
+.row td{
+    font: 600 1.2vw Gantari;
+    height: 3.6vw;
+    padding-top: 1.4vw;
+    text-align:center;
+}
+
+td .excluir{
+    margin-right: 5vw;
+}
+
+h1{
+    margin-bottom: 1vw;
+}
+
+.row form p{
+    font: 600 1.1vw Gantari;
+}
+
+section form a{
+    font: 600 0.9vw Gantari;
+}
+
+
+
+/*! ------------------- LANDING PAGE -------------------- */
+
+.register{
+    height: 3.8vw;
+    width: 17vw;
+    background: rgb(248, 250, 248);
+    border-radius: 0.5vw;
+    font: 800 1.1vw Gantari;
+    color: rgb(18, 145, 196);
+    border: 0.2vw solid rgb(18, 145, 196);
+    transition: 0.3s; 
+    box-shadow: 0 0.5em 1.5em rgba(0, 20, 20, 0.8);
+} 
+
+.register:hover {
+    cursor: pointer;
+    background: rgb(18, 145, 196);
+    color: white;   
+}
+
+header.masthead{
+    padding: 0;
+}
+
+.masthead .container{
+    padding-bottom: 10vw;
+}
+
+.showcase-img {
+    width: 42vw;
+    margin-left: 4vw;
+    border-radius: 0.5vw;
+    box-shadow: 0 0.3em 1em rgb(30 40 80 / 100%);
+}
+
+
+.features img{
+    width: 4vw;
+    height: 4vw;
+    
+}
+
+.features-icons{
+    padding-bottom: 3vw;
+    margin-bottom: 4vw;
+}
+
+section h4{
+    color: rgb(66, 165, 132);
+}
+
+form h4{
+    color: rgb(66, 165, 132);
+    margin: 0;
+  }
+
+.card h2{
+    margin-top: 3vw;
+}
+
+.banner h4{
+    margin-top: 0.8vw;
+    margin-bottom: 1.6vw;
+    color: rgb(66, 165, 132);
+}
+
+
+/*! ------------------- FOOTER - LANDING PAGE -------------------- */
+footer .container{
+    padding: 0vw;
+    margin: 0vw;
+}
+
+.footer-LP{
+    border-top: 1px solid rgb(180, 176, 176);
+    padding: 1.7vw 2vw 2vw 6vw;
+    margin-top: 4vw;
+    height: auto;
+}
+
+.bg-light {
+    background: rgb(133, 131, 131);
+  }
+
+.footer-LP p{
+    font: 800 1.2vw Gantari;
+    color: rgb(66, 165, 132);
+}
+
+.if-part{
+  text-align: center;
+}
+
+.if-part img{
+    margin-bottom: 1vw;
+    width: 12vw;
+    height: 4vw;
+}
+
+.if-part p{
+   font-size: 0.9vw;
+}
+
+.know-project{     
+    padding: 3vw 0 0 1vw;
+   align-items: center;
+   text-align: center;
+}
+
+.know-project img{
+    height: 2vw;
+    width: 2vw;
+}
+
+.know-project button{
+    height: 3.1vw;
+    width: 3.4vw;
+    background-color: rgb(66, 165, 132);
+    border-radius: 1.4vw;
+    border: none;
+    transition: 0.3s;
+    margin-left: 2vw;
+}
+
+.know-project button:hover{
+    background-color: rgb(88, 216, 156);
+}
+
+.devs li{
+    margin-top: 0.6vw;
+    margin-left: 7vw;
+    list-style-type: none;
+    font: 600 0.9vw Gantari;
+    color: rgb(73, 71, 71);
+}
+
+
+/*! ------------------- AUTENTICATIONS -------------------- */
+
+.banner{
+    padding: 7vw 0vw 5vw 18vw;
+}
+
+.banner form {
+    align-self: center;
+    width: 27vw;
+}
+
+.banner form p{
+    text-align: initial;
+    margin: 0;
+}
+
+.banner form button{  
+    margin: 1.7vw 0 1.7vw 5vw; 
+    margin-left: 5vw; 
+    width: 12vw; 
+    align-self: center;  
+}
+
+.block .change-data{
+    margin-right: 7vw;
+}
+
