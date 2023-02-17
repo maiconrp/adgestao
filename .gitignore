@@ -1,4 +1,3 @@
-# django
 # Django #
 *.log
 *.pot
@@ -6,6 +5,7 @@
 __pycache__
 db.sqlite3
 media
+migrations/
 
 # Config files
 code/testes/teste_app/config/firebase/config.json
