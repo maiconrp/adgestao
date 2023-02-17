@@ -8,13 +8,20 @@ Esta pasta contém os arquivos de código Django para o projeto AD Gestão
 
 # Estrutura
     ├── manage.py
-    └── ADGESTAO
-        ├── asgi.py
-        ├── settings.py
-        ├── urls.py
-        ├── wsgi.py
-        └── __init__.py
-
+    ├── README.md
+    ├── requirements.txt
+    |
+    ├───adgestao
+    |   ├── asgi.py
+    |   ├── settings.py
+    |   ├── urls.py
+    |   ├── wsgi.py
+    |   └── __init__.py
+    └───apps
+        ├───accounts
+        ├───financas
+        └───igreja
+        
 # Instalação
 ## Requisitos
 - Git
