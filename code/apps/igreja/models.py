@@ -1,6 +1,10 @@
 import uuid
 from django.db import models
 from django.core.exceptions import ValidationError
+from accounts.models import Usuario
+from multiselectfield import MultiSelectField
+from django.contrib.auth.models import User
+from django.db.models import F
 
 def validate_cpf(value):
     if not value.isdigit():
@@ -53,22 +57,23 @@ class Igreja(models.Model):
     )
     
     pastor = models.ForeignKey(
-        Pastor, 
-        related_name='igreja', 
+        Usuario, 
+        related_name='igreja_pastor', 
         on_delete=models.DO_NOTHING, 
     )
     
     tesoureiro = models.ForeignKey(
-        Tesoureiro, 
-        related_name='igreja', 
+        Usuario, 
+        related_name='igreja_tesoureiro', 
         on_delete=models.DO_NOTHING, 
     )
     
     tesoureiro_sede = models.ForeignKey(
-        TesoureiroSede, 
-        related_name='igreja', 
+        Usuario, 
+        related_name='igreja_tesoureiro_sede', 
         on_delete=models.DO_NOTHING, 
     )
+    
     
     def __str__(self):
         return self.nome
@@ -176,7 +181,7 @@ class Oferta(models.Model):
         return "Oferta -" + self.data_culto
 
 
-class Dizimo(Financa):
+class Dizimo(models.Model):
     """
     Classe que representa as informações de um Dízimo no sistema de finanças.
     Atributos:
