@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import *
 
-# Register your models here.
+admin.site.register(RelatorioMensal)
+admin.site.register(RelatorioGeral)
+admin.site.register(Entrada)
+admin.site.register(Saida)
