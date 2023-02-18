@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'accounts',
     'igreja',
     'financas',
+    
+    # Úteis
+    'phonenumbers',
 ]
 
 MIDDLEWARE = [
