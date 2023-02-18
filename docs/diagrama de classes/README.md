@@ -16,10 +16,7 @@ Este diagrama de classes foi criado como parte do projeto [AD Gestão][adgestao]
 | Classe              	| Descrição                                                                                                                             	|
 |:---------------------	|:---------------------------------------------------------------------------------------------------------------------------------------	|
 | Usuario             	| Classe responsável por armazenar informações de cadastro de usuários do sistema, como nome, email, cpf e senha.                       	|
-| Tesoureiro          	| Classe que representa o usuário responsável por gerenciar as finanças da igreja em que atua.                                          	|
 | Igreja              	| Classe que armazena informações sobre uma igreja, como localização, nome e tesoureiro local.                                          	|
-| TesoureiroSede      	| Classe que representa o usuário responsável por avaliar e autorizar ou negar os pedidos de cadastro de usuários.                      	|
-| Pastor              	| Classe que representa o usuário responsável por liderar uma igreja.                                                                   	|
 | Saida               	| Classe que armazena informações sobre as saídas financeiras de uma igreja, como data, descrição, valor e assinatura do tesoureiro.    	|
 | Oferta              	| Classe que armazena informações sobre as ofertas financeiras de uma igreja, como data, tipo de culto e valor total.                   	|
 | Dizimo              	| Classe que armazena informações sobre os dízimos de uma igreja, como data, contribuinte e valor.                                      	|
