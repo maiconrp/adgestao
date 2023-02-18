@@ -1,28 +1,49 @@
 import phonenumbers
 from django.core.exceptions import ValidationError
-
+import datetime
 
 def validate_cpf(value):
-    # Lógica para validação do CPF
     if not value.isdigit():
         raise ValidationError("O CPF deve conter apenas números.")
     if len(value) != 11:
         raise ValidationError("O CPF deve ter 11 dígitos.")
 
-    # Se o CPF é inválido
-    if invalid:
+    cpf = [int(d) for d in value]
+
+    # Verifica se todos os dígitos são iguais
+    if len(set(cpf)) == 1:
+        raise ValidationError("CPF inválido.")
+
+    # Verifica o primeiro dígito verificador
+    soma = sum([cpf[i] * (10 - i) for i in range(9)])
+    resto = (soma * 10) % 11
+    if resto == 10:
+        resto = 0
+    if resto != cpf[9]:
+        raise ValidationError("CPF inválido.")
+
+    # Verifica o segundo dígito verificador
+    soma = sum([cpf[i] * (11 - i) for i in range(10)])
+    resto = (soma * 10) % 11
+    if resto == 10:
+        resto = 0
+    if resto != cpf[10]:
         raise ValidationError("CPF inválido.")
 
 
-def validate_data(value):
-    if value is not None:
-        if not isinstance(value, str):
-            value = value.strftime("%Y-%m-%d")
-        try:
-            datetime.datetime.strptime(value, "%Y-%m-%d")
-        except ValueError:
-            raise ValidationError("Data de nascimento inválida")
+def validate_data(date):
+    if not isinstance(date, (str, datetime.datetime)):
+        raise ValidationError("Tipo inválido. A data deve ser representada como uma string ou um objeto datetime.")
 
+    if isinstance(date, str):
+        try:
+            datetime.datetime.strptime(date, "%d/%m/%Y")
+        except ValueError:
+            raise ValidationError("Data inválida. Utilize o formato 'dia/mês/ano'")
+
+    if isinstance(date, datetime.datetime):
+        if date.year < 1900 or date.year > datetime.datetime.now().year:
+            raise ValidationError(f"Data inválida. Isira um ano entre 1900 e {datetime.datetime.now().year}")
 
 def validate_telefone(value):
     try:
