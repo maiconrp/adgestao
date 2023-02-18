@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
+from igreja.models import Igreja
+from adgestao.validators import validate_telefone, validate_cpf
+from django.core.validators import MaxLengthValidator, MinLengthValidator, EmailValidator
 
 
 class Usuario(User):
@@ -10,61 +13,72 @@ class Usuario(User):
         ("TS", "Tesoureiro Sede"),
     )
     
+    nome = models.CharField(
+        max_length=100, 
+    )
+    
     cpf = models.CharField(
         max_length=13, 
-        unique=True, 
         primary_key=True,
-        blank=False, 
-        null=False,
+        validators=[validate_cpf]     
     )
+    
     telefone = models.CharField(
-        max_length=20,
-        blank=False, 
-        null=False
+        max_length=20,  
+        validators=[validate_telefone]    
     )
     
     funcao = MultiSelectField(
         choices=FUNCAO_CHOICES,
         max_length=20, 
-        max_choices=1,
-        blank=False, 
-        null=False,
+        max_choices=1,   
+    )
+    
+    igreja = models.ForeignKey(
+        Igreja, 
+        related_name='usuario', 
+        on_delete=models.DO_NOTHING,
+    )
+    
+    USERNAME_FIELD = 'cpf'
+    REQUIRED_FIELDS = ['cpf', 'nome', 'email', 'funcao', 'igreja']
+    
+    def __str__(self):
+        return self.nome
+
+
+class SolicitacaoCadastro(models.Model):
+    
+    usuario = models.ForeignKey(
+        Usuario, 
+        related_name='usuario_solicitacao_cadastro', 
+        on_delete=models.CASCADE 
+    )
+    
+    tesoureiro_sede_responsavel = models.ForeignKey(
+        Usuario, 
+        related_name='tesoureiro_solicitacao_cadastro', 
+        on_delete=models.CASCADE 
+    )
+    
+    situacao = models.CharField(
+        max_length=20, 
+        default="Pendente"
+    )
+    
+    mensagem = models.TextField(
+        max_length=200,
+        blank=True, 
+        null=True,
+        validators=[
+            MaxLengthValidator(200),
+            MinLengthValidator(5)
+        ]
+    )
+    
+    horario = models.DateTimeField(
+        auto_now_add=True
     )
     
     def __str__(self):
-        return self.username
-
-    def solicitar_cadastro(self, nome, email, cpf, senha, telefone=None, igreja=None):
-        """
-        Método responsável por permitir que um usuário solicite cadastro no sistema.
-        Recebe o nome, email, CPF, senha, telefone e igreja do usuário como parâmetros.
-        """
-        # Implementação da lógica para solicitar cadastro
-
-    def acompanhar_cadastro(self, cpf):
-        """
-        Método responsável por permitir que um usuário acompanhe o status de seu cadastro no sistema.
-        Recebe o CPF do usuário como parâmetro.
-        """
-        # Implementação da lógica para acompanhar cadastro
-
-    def atualizar_cadastro(self, nome=None, email=None, cpf=None, senha=None, telefone=None, igreja=None):
-        """
-        Método responsável por permitir que um usuário atualize seus dados de cadastro no sistema.
-        Recebe o nome, email, CPF, senha, telefone e igreja do usuário como parâmetros (opcional).
-        """
-        # Implementação da lógica para atualizar cadastro
-
-    def realizar_login(self):
-        """
-        Método responsável por realizar o login de um usuário no sistema.
-        Recebe o email e a senha do usuário como parâmetros.
-        """
-        # Implementação da lógica para realizar o login
-
-    def realizar_logout(self):
-        """
-        Método responsável por realizar o logout do usuário atual no sistema.
-        """
-        # Implementação da lógica para realizar o logout
-
+        return "Solicitação de" + self.nome

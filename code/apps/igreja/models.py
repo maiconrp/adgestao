@@ -1,31 +1,9 @@
 import uuid
 from django.db import models
-from django.core.exceptions import ValidationError
-from accounts.models import Usuario
 from multiselectfield import MultiSelectField
 from django.contrib.auth.models import User
 from django.db.models import F
-
-def validate_cpf(value):
-    if not value.isdigit():
-        raise ValidationError('O CPF deve conter apenas números.')
-    if len(value) != 11:
-        raise ValidationError('O CPF deve ter 11 dígitos.')
-    
-    # Lógica para validação do CPF
-    
-    # Se o CPF é inválido
-    if invalid:
-        raise ValidationError('CPF inválido.')
-
-def validate_data(value):
-    if value is not None:
-        if not isinstance(value, str):
-            value = value.strftime('%Y-%m-%d')
-        try:
-            datetime.datetime.strptime(value, '%Y-%m-%d')
-        except ValueError:
-            raise ValidationError('Data de nascimento inválida')
+from adgestao.validators import validate_cpf, validate_data
 
 
 class Igreja(models.Model):
@@ -52,28 +30,9 @@ class Igreja(models.Model):
     )
     
     saldo = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2
-    )
-    
-    pastor = models.ForeignKey(
-        Usuario, 
-        related_name='igreja_pastor', 
-        on_delete=models.DO_NOTHING, 
-    )
-    
-    tesoureiro = models.ForeignKey(
-        Usuario, 
-        related_name='igreja_tesoureiro', 
-        on_delete=models.DO_NOTHING, 
-    )
-    
-    tesoureiro_sede = models.ForeignKey(
-        Usuario, 
-        related_name='igreja_tesoureiro_sede', 
-        on_delete=models.DO_NOTHING, 
-    )
-    
+        max_digits=12, 
+        decimal_places=3
+    )   
     
     def __str__(self):
         return self.nome
@@ -122,7 +81,7 @@ class Membro(User):
     )
     
     USERNAME_FIELD = 'cpf'
-    REQUIRED_FIELDS = ['username', 'nome', 'data_nasc', 'sexo']
+    REQUIRED_FIELDS = ['username', 'nome', 'data_nasc', 'sexo', 'igreja']
 
     def __str__(self):
         return self.nome
@@ -155,19 +114,19 @@ class Oferta(models.Model):
     )
     
     valor_dizimo = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2
+        max_digits=12, 
+        decimal_places=3
     )
     
     valor_oferta = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2
+        max_digits=12, 
+        decimal_places=3
     )
     
     # função F para referenciar os campos valor_culto e valor_dizimo
     total = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2,
+        max_digits=12, 
+        decimal_places=3,
         default=F('valor_culto') + F('valor_dizimo')
     )
     
@@ -199,8 +158,8 @@ class Dizimo(models.Model):
     )
     
     valor = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2
+        max_digits=12, 
+        decimal_places=3
         )
     
     membro = models.ForeignKey(

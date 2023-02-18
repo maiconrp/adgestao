@@ -2,8 +2,8 @@ import uuid
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.db.models import F
-from igreja.models import Igreja, Oferta, Dizimo
-from accounts.models import Usuario
+import igreja.models
+import accounts.models
 
 
 def validate_cpf(value):
@@ -50,12 +50,12 @@ class Saida(models.Model):
     )
     
     valor = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2
+        max_digits=12, 
+        decimal_places=3
     )
     
     igreja = models.ForeignKey(
-        Igreja, 
+        igreja.models.Igreja, 
         related_name='saidas', 
         on_delete=models.CASCADE, 
     )
@@ -73,25 +73,25 @@ class Entrada(models.Model):
     
     # função F para referenciar os campos valor_culto e valor_dizimo
     total = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2,
+        max_digits=12, 
+        decimal_places=3,
         default=F('ofertas.total') + F('dizimos.valor')
     )
     
     ofertas = models.ForeignKey(
-        Oferta, 
+        igreja.models.Oferta, 
         related_name='Entrada_oferta', 
         on_delete=models.CASCADE, 
     )
     
     dizimos = models.ForeignKey(
-        Dizimo, 
+        igreja.models.Dizimo, 
         related_name='Entrada_dizimo', 
         on_delete=models.CASCADE, 
     )
     
     igreja = models.ForeignKey(
-        Igreja, 
+        igreja.models.Igreja, 
         related_name='entradas', 
         on_delete=models.CASCADE, 
     )
@@ -109,8 +109,8 @@ class RelatorioGeral(models.Model):
     """
 
     saldo = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         default=0,
         verbose_name='Saldo',
     )
@@ -124,84 +124,84 @@ class RelatorioGeral(models.Model):
     )
 
     entradas_sede = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         default=0,
         verbose_name='Entradas Sede',
     )
 
     entradas_locais = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         default=0,
         verbose_name='Entradas Locais',
     )
 
     entradas_missoes = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         default=0,
         verbose_name='Entradas Missões',
     )
     
     saidas_sede = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         blank=True,
         null=True,
         verbose_name='Saídas Sede',
     )
 
     saidas_locais = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         blank=True,
         null=True,
         verbose_name='Saídas Locais',
     )
 
     pgto_obreiros = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         blank=True,
         null=True,
         verbose_name='Pagamento de Obreiros',
     )
 
     inss = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         blank=True,
         null=True,
         verbose_name='INSS',
     )
 
     aluguel_obreiros = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         blank=True,
         null=True,
         verbose_name='Aluguel de Obreiros',
     )
 
     construcoes = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         blank=True,
         null=True,
         verbose_name='Construções',
     )
 
     assis_social = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=12,
+        decimal_places=3,
         blank=True,
         null=True,
         verbose_name='Assistência Social',
     )    
     
     tesoureiro_sede = models.ForeignKey(
-        Usuario, 
+        accounts.models.Usuario, 
         related_name='relatorio_geral', 
         on_delete=models.DO_NOTHING, 
     )
@@ -226,31 +226,31 @@ class RelatorioMensal(models.Model):
     )
     
     pagamento_obreiro = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2,
+        max_digits=12, 
+        decimal_places=3,
         default=F('entradas.total')*0.1
     )
     
     missoes_sede = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2,
+        max_digits=12, 
+        decimal_places=3,
         default=F('entradas.total')*0.1
     )
     
     fundo_convencional = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
+        max_digits=12, 
+        decimal_places=3, 
         default=F('entradas.total')*0.05
     )
     
     saldo = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2,
+        max_digits=12, 
+        decimal_places=3,
         default=F('entradas.total')-F('fundo_convencional')-F('missoes_sede')-F('pagamento_obreiro')-F('saidas.total')
     )
     
     igreja = models.ForeignKey(
-        Igreja, 
+        igreja.models.Igreja, 
         related_name='relatorio_mensal', 
         on_delete=models.CASCADE, 
     )
@@ -268,7 +268,7 @@ class RelatorioMensal(models.Model):
     )
      
     tesoureiro_sede = models.ForeignKey(
-        Usuario, 
+        accounts.models.Usuario, 
         related_name='relatorio_mensal_tesoureiro_sede', 
         on_delete=models.DO_NOTHING, 
     )
