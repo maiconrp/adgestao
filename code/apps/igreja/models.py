@@ -1,8 +1,10 @@
 import uuid
-from django.db import models
-from multiselectfield import MultiSelectField
+
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models import F
+from multiselectfield import MultiSelectField
+
 from adgestao.validators import validate_cpf, validate_data
 
 
@@ -16,28 +18,28 @@ class Igreja(models.Model):
         saldo: Saldo financeiro da igreja.
     """
     id = models.UUIDField(
-        primary_key=True, 
-        default=uuid.uuid4, 
+        primary_key=True,
+        default=uuid.uuid4,
         editable=False
     )
-    
+
     nome = models.CharField(
         max_length=100,
     )
-    
+
     localizacao = models.CharField(
-        max_length=200,    
+        max_length=200,
     )
-    
+
     saldo = models.DecimalField(
-        max_digits=12, 
+        max_digits=12,
         decimal_places=3
-    )   
-    
+    )
+
     def __str__(self):
         return self.nome
 
-   
+
 class Membro(User):
     """
     Classe que representa um membro da igreja.
@@ -53,33 +55,33 @@ class Membro(User):
         ("F", "Feminino"),
         ("I", "Indefinido"),
     )
-    
+
     nome = models.CharField(
-        max_length=100, 
+        max_length=100,
     )
-    
+
     data_nasc = models.DateField(
         validators=[validate_data]
     )
-    
+
     sexo = MultiSelectField(
         choices=SEXO_CHOICES,
-        max_length=20, 
-        max_choices=1,   
+        max_length=20,
+        max_choices=1,
     )
-    
+
     cpf = models.CharField(
-        max_length=11, 
+        max_length=11,
         primary_key=True,
         validators=[validate_cpf]
     )
-    
+
     igreja = models.ForeignKey(
-        Igreja, 
-        related_name='membros', 
-        on_delete=models.PROTECT, 
+        Igreja,
+        related_name='membros',
+        on_delete=models.PROTECT,
     )
-    
+
     USERNAME_FIELD = 'cpf'
     REQUIRED_FIELDS = ['username', 'nome', 'data_nasc', 'sexo', 'igreja']
 
@@ -98,44 +100,45 @@ class Oferta(models.Model):
         validacao_pastor (BooleanField): A validação do pastor.
     """
 
-    CULTO_CHOICE =  (
+    CULTO_CHOICE = (
         ("N", "Normal"),
         ("C", "Ceia"),
     )
-    
+
     id = models.UUIDField(
-        primary_key=True, 
-        default=uuid.uuid4, 
+        primary_key=True,
+        default=uuid.uuid4,
         editable=False
     )
-    
+
     data_culto = models.DateField(
         validators=[validate_data]
     )
-    
+
     valor_dizimo = models.DecimalField(
-        max_digits=12, 
+        max_digits=12,
         decimal_places=3
     )
-    
+
     valor_oferta = models.DecimalField(
-        max_digits=12, 
+        max_digits=12,
         decimal_places=3
     )
-    
+
     # função F para referenciar os campos valor_culto e valor_dizimo
     total = models.DecimalField(
-        max_digits=12, 
+        max_digits=12,
         decimal_places=3,
         default=F('valor_culto') + F('valor_dizimo')
     )
-    
+
     tipo_culto = MultiSelectField(
-        max_length=20, 
+        max_length=20,
         max_choices=1,
         choices=CULTO_CHOICE,
-        
-    )  
+
+    )
+
     def __str__(self):
         return "Oferta -" + self.data_culto
 
@@ -146,26 +149,26 @@ class Dizimo(models.Model):
     Atributos:
         valor_dizimo (DecimalField): o valor do dízimo doado
     """
-    
+
     id = models.UUIDField(
-        primary_key=True, 
-        default=uuid.uuid4, 
+        primary_key=True,
+        default=uuid.uuid4,
         editable=False
     )
-    
+
     data = models.DateField(
         validators=[validate_data]
     )
-    
+
     valor = models.DecimalField(
-        max_digits=12, 
+        max_digits=12,
         decimal_places=3
-        )
-    
+    )
+
     membro = models.ForeignKey(
-        Membro, 
-        on_delete=models.SET_DEFAULT, 
-        default=None, 
+        Membro,
+        on_delete=models.SET_DEFAULT,
+        default=None,
         related_name='dizimos'
     )
 
