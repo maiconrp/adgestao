@@ -43,7 +43,7 @@ class Saida(models.Model):
     REQUIRED_FIELDS = ['descricao', 'data', 'valor', 'igreja']
 
     def __str__(self):
-        return "Saída -" + self.data
+        return "Saída -" + self.data.strftime('%d/%m/%Y')
 
     def gerar_relatorio(self, **kargs):
         return "Gerar Relatorio"
@@ -77,7 +77,8 @@ class Entrada(models.Model):
     )
 
     def __str__(self):
-        return "Entrada -" + self.data
+        return "Entrada -" 
+    # + self.data.strftime('%d/%m/%Y')
 
     def gerar_relatorio(self, **kargs):
         return "Gerar Relatorio"
@@ -255,7 +256,7 @@ class RelatorioMensal(models.Model):
     )
 
     def __str__(self):
-        return "Relatório Mensal -" + self.data
+        return "Relatório Mensal -" + self.data.strftime('%d/%m/%Y')
 
     def baixar(self):
         return "Baixar Relatório"

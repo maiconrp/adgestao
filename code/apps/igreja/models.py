@@ -35,12 +35,14 @@ class Igreja(models.Model):
         max_digits=12,
         decimal_places=3
     )
+    
+    REQUIRED_FIELDS = ['nome', 'localização']
 
     def __str__(self):
         return self.nome
 
 
-class Membro(User):
+class Membro(models.Model):
     """
     Classe que representa um membro da igreja.
     Herda da classe User do Django, que já possui campos básicos de usuário.
@@ -81,9 +83,6 @@ class Membro(User):
         related_name='membros',
         on_delete=models.PROTECT,
     )
-
-    USERNAME_FIELD = 'cpf'
-    REQUIRED_FIELDS = ['username', 'nome', 'data_nasc', 'sexo', 'igreja']
 
     def __str__(self):
         return self.nome
@@ -140,7 +139,7 @@ class Oferta(models.Model):
     )
 
     def __str__(self):
-        return "Oferta -" + self.data_culto
+        return "Oferta -" + self.data_culto.strftime('%d/%m/%Y')
 
 
 class Dizimo(models.Model):
