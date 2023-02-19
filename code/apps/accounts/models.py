@@ -42,11 +42,12 @@ class Usuario(User):
         on_delete=models.DO_NOTHING,
     )
 
-    USERNAME_FIELD = 'cpf'
-    REQUIRED_FIELDS = ['cpf', 'nome', 'email', 'funcao', 'igreja']
-
     def __str__(self):
         return self.nome
+    
+    def save(self, *args, **kwargs):
+        self.username = self.cpf
+        super(Usuario, self).save(*args, **kwargs)
 
 
 class SolicitacaoCadastro(models.Model):
