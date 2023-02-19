@@ -12,11 +12,7 @@ Esta pasta contém os arquivos de código Django para o projeto AD Gestão
     ├── requirements.txt
     |
     ├───adgestao
-    |   ├── asgi.py
-    |   ├── settings.py
-    |   ├── urls.py
-    |   ├── wsgi.py
-    |   └── __init__.py
+    |   └── tests
     └───apps
         ├───accounts
         ├───financas
