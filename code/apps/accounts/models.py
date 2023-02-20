@@ -61,7 +61,9 @@ class SolicitacaoCadastro(models.Model):
     tesoureiro_sede_responsavel = models.ForeignKey(
         Usuario,
         related_name='tesoureiro_solicitacao_cadastro',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
     )
 
     situacao = models.CharField(
