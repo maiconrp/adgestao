@@ -22,7 +22,7 @@ def set_permission(usuario):
         'T': 'tesoureiro',
         'P': 'pastor',
     }
-    grupo_nome = funcao_para_grupo.get(usuario.funcao, 'default')
+    grupo_nome = funcao_para_grupo.get(*usuario.funcao, 'default')
 
     # Cria ou recupera o grupo
     try:
