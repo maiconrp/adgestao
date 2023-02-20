@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     
     # Úteis
     'phonenumbers',
+    'bootstrapform'
 ]
 
 MIDDLEWARE = [
@@ -63,7 +64,7 @@ ROOT_URLCONF = "adgestao.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [str(BASE_DIR) + '/templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
