@@ -1,22 +1,17 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse, HttpResponseRedirect 
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from . forms import UsuarioForm
 from .permissions import set_permission
 from .models import Usuario, SolicitacaoCadastro
-
+from django.contrib import messages
 
 def solicitar_cadastro(request):
     """
     View para solicitação de cadastro.
 
     Esta view pode ser acessada por qualquer usuário.
-    """
-    form_solicitacao = UsuarioForm()
-        
-    context={
-            'form_solicitacao': form_solicitacao
-        }
+    """    
     if request.method == "POST":
         form_solicitacao = UsuarioForm(request.POST)
         
@@ -24,32 +19,29 @@ def solicitar_cadastro(request):
             usuario = form_solicitacao.save(commit=False)
             
             usuario.is_active = False
-            
             usuario.save()
             
             usuario = set_permission(usuario)
-            
-            usuario.save()
-            
+                        
             solicitacao, _ = SolicitacaoCadastro.objects.get_or_create(
                 usuario = usuario,
-            )   
+            )
+            
+            messages.success(request, 'Solicitação de cadastro enviada com sucesso! Aguarde a aprovação de um administrador.')
             
             context={
                 'form_solicitacao': form_solicitacao
             }
             
-            return HttpResponseRedirect("/cadastro/acompanhar")
-    else:
+            return HttpResponseRedirect(reverse('acompanhar_cadastro'))
+    
+    form_solicitacao = UsuarioForm()
         
-        return render(request, 'accounts/register.html', context)
+    context={
+        'form_solicitacao': form_solicitacao
+    }
     
     return render(request, 'accounts/register.html', context)
-
-
-# def solicitar_cadastro(request):
-    
-#     return HttpResponse("Cadastro de Usuários")
 
 def acompanhar_cadastro(request):
     """
