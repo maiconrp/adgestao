@@ -23,10 +23,15 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
+        cd code
         python -m pip install --upgrade pip
         pip install -r code/requirements.txt
     - name: Run Tests
       run: |
-        python code/manage.py makemigrations
-        python code/manage.py migrate
-        python code/manage.py test
+        rm db.sqlite3
+        find . | grep "__pycache__" | xargs sudo rm -rf
+        python manage.py makemigrations admin
+        python manage.py migrate admin
+        python manage.py makemigrations
+        python manage.py migrate        
+        python manage.py test
