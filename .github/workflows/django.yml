@@ -27,4 +27,6 @@ jobs:
         pip install -r code/requirements.txt
     - name: Run Tests
       run: |
+        python code/manage.py makemigrations
+        python code/manage.py migrate
         python code/manage.py test
