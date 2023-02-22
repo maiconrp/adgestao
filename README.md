@@ -1,5 +1,6 @@
 ![BANNER_README](https://user-images.githubusercontent.com/60708311/211361317-8ed0ed0c-8be3-4621-84f2-249afb7cbe7f.png)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4f5af95fb4f54b51aaf294fff6fc451f)](https://app.codacy.com/gh/maiconrp/adgestao?utm_source=github.com&utm_medium=referral&utm_content=maiconrp/adgestao&utm_campaign=Badge_Grade_Settings)
 [![Badge em Desenvolvimento](https://img.shields.io/badge/Status-Prototipagem-green?logoColor=7834cd&labelColor=white&color=413f3d&style=for-the-badge)](.)
 [![stars](https://img.shields.io/github/stars/maiconrp/AD-Gestao.svg?labelColor=white&color=413f3d&style=for-the-badge)](https://github.com/maiconrp/adgestao/stargazers)
 [![Issues](https://img.shields.io/github/issues/maiconrp/AD-Gestao?labelColor=white&color=413f3d&style=for-the-badge)](https://github.com/maiconrp/adgestao/issues)
