@@ -28,8 +28,6 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        rm db.sqlite3
-        find . | grep "__pycache__" | xargs sudo rm -rf
         python manage.py makemigrations admin
         python manage.py migrate admin
         python manage.py makemigrations
