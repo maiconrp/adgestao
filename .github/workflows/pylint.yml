@@ -38,5 +38,5 @@ jobs:
         
     - name: Analyze the code with pylint
       run: |
-       echo -e ${{pylint $(git ls-files '*.py')}} | grep -E '^[^:]+:[0-9]+:' | sed 's/:/|/; s/:/|/; s/^/|/; s/$/|/' > pylint_report.md
+       echo -e pylint $(git ls-files '*.py') | grep -E '^[^:]+:[0-9]+:' | sed 's/:/|/; s/:/|/; s/^/|/; s/$/|/' > pylint_report.md
        git diff --quiet || git commit -am "🔧 wrench: Add pylint issues" && git push
