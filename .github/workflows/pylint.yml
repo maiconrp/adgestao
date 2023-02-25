@@ -21,6 +21,8 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
+      timeout-minutes: 10
+     
     - name: Create issues for pylint errors
       run: |
         pylint --output-format=parseable $(git ls-files '*.py') |
