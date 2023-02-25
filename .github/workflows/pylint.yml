@@ -2,7 +2,7 @@ name: Pylint
 
 on:
   push:
-    branches: [ tests/actions ]
+    branches: [ test/actions ]
 
 jobs:
   build:
