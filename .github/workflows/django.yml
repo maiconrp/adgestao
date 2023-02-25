@@ -29,6 +29,7 @@ jobs:
     - name: Run Tests
       run: |
         cd code
+        rm -r apps/*/__pycache__ db.sqlite3
         python manage.py makemigrations admin accounts financas igreja
         python manage.py migrate admin accounts financas igreja      
         python manage.py test
