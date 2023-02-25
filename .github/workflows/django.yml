@@ -25,12 +25,10 @@ jobs:
       run: |
         cd code
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        python -m pip install -r requirements.txt
     - name: Run Tests
       run: |
         cd code
-        python manage.py makemigrations admin
-        python manage.py migrate admin
-        python manage.py makemigrations
-        python manage.py migrate        
+        python manage.py makemigrations admin accounts financas igreja
+        python manage.py migrate admin accounts financas igreja      
         python manage.py test
