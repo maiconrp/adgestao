@@ -38,5 +38,8 @@ jobs:
         
     - name: Analyze the code with pylint
       run: |
-       echo -e pylint $(git ls-files '*.py') | grep -E '^[^:]+:[0-9]+:' | sed 's/:/|/; s/:/|/; s/^/|/; s/$/|/' > pylint_report.md
-       git diff --quiet || git commit -am "🔧 wrench: Add pylint issues" && git push
+        pylint $(git ls-files '*.py') > pylint_report.txt
+    - name: Generate Markdown report
+      run: |
+        cat pylint_report.txt | grep -E '^[^:]+:[0-9]+:' | sed 's/:/|/; s/:/|/; s/^/|/; s/$/|/' > pylint_report.md
+        git diff --quiet || git commit -am "🔧 wrench: Add pylint issues" && git push
