@@ -20,26 +20,12 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
-      timeout-minutes: 10
-     
-    - name: Create issues for pylint errors
+        pylint $(git ls-files '*.py') > pylint_report.txt || true
+    - name: Save pylint report
       run: |
-        pylint --output-format=parseable $(git ls-files '*.py') |
-          awk -F ":" '{print $1 ":" $2 ":" $4}' |
-          sed 's/^/pylint\//' |
-          sed 's/:/\/erro - /' |
-          sed 's/:/:\n/' |
-          sed 's/^\([^:]*\):\([^:]*\):\([^:]*\):\s*\[\(.*\)\]/::error file=\1,line=\2,col=\3::[\4]/' |
-          awk '{print "::set-output name=issue_title::" $0}' |
-          awk '{print "::set-output name=issue_body::Code has a pylint issue.\n\n" $0}' |
-          sed 's/\/erro/\/error/g' |
-          sed 's/\\//g' |
-          awk '{print "::error " $0 " ::"}' |
-          tee /dev/stderr |
-          tee /dev/stdout
-      shell: bash
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: ${{ steps.analyse_code_with_pylint.outcome == 'success' && steps.analyse_code_with_pylint.outputs.total_reports > 0 }}
-
+        pylint $(git ls-files '*.py') > pylint_report.txt || true
+    - name: Create issues for pylint errors
+      uses: peter-evans/create-issue-from-file@v2
+      with:
+        title: Pylint errors found in the code
+        content-filepath: pylint_report.txt
