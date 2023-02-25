@@ -1,4 +1,4 @@
-name: Send Codacy issues to GitHub as issues
+name: Send Codacy issues to GitHub issues
 
 on:
   push:
@@ -23,53 +23,29 @@ jobs:
 
     - name: Send issues to GitHub
       run: |
-        # Importa as bibliotecas necessárias
-        import os
-        import requests
-        import json
-
         # Define o padrão de corpo da issue
-        issue_body_pattern = '''**Arquivo:** `{{issue.file}}`
-          \n
-          **Linha:** `{{issue.line}}`
-          \n
-          **Trecho de código:**\n```\n{{issue.code}}\n```\n
-          **Descrição:**\n{{issue.description}}\n
-          \nVeja mais detalhes em: `{{issue.url}}`'''
+        issue_body_pattern="**Arquivo:** \`{{issue.file}}\`\n\n**Linha:** \`{{issue.line}}\`\n\n**Trecho de código:**\n\`\`\`\n{{issue.code}}\n\`\`\`\n\n**Descrição:**\n{{issue.description}}\n\nVeja mais detalhes em: \`{{issue.url}}\`"
 
         # Define o filtro de issues para buscar no Codacy
-        issues_filter = os.getenv('ISSUES_FILTER')
+        issues_filter=${ISSUES_FILTER}
 
         # Obtém as informações das issues do Codacy que correspondem ao filtro definido
-        codacy_api_url = 'https://api.codacy.com/2.0/issues/search'
-        response = requests.post(
-            codacy_api_url,
-            auth=(os.getenv('CODACY_USERNAME'), os.getenv('CODACY_API_TOKEN')),
-            headers={'Content-Type': 'application/json'},
-            data=json.dumps({'filters': issues_filter})
-        )
+        codacy_api_url="https://api.codacy.com/2.0/issues/search"
+        response=$(curl -sS -X POST -u ${CODACY_USERNAME}:${CODACY_API_TOKEN} -H "Content-Type: application/json" -d '{"filters":'"${issues_filter}"'}' "${codacy_api_url}")
 
         # Obtém as issues do resultado da busca e cria uma nova issue no GitHub para cada uma
-        issues = response.json().get('results', [])
-        github_api_url = f'https://api.github.com/repos/{os.getenv('GITHUB_REPO_OWNER')}/{os.getenv('GITHUB_REPO_NAME')}/issues'
-        for issue in issues:
-            # Define o título da issue
-            issue_title = f"#{issue['number']} - [Codacy/{issue['severity']}] - {issue['message']}"
+        issues=$(echo "$response" | jq -r '.results[] | @base64')
+        github_api_url="https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/issues"
+        for issue in $issues; do
+            # Decodifica o JSON da issue e define o título da issue
+            issue_title="#$(echo "$issue" | base64 --decode | jq -r '.number') - [Codacy/$(echo "$issue" | base64 --decode | jq -r '.severity')] - $(echo "$issue" | base64 --decode | jq -r '.message')"
 
             # Define os parâmetros para criar uma nova issue no GitHub
-            new_issue = {
-                'title': issue_title,
-                'body': issue_body_pattern.format(issue=issue),
-            }
+            new_issue=$(echo "$issue" | base64 --decode | jq -r --arg issue_body_pattern "${issue_body_pattern}" '{"title":"'"${issue_title}"'","body":$issue_body_pattern}')
 
             # Cria a nova issue no GitHub
-            response = requests.post(
-                github_api_url,
-                auth=(os.getenv('GITHUB_API_TOKEN'), ''),
-                headers={'Content-Type': 'application/json'},
-                data=json.dumps(new_issue)
-            )
+            response=$(curl -sS -X POST -u "${GITHUB_API_TOKEN}:" -H "Content-Type: application/json" -d "${new_issue}" "${github_api_url}")
 
             # Imprime o status da resposta HTTP
-            print(response.status_code)
-            break
+            echo "$response"
+            done
