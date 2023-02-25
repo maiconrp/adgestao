@@ -28,4 +28,4 @@ jobs:
         pylint $(git ls-files '*.py') > pylint_report.txt || true
     - name: Generate Markdown report
       run: |
-        cat pylint_report.txt | grep -E '^[^:]+:[0-9]+:' | sed 's/:/|/; s/:/|/; s/^/|/; s/$/|/' > pylint_report.md
+        echo -e pylint_report.txt | grep -E '^[^:]+:[0-9]+:' | sed 's/:/|/; s/:/|/; s/^/|/; s/$/|/' > pylint_report.md
