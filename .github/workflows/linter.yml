@@ -1,0 +1,18 @@
+on:
+  push:
+    branches: [ "test/actions" ]
+  pull_request:
+    branches: [ "test/actions" ]
+
+jobs:
+  linter:
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v3
+    - uses: smelly-python/smell-my-pr@main
+      with: 
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        command: pipenv run smelly-python -d code
