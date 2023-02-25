@@ -1,3 +1,5 @@
+name: linter report
+
 on:
   push:
     branches: [ "test/actions" ]
