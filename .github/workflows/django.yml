@@ -29,6 +29,6 @@ jobs:
     - name: Run Tests
       run: |
         cd code
-        python manage.py makemigrations contenttypes admin accounts financas igreja --directory=apps
+        python manage.py makemigrations contenttypes admin accounts financas igreja
         python manage.py migrate contenttypes admin accounts financas igreja --database=default --noinput --verbosity=0
         python manage.py test
