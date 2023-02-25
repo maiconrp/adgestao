@@ -26,8 +26,6 @@ jobs:
     - name: Analyze the code with pylint
       run: |
         pylint $(git ls-files '*.py') > pylint_report.txt || true
-    - name: Create issues for pylint errors
-      uses: peter-evans/create-issue-from-file@v2
-      with:
-        title: Pylint errors found in the code
-        content-filepath: pylint_report.txt
+    - name: Generate Markdown report
+      run: |
+        cat pylint_report.txt | grep -E '^[^:]+:[0-9]+:' | sed 's/:/|/; s/:/|/; s/^/|/; s/$/|/' > pylint_report.md
