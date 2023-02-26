@@ -43,9 +43,17 @@ jobs:
     
     - name: Generate Markdown report
       run: |
-        echo "| Arquivo | Código | Código do Erro | Erro | Tipo |" > pylint_report.md
-        echo "| --- | --- | --- | --- | --- |" >> pylint_report.md
-        awk -F ":" '{ printf("| %s | %s | %s | %s | %s |\n", $1, $2, $3, $4, $5) }' pylint_report.txt | sed 's/ *\([|]\)/\1/g' >> pylint_report.md
+        awk -F ":" '
+          BEGIN { print "<details>" }
+          /^(\*{13})/ {
+            if (NR > 1) { print "</table></details>" }
+            print "<summary><h2>" $2 "</h2></summary><table><tr><th>Arquivo</th><th>Código</th><th>Código do erro</th><th>Erro</th><th>Tipo</th></tr>"
+          }
+          /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)$/ {
+            printf("<tr><td>%s</td><td>%s:%s</td><td>%s</td><td>%s</td><td></td></tr>\n", $1, $2, $3, $4, $5)
+          }
+          END { print "</table></details>" }
+        ' pylint_report.txt > pylint_report.md
 
     - name: Check for changes
       run: |
