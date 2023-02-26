@@ -41,19 +41,21 @@ jobs:
       run: |
         pylint $(git ls-files '*.py') > pylint_report.txt || true
     
-    - name: Generate Markdown report
+    - name: Generate Markdown report organized by file
       run: |
         awk -F ":" '
           BEGIN { print "<details>" }
           /^(\*{13})/ {
             if (NR > 1) { print "</table></details>" }
-            print "<summary><h2>" $2 "</h2></summary><table><tr><th>Arquivo</th><th>Código</th><th>Código do erro</th><th>Erro</th><th>Tipo</th></tr>"
+            filename = gensub(/[\* ]+Module /, "", "g", $2)
+            print "<summary><h2>" filename "</h2></summary><table><tr><th>Severidade</th><th>Código do erro</th><th>Erro</th><th>Tipo</th></tr>"
           }
           /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)$/ {
-            printf("<tr><td>%s</td><td>%s:%s</td><td>%s</td><td>%s</td><td></td></tr>\n", $1, $2, $3, $4, $5)
+            printf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", $4, $5, $6, $7)
           }
           END { print "</table></details>" }
-        ' pylint_report.txt > pylint_report.md
+        ' pylint_report.txt > pylint_report_organized_by_file.md
+
 
     - name: Check for changes
       run: |
