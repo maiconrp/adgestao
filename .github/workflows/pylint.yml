@@ -41,21 +41,27 @@ jobs:
       run: |
         pylint $(git ls-files '*.py') > pylint_report.txt || true
     
-    - name: Generate Markdown report organized by file
+    - name: Generate Markdown report
       run: |
         awk -F ":" '
-          BEGIN { print "<details>" }
+          BEGIN {
+            print "<details>"
+          }
           /^(\*{13})/ {
-            if (NR > 1) { print "</table></details>" }
-            filename = gensub(/[\* ]+Module /, "", "g", $2)
-            print "<summary><h2>" filename "</h2></summary><table><tr><th>Severidade</th><th>Código do erro</th><th>Erro</th><th>Tipo</th></tr>"
+            if (NR > 1) {
+              print "</table></details><details>"
+            }
+            file = $2
+            gsub(/^ +| +$/, "", file)
+            print "<summary><h2>" file "</h2></summary><table><tr><th>Código do erro</th><th>Erro</th><th>Tipo</th></tr>"
           }
-          /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)$/ {
-            printf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", $4, $5, $6, $7)
+          /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)\((.*)\)$/ {
+            printf("<tr><td>%s</td><td>%s</td><td>%s</td></tr>\n", $4, $5, $6)
           }
-          END { print "</table></details>" }
-        ' pylint_report.txt > pylint_report_organized_by_file.md
-
+          END {
+            print "</table></details>"
+          }
+        ' pylint_report.txt > pylint_report.md
 
     - name: Check for changes
       run: |
