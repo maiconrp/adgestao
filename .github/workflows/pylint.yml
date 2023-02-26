@@ -43,25 +43,41 @@ jobs:
     
     - name: Generate Markdown report
       run: |
-        awk -F ":" '
-          BEGIN {
+       awk -F ":" '
+        BEGIN {
             count = 0
+            # Imprime o título do relatório
             print "# Pylint Report"
+            # Imprime o número total de erros encontrados pelo pylint
             printf "\n**Total**: %d\n", NR
+            # Imprime o cabeçalho da tabela
             print "| Arquivo | Linha | Erro | Código do erro | Tipo |"
             print "| ------- | ----- | ---- | -------------- | ---- |"
-          }
-          # Este bloco de código é executado para cada erro encontrado pelo Pylint
-          /(.+):([0-9]+):[0-9]+: ([^:]+): (.+)/ {
-            arquivo = gensub(".*/", "", "g", $1)
-            caminho = "["$1"](" $1 ")"
+        }
+        # Este bloco de código é executado para cada erro encontrado pelo pylint
+        # O padrão é: nome_do_arquivo:linha:coluna: código_do_erro: mensagem_do_erro
+        # Por exemplo: app.py:10:5: W0611: Unused import os
+        /(.+):([0-9]+):[0-9]+: ([^:]+): (.+)/ {
+            # Extrai o nome do arquivo e remove o caminho do diretório
+            arquivo = $1
+            sub(/^.*\//, "", arquivo)
+            # Formata o caminho do arquivo para incluir um link clicável no relatório
+            caminho = "["arquivo"](" $1 ")"
+            # Extrai o número da linha onde ocorreu o erro
             linha = $2
-            codigo_erro = $3
-            erro = $4
+            # Extrai o código do erro (por exemplo, W0611)
+            codigo_erro = $4
+            # Extrai a mensagem de erro
+            erro = $5
+            # Extrai o tipo de erro (por exemplo, warning)
             tipo_erro = gensub("[^\\(]*\\(([a-z-]+)\\).*", "\\1", "g", $5)
+            # Remove o tipo de erro da mensagem de erro
+            sub(tipo_erro, "", erro)
+            # Imprime uma linha da tabela com as informações do erro
             print "| " caminho " | " linha " | " erro " | " codigo_erro " | " tipo_erro " |"
-          }
-        ' pylint_report.txt > PYREPORT.md
+        }
+    ' pylint_report.txt > PYREPORT.md
+
 
 
 
