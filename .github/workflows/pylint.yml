@@ -53,5 +53,5 @@ jobs:
         fi
     - name: Commit changes
       run: |
-        git commit -am ":wrench: chore: Add pylint issues"
+        git commit -a -m ":wrench: chore: Add pylint issues"
         git push
