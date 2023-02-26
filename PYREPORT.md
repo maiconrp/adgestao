@@ -1,4 +1,5 @@
 # Pylint Report
+274
 
 **Total**: 0
 | Arquivo | Linha | Erro | Código do erro | Tipo |
