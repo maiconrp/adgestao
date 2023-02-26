@@ -43,8 +43,10 @@ jobs:
     
     - name: Generate Markdown report
       run: |
-        echo -e pylint_report.txt | grep -E '^[^:]+:[0-9]+:' | sed 's/:/|/; s/:/|/; s/^/|/; s/$/|/' > pylint_report.md
-        
+        echo "| Arquivo | Código | Código do Erro | Erro | Tipo |" > pylint_report.md
+        echo "| --- | --- | --- | --- | --- |" >> pylint_report.md
+        awk -F ":" '{ printf("| %s | %s | %s | %s | %s |\n", $1, $2, $3, $4, $5) }' pylint_report.txt | sed 's/ *\([|]\)/\1/g' >> pylint_report.md
+
     - name: Check for changes
       run: |
         if [ -z "$(git status --porcelain)" ]; then
