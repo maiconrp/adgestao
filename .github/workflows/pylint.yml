@@ -67,10 +67,10 @@ jobs:
             gsub(/ +\(.+\)/, "", erro)
             
             tipo_erro = $6
-            tipo_erro =(gsub(/[\(\)]/, "", tipo_erro)) ? tipo_erro : "N/A"
+            sub(/[\(\)]/, "", tipo_erro)
             
             # A seguir, uma correção necessária para que o relatório mostre a linha e a coluna em que o erro ocorreu
-            print "| " caminho " | | "linha" | " erro " | " codigo_erro " | " tipo_erro " |"
+            print "| " caminho " | "linha" | " erro " | " codigo_erro " | " tipo_erro " |"
           }
         ' pylint_report.txt > PYREPORT.md
 
