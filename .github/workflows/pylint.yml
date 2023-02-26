@@ -47,8 +47,13 @@ jobs:
           awk -F ":" '
             BEGIN {
               count = 0
+              total = 0 
+              while ("grep -cE \047.+:[0-9]+:[0-9]+: [^:]+: .+\047 pylint_report.txt > /tmp/awktmp" | getline contador) { 
+                  total += contador 
+              } 
+              close("/tmp/awktmp") 
               print "# Pylint Report"
-              printf "\n**Total**: %d\n", $(grep -cE '(.+):([0-9]+):[0-9]+: ([^:]+): (.+)' pylint_report.txt)
+              printf "\n**Total**: %d\n", total 
               # Imprime o cabeçalho da tabela
               print "| ID | Arquivo | Linha | Erro | Cod | Tipo |"
               print "| -- | ------- | ----- | ---- | --- | ---- |"
