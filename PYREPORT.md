@@ -1,6 +1,6 @@
 # Pylint Report
 
-**Total**: 274
+**Total**: 0
 | ID | Arquivo | Linha | Erro | Cod | Tipo |
 | -- | ------- | ----- | ---- | --- | ---- |
 | 0 | [asgi.py](code/adgestao/asgi.py#L12) | 12 |  Unable to import 'django.core.asgi' (import-error) |  E0401 | import-error |
