@@ -79,8 +79,8 @@ jobs:
               
               # Extrai o tipo de erro (por exemplo, warning)
               # tipo_erro = gensub("[^\\(]*\\(\\([a-z-]+\\)\\).*", "\\1", "g", $5)
-              sub(/\(([^)]+)\)$/), "", erro)
-              
+              sub(/\([^)]+\)$/, "", erro)
+
               # Imprime uma linha da tabela com as informações do erro
               print "| " count " | " caminho " | " linha " | " erro " | " codigo_erro " | "tipo_erro " |"
               count++
