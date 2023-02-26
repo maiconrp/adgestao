@@ -50,7 +50,7 @@ jobs:
             # A seguir, a correção necessária para que o relatório mostre o número total de erros
             printf "\n**Total**: %d\n", NR
             print "| Arquivo | Linha | Erro | Código do erro | Tipo |"
-            print "| ------- | ------|------| ---- ----------| ---- |"
+            print "| ------- | ----- | ---- | -------------- | ---- |"
           }
           # Este bloco de código é executado para cada erro encontrado pelo Pylint
           /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)\(([^)]+)\)$/ {
