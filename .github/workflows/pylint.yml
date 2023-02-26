@@ -47,23 +47,32 @@ jobs:
           BEGIN {
             count = 0
             print "# Pylint Report"
-            printf "\n**Total**: %d\n", length(pylint_report.txt) 
-            print "| Arquivo | Código do erro | Erro | Tipo |"
-            print "| ------- | ------------- | ---- | ---- |"
+            # A seguir, a correção necessária para que o relatório mostre o número total de erros
+            printf "\n**Total**: %d\n", NR
+            print "| Arquivo | Linha | Erro | Código do erro | Tipo |"
+            print "| ------- | ------|------| ---- ----------| ---- |"
           }
+          # Este bloco de código é executado para cada erro encontrado pelo Pylint
           /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)\(([^)]+)\)$/ {
-            file = $1
-            sub(/^.*\//, "", file)
-            error_code = $4
-            error = $5
-            gsub(/ +\(.+\)/, "", error)
-            error_type = $6
-            error_type = (gsub(/[\(\)]/, "", error_type)) ? error_type : "N/A"
-            location = "["file"]("$1")"
-            print "| " location " | " error_code " | " error " | " error_type " |"
+            
+            arquivo = $1
+            sub(/^.*\//, "", arquivo)
+            caminho = "["arquivo"]("$1")"
+            
+            linha = $2
+            
+            codigo_erro = $4
+            
+            erro = $5
+            gsub(/ +\(.+\)/, "", erro)
+            
+            tipo_erro = $6
+            gsub(/[\(\)]/, "", tipo_erro)) ? error_type : "N/A"
+            
+            # A seguir, uma correção necessária para que o relatório mostre a linha e a coluna em que o erro ocorreu
+            print "| " caminho " | | "linha" | " erro " | " codigo_erro " | " tipo_erro " |"
           }
-        ' pylint_report.txt > pylint_report.md
-
+        ' pylint_report.txt > PYREPORT.md
 
 
     - name: Check for changes
