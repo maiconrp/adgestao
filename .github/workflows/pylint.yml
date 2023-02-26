@@ -40,7 +40,7 @@ jobs:
     
       - name: Analyze the code with pylint
         run: |
-          erros=$(pylint $(git ls-files '*.py') > pylint_report.txt || true)
+          erros=$(pylint $(git ls-files '*.py') || true)
     
       - name: Generate Markdown report
         run: |
