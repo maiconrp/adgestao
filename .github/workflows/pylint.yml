@@ -52,14 +52,14 @@ jobs:
             print "| ------- | ------------- | ---- | ---- | ----- |"
           }
           /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)\((.*)\)$/ {
-            file = $2
+            file = $1
             gsub(/^ +| +$/, "", file)
             error_code = $4
             error = $5
             gsub(/ +\(.+\)/, "", error)
             error_type = $6
             gsub(/[\(\)]/, "", error_type)
-            location = "["file":"$3"]("$1":"$3")"
+            location = "["file":"$2"]("$1":"$2")"
             print "| " file " | " error_code " | " error " | " error_type " | " location " |"
             count++
           }
