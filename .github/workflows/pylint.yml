@@ -50,7 +50,7 @@ jobs:
               # Imprime o título do relatório
               print "# Pylint Report"
               # Imprime o número total de erros encontrados pelo pylint
-              print "\n**Total**: %d\n", system("wc -l < pylint_report.txt")
+              printf "\n**Total**: %d\n", $(wc -l < pylint_report.txt)
               # Imprime o cabeçalho da tabela
               print "| Arquivo | Linha | Erro | Código do erro | Tipo |"
               print "| ------- | ----- | ---- | -------------- | ---- |"
@@ -81,7 +81,8 @@ jobs:
               
               # Extrai o tipo de erro (por exemplo, warning)
               # tipo_erro = gensub("[^\\(]*\\(\\([a-z-]+\\)\\).*", "\\1", "g", $5)
-              
+              gsub("\\(\$type_error\\)", error, tipo_erro)
+
               # Imprime uma linha da tabela com as informações do erro
               print "| " caminho " | " linha " | " erro " | " codigo_erro " | "tipo_erro " |"
             }
