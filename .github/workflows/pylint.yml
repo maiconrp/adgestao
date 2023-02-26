@@ -40,8 +40,5 @@ jobs:
       
       - name: Analyze the code with pylint
         run: |
-          pylint $(git ls-files '*.py') > pylint_report.md
-      
-      - name: Generate Markdown report
-        run: |
+          pylint $(git ls-files '*.py') > pylint_report.txt
           git diff --quiet || git commit -am "🔧 wrench: Add pylint issues" && git push
