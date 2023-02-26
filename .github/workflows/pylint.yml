@@ -48,8 +48,8 @@ jobs:
             print "# Pylint Report"
             print "**Total**: " count
             print ""
-            print "| Arquivo | Código do erro | Erro | Tipo | Local |"
-            print "| ------- | ------------- | ---- | ---- | ----- |"
+            print "| Arquivo | Código do erro | Erro | Tipo |"
+            print "| ------- | ------------- | ---- | ---- |"
           }
           /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)\((.*)\)$/ {
             file = $1
@@ -59,8 +59,8 @@ jobs:
             gsub(/ +\(.+\)/, "", error)
             error_type = $6
             gsub(/[\(\)]/, "", error_type)
-            location = "["file":"$2"]("$1":"$2")"
-            print "| " file " | " error_code " | " error " | " error_type " | " location " |"
+            location = "["file":"$2"]("$1")"
+            print "| " location " | " error_code " | " error " | " error_type " |"
             count++
           }
           END {
