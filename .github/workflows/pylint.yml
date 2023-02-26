@@ -50,7 +50,7 @@ jobs:
               # Imprime o título do relatório
               print "# Pylint Report"
               # Imprime o número total de erros encontrados pelo pylint
-              printf "\n**Total**: %d\n", NR
+              printf "\n**Total**: %d\n", system("wc -l < pylint_report.txt")
               # Imprime o cabeçalho da tabela
               print "| Arquivo | Linha | Erro | Código do erro | Tipo |"
               print "| ------- | ----- | ---- | -------------- | ---- |"
