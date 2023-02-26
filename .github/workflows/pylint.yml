@@ -47,13 +47,14 @@ jobs:
           awk -F ":" '
             BEGIN {
               count = 0
-              # Imprime o título do relatório
+              cmd = "wc -l < pylint_report.txt"
+              cmd | getline total
+              close(cmd)
               print "# Pylint Report"
-              # Imprime o número total de erros encontrados pelo pylint
-              printf "\n**Total**: %d\n", $(wc -l < pylint_report.txt)
+              printf "\n**Total**: %d\n", total
               # Imprime o cabeçalho da tabela
-              print "| Arquivo | Linha | Erro | Código do erro | Tipo |"
-              print "| ------- | ----- | ---- | -------------- | ---- |"
+              print "| ID | Arquivo | Linha | Erro | Cod | Tipo |"
+              print "| -- | ------- | ----- | ---- | --- | ---- |"
             }
             # Este bloco de código é executado para cada erro encontrado pelo pylint
             # O padrão é: nome_do_arquivo:linha:coluna: código_do_erro: mensagem_do_erro
@@ -82,9 +83,11 @@ jobs:
               # Extrai o tipo de erro (por exemplo, warning)
               # tipo_erro = gensub("[^\\(]*\\(\\([a-z-]+\\)\\).*", "\\1", "g", $5)
               gsub("\\(\$type_error\\)", error, tipo_erro)
-
+              
               # Imprime uma linha da tabela com as informações do erro
-              print "| " caminho " | " linha " | " erro " | " codigo_erro " | "tipo_erro " |"
+              print "| " count " | " caminho " | " linha " | " erro " | " codigo_erro " | "tipo_erro " |"
+              count++
+              
             }
           ' pylint_report.txt > PYREPORT.md
 
