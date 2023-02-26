@@ -47,32 +47,22 @@ jobs:
           BEGIN {
             count = 0
             print "# Pylint Report"
-            # A seguir, a correção necessária para que o relatório mostre o número total de erros
             printf "\n**Total**: %d\n", NR
             print "| Arquivo | Linha | Erro | Código do erro | Tipo |"
             print "| ------- | ----- | ---- | -------------- | ---- |"
           }
           # Este bloco de código é executado para cada erro encontrado pelo Pylint
-          /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)\(([^)]+)\)$/ {
-            
-            arquivo = $1
-            sub(/^.*\//, "", arquivo)
-            caminho = "["arquivo"]("$1")"
-            
+          /(.+):([0-9]+):[0-9]+: ([^:]+): (.+)/ {
+            arquivo = gensub(".*/", "", "g", $1)
+            caminho = "["$1"](" $1 ")"
             linha = $2
-            
-            codigo_erro = $4
-            
-            erro = $5
-            gsub(/ +\(.+\)/, "", erro)
-            
-            tipo_erro = $6
-            sub(/[\(\)]/, "", tipo_erro)
-            
-            # A seguir, uma correção necessária para que o relatório mostre a linha e a coluna em que o erro ocorreu
-            print "| " caminho " | "linha" | " erro " | " codigo_erro " | " tipo_erro " |"
+            codigo_erro = $3
+            erro = $4
+            tipo_erro = gensub("[^\\(]*\\(([a-z-]+)\\).*", "\\1", "g", $5)
+            print "| " caminho " | " linha " | " erro " | " codigo_erro " | " tipo_erro " |"
           }
         ' pylint_report.txt > PYREPORT.md
+
 
 
     - name: Check for changes
