@@ -40,11 +40,11 @@ jobs:
     
       - name: Analyze the code with pylint
         run: |
-          pylint_output=$(pylint $(git ls-files '*.py') || true)
+          erros=$(pylint $(git ls-files '*.py') > pylint_report.txt || true)
     
       - name: Generate Markdown report
         run: |
-          report=$(awk -F ":" '
+          awk -F ":" '
             BEGIN {
               count = 0 
               close("/tmp/awktmp") 
@@ -86,9 +86,7 @@ jobs:
               count++
               
             }
-          ' pylint_output)
-          
-          echo $report > PYREPORT.md
+          ' $erros > PYREPORT.md
           
       - name: Check for changes
         id: check_changes
