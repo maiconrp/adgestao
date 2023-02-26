@@ -45,19 +45,18 @@ jobs:
       run: |
         awk -F ":" '
           BEGIN {
+            count = 0
             print "# Pylint Report"
-            print "**Total**: " count
-            print ""
             print "| Arquivo | Código do erro | Erro | Tipo |"
             print "| ------- | ------------- | ---- | ---- |"
           }
-          /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)( \((.*)\))?$/ {
+          /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+);(.+)$/ {
             file = $1
             sub(/^.*\//, "", file)
             error_code = $4
             error = $5
-            gsub(/ +\(.+\)/, "", error)
-            error_type = $7
+            error_type = $6
+            gsub(/[\(\)]/, "", error_type)
             location = "["file"]("$1")"
             print "| " location " | " error_code " | " error " | " error_type " |"
             count++
@@ -66,6 +65,7 @@ jobs:
             printf "\n**Total**: %d\n", count
           }
         ' pylint_report.txt > pylint_report.md
+
 
 
 
