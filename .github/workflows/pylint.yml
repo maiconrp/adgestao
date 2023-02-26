@@ -47,6 +47,7 @@ jobs:
           BEGIN {
             count = 0
             print "# Pylint Report"
+            printf "\n**Total**: %d\n", length(pylint_report.txt) 
             print "| Arquivo | Código do erro | Erro | Tipo |"
             print "| ------- | ------------- | ---- | ---- |"
           }
@@ -57,15 +58,12 @@ jobs:
             error = $5
             gsub(/ +\(.+\)/, "", error)
             error_type = $6
-            gsub(/[\(\)]/, "", error_type) ? error_type : "N/A"
+            error_type = (gsub(/[\(\)]/, "", error_type)) ? error_type : "N/A"
             location = "["file"]("$1")"
             print "| " location " | " error_code " | " error " | " error_type " |"
-            count++
-          }
-          END {
-            printf "\n**Total**: %d\n", count
           }
         ' pylint_report.txt > pylint_report.md
+
 
 
     - name: Check for changes
