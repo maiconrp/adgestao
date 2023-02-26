@@ -48,7 +48,7 @@ jobs:
             BEGIN {
               count = 0
               print "# Pylint Report"
-              printf "\n**Total**: %d\n", system("grep -cE ':[0-9]+:[0-9]+: [A-Z]+[0-9]+:' pylint_report.txt")
+              printf "\n**Total**: %d\n", $(grep -cE '(.+):([0-9]+):[0-9]+: ([^:]+): (.+)' pylint_report.txt)
               # Imprime o cabeçalho da tabela
               print "| ID | Arquivo | Linha | Erro | Cod | Tipo |"
               print "| -- | ------- | ----- | ---- | --- | ---- |"
