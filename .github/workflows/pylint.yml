@@ -2,7 +2,7 @@ name: Pylint
 
 on:
   push:
-    branches: [test/actions]
+    branches: [ test/actions ]
 
 jobs:
   build:
@@ -10,37 +10,32 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.8"]
-          
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v3
-
-        - name: Use Node.js 14
-          uses: actions/setup-node@v3
-          with:
-            node-version: 14
-
-        - name: Set up Git
-          run: |
-            git config --global user.email "github-actions@github.com"
-            git config --global user.name "GitHub Actions"
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Set up Git
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "Action Pylint"
         
-        - name: Set up Python ${{ matrix.python-version }}
-          uses: actions/setup-python@v2
-          with:
-            python-version: ${{ matrix.python-version }}
-            
-        - name: Upgrade pip and setuptools
-          run: |
-            python -m pip install --upgrade pip setuptools
-        
-        - name: Install pylint
-          run: |
-            python -m pip install pylint
-        
-        - name: Analyze code with pylint
-          run: |
-            pylint $(git ls-files '*.py') > pylint_report.txt
-            if [ -n "$(git status --porcelain)" ]; then
-              git commit -am "🔧 wrench: Add pylint issues" && git push
-            fi
+    - name: Upgrade setuptools
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade setuptools
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install pylint
+    
+    - name: Analyze the code with pylint
+      run: |
+        pylint $(git ls-files '*.py') > pylint_report.txt || true
+    
+    - name: Generate Markdown report
+      run: |
+        echo -e pylint_report.txt | grep -E '^[^:]+:[0-9]+:' | sed 's/:/|/; s/:/|/; s/^/|/; s/$/|/' > pylint_report.md
+        git commit -am "🔧 wrench: Add pylint issues" && git push
