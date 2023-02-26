@@ -44,7 +44,7 @@ jobs:
     
       - name: Generate Markdown report
         run: |
-          awk -F ":" '
+          report=$(awk -F ":" '
             BEGIN {
               count = 0 
               close("/tmp/awktmp") 
@@ -86,7 +86,9 @@ jobs:
               count++
               
             }
-          ' pylint_output > PYREPORT.md
+          ' pylint_output)
+          
+          echo $report > PYREPORT.md
           
       - name: Check for changes
         id: check_changes
