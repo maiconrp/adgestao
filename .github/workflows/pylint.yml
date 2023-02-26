@@ -71,7 +71,7 @@ jobs:
               # Extrai a mensagem de erro
               erro = $5
               # Extrai o tipo de erro (por exemplo, warning)
-              tipo_erro = gensub("[^\\(]*\\(([a-z-]+)\\).*", "\\1", "g", $5)
+              tipo_erro = gensub("[^\\(]*\\(\\([a-z-]+\\)\\).*", "\\1", "g", $5)
               # Remove o tipo de erro da mensagem de erro
               sub(tipo_erro, "", erro)
               # Imprime uma linha da tabela com as informações do erro
