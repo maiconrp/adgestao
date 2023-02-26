@@ -47,11 +47,8 @@ jobs:
           awk -F ":" '
             BEGIN {
               count = 0
-              cmd = "wc -l < pylint_report.txt"
-              cmd | getline total
-              close(cmd)
               print "# Pylint Report"
-              printf "\n**Total**: %d\n", total
+              printf "\n**Total**: %d\n", system("grep -cE ':[0-9]+:[0-9]+: [A-Z]+[0-9]+:' pylint_report.txt")
               # Imprime o cabeçalho da tabela
               print "| ID | Arquivo | Linha | Erro | Cod | Tipo |"
               print "| -- | ------- | ----- | ---- | --- | ---- |"
@@ -82,7 +79,7 @@ jobs:
               
               # Extrai o tipo de erro (por exemplo, warning)
               # tipo_erro = gensub("[^\\(]*\\(\\([a-z-]+\\)\\).*", "\\1", "g", $5)
-              gsub("\\(\$type_error\\)", error, tipo_erro)
+              gsub("\\(\$tipo_erro\\)", error, tipo_erro)
               
               # Imprime uma linha da tabela com as informações do erro
               print "| " count " | " caminho " | " linha " | " erro " | " codigo_erro " | "tipo_erro " |"
