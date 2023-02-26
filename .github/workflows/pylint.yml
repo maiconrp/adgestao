@@ -44,4 +44,14 @@ jobs:
     - name: Generate Markdown report
       run: |
         echo -e pylint_report.txt | grep -E '^[^:]+:[0-9]+:' | sed 's/:/|/; s/:/|/; s/^/|/; s/$/|/' > pylint_report.md
-        git diff --quiet || git commit -am ":wrench: chore: Add pylint issues" && git push
+        
+    - name: Check for changes
+      run: |
+        if [ -z "$(git status --porcelain)" ]; then
+          echo "No changes detected"
+          exit 0
+        fi
+    - name: Commit changes
+      run: |
+        git commit -am ":wrench: chore: Add pylint issues"
+        git push
