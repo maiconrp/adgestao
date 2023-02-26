@@ -97,5 +97,5 @@ jobs:
 
       - name: Commit changes
         run: |
-          git add . && git commit -m ":wrench: chore: Add pylint issues"
+          git add PYREPORT.md && git commit -m ":wrench: chore: Add pylint issues"
           git push
