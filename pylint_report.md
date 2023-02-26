@@ -76,9 +76,9 @@
 | [validators.py](code/adgestao/validators.py) |  R1728 |  Consider using a generator instead 'sum(cpf[i] * |  |
 | [validators.py](code/adgestao/validators.py) |  R1728 |  Consider using a generator instead 'sum(cpf[i] * |  |
 | [validators.py](code/adgestao/validators.py) |  C0116 |  Missing function or method docstring |  |
-| [validators.py](code/adgestao/validators.py) |  W0707 |  Consider explicitly re-raising using 'except ValueError as exc' and 'raise ValidationError from exc' |  |
+| [validators.py](code/adgestao/validators.py) |  W0707 |  Consider explicitly re-raising using 'except ValueError as exc' and 'raise ValidationError("Data inválida. Utilize o formato 'dia/mês/ano'") from exc' |  |
 | [validators.py](code/adgestao/validators.py) |  C0116 |  Missing function or method docstring |  |
-| [validators.py](code/adgestao/validators.py) |  W0707 |  Consider explicitly re-raising using 'except Exception as exc' and 'raise ValidationError from exc' |  |
+| [validators.py](code/adgestao/validators.py) |  W0707 |  Consider explicitly re-raising using 'except Exception as exc' and 'raise ValidationError('Número de telefone inválido.') from exc' |  |
 | [validators.py](code/adgestao/validators.py) |  C0411 |  standard import "import datetime" should be placed before "import phonenumbers" |  |
 | [wsgi.py](code/adgestao/wsgi.py) |  E0401 |  Unable to import 'django.core.wsgi' |  |
 | [__init__.py](code/apps/accounts/__init__.py) |  C0303 |  Trailing whitespace |  |
@@ -86,7 +86,7 @@
 | [admin.py](code/apps/accounts/admin.py) |  C0114 |  Missing module docstring |  |
 | [admin.py](code/apps/accounts/admin.py) |  E0401 |  Unable to import 'django.contrib' |  |
 | [admin.py](code/apps/accounts/admin.py) |  W0401 |  Wildcard import models |  |
-| [admin.py](code/apps/accounts/admin.py) |  W0614 |  Unused import User, EmailValidator, MaxLengthValidator, MinLengthValidator, models, Igreja, MultiSelectField, validate_cpf and validate_telefone from wildcard import of models |  |
+| [admin.py](code/apps/accounts/admin.py) |  W0614 |  Unused import(s) User, EmailValidator, MaxLengthValidator, MinLengthValidator, models, Igreja, MultiSelectField, validate_cpf and validate_telefone from wildcard import of models |  |
 | [apps.py](code/apps/accounts/apps.py) |  C0114 |  Missing module docstring |  |
 | [apps.py](code/apps/accounts/apps.py) |  E0401 |  Unable to import 'django.apps' |  |
 | [apps.py](code/apps/accounts/apps.py) |  C0115 |  Missing class docstring |  |
@@ -128,24 +128,24 @@
 | [permissions.py](code/apps/accounts/permissions.py) |  E0401 |  Unable to import 'django.contrib.auth.models' |  |
 | [permissions.py](code/apps/accounts/permissions.py) |  E0401 |  Unable to import 'django.contrib.contenttypes.models' |  |
 | [permissions.py](code/apps/accounts/permissions.py) |  C0103 |  Variable name "e" doesn't conform to snake_case naming style |  |
-| [permissions.py](code/apps/accounts/permissions.py) |  W0707 |  Consider explicitly re-raising using 'raise Exception(f'Erro ao criar/recuperar grupo {grupo_nome} |  {e}') from e' (raise-missing-from) |
-| [permissions.py](code/apps/accounts/permissions.py) |  W0719 |  Raising too general exception |  Exception (broad-exception-raised) |
+| [permissions.py](code/apps/accounts/permissions.py) |  W0707 |  Consider explicitly re-raising using 'raise Exception(f'Erro ao criar/recuperar grupo {grupo_nome} |  {e}' from e' raise-missing-from |
+| [permissions.py](code/apps/accounts/permissions.py) |  W0719 |  Raising too general exception |  Exception broad-exception-raised |
 | [permissions.py](code/apps/accounts/permissions.py) |  C0103 |  Variable name "e" doesn't conform to snake_case naming style |  |
-| [permissions.py](code/apps/accounts/permissions.py) |  W0707 |  Consider explicitly re-raising using 'raise Exception(f'Erro ao criar/recuperar permissão {permissao_nome} |  {e}') from e' (raise-missing-from) |
-| [permissions.py](code/apps/accounts/permissions.py) |  W0719 |  Raising too general exception |  Exception (broad-exception-raised) |
+| [permissions.py](code/apps/accounts/permissions.py) |  W0707 |  Consider explicitly re-raising using 'raise Exception(f'Erro ao criar/recuperar permissão {permissao_nome} |  {e}' from e' raise-missing-from |
+| [permissions.py](code/apps/accounts/permissions.py) |  W0719 |  Raising too general exception |  Exception broad-exception-raised |
 | [permissions.py](code/apps/accounts/permissions.py) |  C0103 |  Variable name "e" doesn't conform to snake_case naming style |  |
-| [permissions.py](code/apps/accounts/permissions.py) |  W0707 |  Consider explicitly re-raising using 'raise Exception(f'Erro ao adicionar permissão {permissao_nome} ao grupo {grupo_nome} |  {e}') from e' (raise-missing-from) |
-| [permissions.py](code/apps/accounts/permissions.py) |  W0719 |  Raising too general exception |  Exception (broad-exception-raised) |
+| [permissions.py](code/apps/accounts/permissions.py) |  W0707 |  Consider explicitly re-raising using 'raise Exception(f'Erro ao adicionar permissão {permissao_nome} ao grupo {grupo_nome} |  {e}' from e' raise-missing-from |
+| [permissions.py](code/apps/accounts/permissions.py) |  W0719 |  Raising too general exception |  Exception broad-exception-raised |
 | [permissions.py](code/apps/accounts/permissions.py) |  C0103 |  Variable name "e" doesn't conform to snake_case naming style |  |
-| [permissions.py](code/apps/accounts/permissions.py) |  W0707 |  Consider explicitly re-raising using 'raise Exception(f'Erro ao adicionar usuário {usuario.nome} ao grupo {grupo_nome} |  {e}') from e' (raise-missing-from) |
-| [permissions.py](code/apps/accounts/permissions.py) |  W0719 |  Raising too general exception |  Exception (broad-exception-raised) |
+| [permissions.py](code/apps/accounts/permissions.py) |  W0707 |  Consider explicitly re-raising using 'raise Exception(f'Erro ao adicionar usuário {usuario.nome} ao grupo {grupo_nome} |  {e}' from e' raise-missing-from |
+| [permissions.py](code/apps/accounts/permissions.py) |  W0719 |  Raising too general exception |  Exception broad-exception-raised |
 | [tests.py](code/apps/accounts/tests.py) |  C0114 |  Missing module docstring |  |
 | [tests.py](code/apps/accounts/tests.py) |  E0401 |  Unable to import 'django.test' |  |
 | [tests.py](code/apps/accounts/tests.py) |  W0611 |  Unused TestCase imported from django.test |  |
 | [urls.py](code/apps/accounts/urls.py) |  C0114 |  Missing module docstring |  |
 | [urls.py](code/apps/accounts/urls.py) |  E0401 |  Unable to import 'django.urls' |  |
 | [urls.py](code/apps/accounts/urls.py) |  W0401 |  Wildcard import views |  |
-| [urls.py](code/apps/accounts/urls.py) |  W0614 |  Unused import login_required, permission_required, HttpResponse, HttpResponseRedirect, render, reverse, UsuarioForm, set_permission, Usuario, SolicitacaoCadastro and messages from wildcard import of views |  |
+| [urls.py](code/apps/accounts/urls.py) |  W0614 |  Unused import(s) login_required, permission_required, HttpResponse, HttpResponseRedirect, render, reverse, UsuarioForm, set_permission, Usuario, SolicitacaoCadastro and messages from wildcard import of views |  |
 | [views.py](code/apps/accounts/views.py) |  C0303 |  Trailing whitespace |  |
 | [views.py](code/apps/accounts/views.py) |  C0303 |  Trailing whitespace |  |
 | [views.py](code/apps/accounts/views.py) |  C0303 |  Trailing whitespace |  |
@@ -175,7 +175,7 @@
 | [admin.py](code/apps/financas/admin.py) |  C0114 |  Missing module docstring |  |
 | [admin.py](code/apps/financas/admin.py) |  E0401 |  Unable to import 'django.contrib' |  |
 | [admin.py](code/apps/financas/admin.py) |  W0401 |  Wildcard import models |  |
-| [admin.py](code/apps/financas/admin.py) |  W0614 |  Unused import uuid, accounts, igreja, models, F, validate_cpf and validate_data from wildcard import of models |  |
+| [admin.py](code/apps/financas/admin.py) |  W0614 |  Unused import(s) uuid, accounts, igreja, models, F, validate_cpf and validate_data from wildcard import of models |  |
 | [apps.py](code/apps/financas/apps.py) |  C0114 |  Missing module docstring |  |
 | [apps.py](code/apps/financas/apps.py) |  E0401 |  Unable to import 'django.apps' |  |
 | [apps.py](code/apps/financas/apps.py) |  C0115 |  Missing class docstring |  |
@@ -206,7 +206,7 @@
 | [admin.py](code/apps/igreja/admin.py) |  C0114 |  Missing module docstring |  |
 | [admin.py](code/apps/igreja/admin.py) |  E0401 |  Unable to import 'django.contrib' |  |
 | [admin.py](code/apps/igreja/admin.py) |  W0401 |  Wildcard import models |  |
-| [admin.py](code/apps/igreja/admin.py) |  W0614 |  Unused import uuid, models, F, MultiSelectField, validate_cpf and validate_data from wildcard import of models |  |
+| [admin.py](code/apps/igreja/admin.py) |  W0614 |  Unused import(s) uuid, models, F, MultiSelectField, validate_cpf and validate_data from wildcard import of models |  |
 | [apps.py](code/apps/igreja/apps.py) |  C0114 |  Missing module docstring |  |
 | [apps.py](code/apps/igreja/apps.py) |  E0401 |  Unable to import 'django.apps' |  |
 | [apps.py](code/apps/igreja/apps.py) |  C0115 |  Missing class docstring |  |
