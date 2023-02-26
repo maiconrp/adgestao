@@ -50,7 +50,7 @@ jobs:
               # Imprime o título do relatório
               print "# Pylint Report"
               # Imprime o número total de erros encontrados pelo pylint
-              printf "\n**Total**: %d\n", system("wc -l < pylint_report.txt")
+              print "\n**Total**: %d\n", system("wc -l < pylint_report.txt")
               # Imprime o cabeçalho da tabela
               print "| Arquivo | Linha | Erro | Código do erro | Tipo |"
               print "| ------- | ----- | ---- | -------------- | ---- |"
@@ -68,7 +68,7 @@ jobs:
               linha = $2
               
               # Formata o caminho do arquivo para incluir um link clicável no relatório
-              caminho = "[" arquivo "](" $1 "#" $2 ")"
+              caminho = "[" arquivo "](" $1 "#L" $2 ")"
               
               # Extrai o código do erro (por exemplo, W0611)
               codigo_erro = $4
