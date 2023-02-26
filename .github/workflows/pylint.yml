@@ -87,13 +87,21 @@ jobs:
               
             }
           ' pylint_report.txt > PYREPORT.md
-
+          
       - name: Check for changes
+        id: check_changes
         run: |
           if [ -z "$(git status --porcelain)" ]; then
-            echo "No changes detected"
-            exit 0
+            echo "::set-output name=changes::no"
+          else
+            echo "::set-output name=changes::yes"
           fi
+
+      - name: Commit changes
+        if: steps.check_changes.outputs.changes == 'yes'
+        run: |
+          git add PYREPORT.md && git commit -m ":wrench: chore: Add pylint issues"
+          git push
 
       - name: Commit changes
         run: |
