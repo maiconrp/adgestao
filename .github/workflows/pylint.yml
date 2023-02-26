@@ -67,7 +67,7 @@ jobs:
             gsub(/ +\(.+\)/, "", erro)
             
             tipo_erro = $6
-            gsub(/[\(\)]/, "", tipo_erro)) ? error_type : "N/A"
+            gsub(/[\(\)]/, "", tipo_erro)) ? tipo_erro : "N/A"
             
             # A seguir, uma correção necessária para que o relatório mostre a linha e a coluna em que o erro ocorreu
             print "| " caminho " | | "linha" | " erro " | " codigo_erro " | " tipo_erro " |"
