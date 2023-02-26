@@ -57,7 +57,7 @@ jobs:
             error = $5
             gsub(/ +\(.+\)/, "", error)
             error_type = $6
-            gsub(/[\(\)]/, "", error_type)
+            gsub(/ *\([^)]+\)/, "", error)
             location = "["file"]("$1")"
             print "| " location " | " error_code " | " error " | " error_type " |"
             count++
