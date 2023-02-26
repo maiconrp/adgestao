@@ -45,26 +45,26 @@ jobs:
       run: |
         awk -F ":" '
           BEGIN {
-            print "<h2>Arquivo</h2><table><tr><th>Arquivo</th><th>Código do erro</th><th>Erro</th><th>Tipo</th></tr>"
+            print "# Pylint Report"
+            print "**Total**: " count
+            print ""
+            print "| Arquivo | Código do erro | Erro | Tipo | Local |"
+            print "| ------- | ------------- | ---- | ---- | ----- |"
           }
-          /^(\*{13})/ {
-            if (NR > 1) {
-              print "</table>"
-            }
-          }
-          /^[^:]+:[0-9]+:[0-9]+: [A-Z0-9]+: (.+)\((.*)\)$/ {
-            split($1, a, ":")
-            filename = system("basename " a[1])
-            gsub(/^ +| +$/, "", filename)
-            error = $2
-            gsub(/^\s+|\s+$/, "", error)
-            match($0, /\((.*)\)$/, m)
-            type = m[1]
-            gsub(/^\s+|\s+$/, "", type)
-            printf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n", filename, $4, error, type)
+          /^([^:]+):([0-9]+):([0-9]+): ([A-Z0-9]+): (.+)\((.*)\)$/ {
+            file = $2
+            gsub(/^ +| +$/, "", file)
+            error_code = $4
+            error = $5
+            gsub(/ +\(.+\)/, "", error)
+            error_type = $6
+            gsub(/[\(\)]/, "", error_type)
+            location = "["file":"$3"]("$1":"$3")"
+            print "| " file " | " error_code " | " error " | " error_type " | " location " |"
+            count++
           }
           END {
-            print "</table>"
+            printf "\n**Total**: %d\n", count
           }
         ' pylint_report.txt > pylint_report.md
 
