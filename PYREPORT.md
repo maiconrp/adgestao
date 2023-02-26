@@ -2,7 +2,7 @@
 
 **Total**: 0
 | Arquivo | Linha | Erro | Código do erro | Tipo |
-| ------- | ------|------| ---- ----------| ---- |
+| ------- | ----- | ---- | -------------- | ---- |
 | [asgi.py](code/adgestao/asgi.py) | 12 |  Unable to import 'django.core.asgi' |  E0401 |  |
 | [settings.py](code/adgestao/settings.py) | 41 |  Trailing whitespace |  C0303 |  |
 | [settings.py](code/adgestao/settings.py) | 46 |  Trailing whitespace |  C0303 |  |
