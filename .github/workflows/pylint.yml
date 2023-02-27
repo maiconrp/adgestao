@@ -86,7 +86,7 @@ jobs:
               count++
               
             }
-          ' $erros > PYREPORT.md
+          ' $erros > PYREPORT.md"
           
       - name: Check for changes
         id: check_changes
