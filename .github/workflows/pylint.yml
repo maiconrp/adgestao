@@ -87,7 +87,6 @@ jobs:
               
             }
           ' pylint_report.txt > PYREPORT.md
-          git rm pylint_report.txt
           
       - name: Check for changes
         id: check_changes
@@ -101,5 +100,6 @@ jobs:
       - name: Commit changes
         if: steps.check_changes.outputs.changes == 'yes'
         run: |
+          git rm pylint_report.txt
           git add PYREPORT.md && git commit -m ":wrench: chore: Add pylint issues"
           git push
