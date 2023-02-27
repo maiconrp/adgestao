@@ -41,6 +41,7 @@ jobs:
       - name: Analyze the code with pylint
         run: |
           erros=$(pylint $(git ls-files '*.py') || true)
+          echo $erros
     
       - name: Generate Markdown report
         run: |
@@ -86,7 +87,7 @@ jobs:
               count++
               
             }
-          ' $erros > PYREPORT.md"
+          ' $erros > PYREPORT.md
           
       - name: Check for changes
         id: check_changes
