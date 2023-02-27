@@ -40,8 +40,7 @@ jobs:
     
       - name: Analyze the code with pylint
         run: |
-          erros=$(pylint $(git ls-files '*.py') || true)
-          echo $erros
+          pylint $(git ls-files '*.py') > pylint_report.txt || true
     
       - name: Generate Markdown report
         run: |
@@ -49,7 +48,7 @@ jobs:
             BEGIN {
               count = 0 
               close("/tmp/awktmp") 
-              print "# :wrench: Pylint Report"
+              print "# Pylint Report"
               # Imprime o cabeçalho da tabela
               print "| ID | Arquivo | Linha | Erro | Cod | Tipo |"
               print "| -- | ------- | ----- | ---- | --- | ---- |"
@@ -87,8 +86,7 @@ jobs:
               count++
               
             }
-          ' $erros > PYREPORT.md
-          cat PYREPORT.md
+          ' pylint_report.txt > PYREPORT.md
           
       - name: Check for changes
         id: check_changes
@@ -102,5 +100,6 @@ jobs:
       - name: Commit changes
         if: steps.check_changes.outputs.changes == 'yes'
         run: |
+          git update-index --assume-unchanged pylint_report.txt
           git add PYREPORT.md && git commit -m ":wrench: chore: Add pylint issues"
           git push
