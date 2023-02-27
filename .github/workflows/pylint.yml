@@ -49,7 +49,7 @@ jobs:
             BEGIN {
               count = 0 
               close("/tmp/awktmp") 
-              print "# Pylint Report"
+              print "# :wrench: Pylint Report"
               # Imprime o cabeçalho da tabela
               print "| ID | Arquivo | Linha | Erro | Cod | Tipo |"
               print "| -- | ------- | ----- | ---- | --- | ---- |"
@@ -88,6 +88,7 @@ jobs:
               
             }
           ' $erros > PYREPORT.md
+          cat PYREPORT.md
           
       - name: Check for changes
         id: check_changes
