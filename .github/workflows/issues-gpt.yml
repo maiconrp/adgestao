@@ -1,7 +1,6 @@
 name: Responder Issue com ChatGPT
 
 on:
-  push:
   issues:
     types: [opened]
 
@@ -11,47 +10,25 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Responder Issue com ChatGPT
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: Instalar dependências
-      run: |
-        python -m pip install --upgrade pip
-        pip install openai
+
     - name: Responder Issue com ChatGPT
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        import openai
-        import os
-        import requests
-        
         # Define as informações da issue
-        issue = github.event['issue']
-        issue_number = issue['number']
-        issue_body = issue['body']
-        issue_comments_url = issue['comments_url']
+        issue_number=$(jq --raw-output .issue.number "$GITHUB_EVENT_PATH")
+        issue_body=$(jq --raw-output .issue.body "$GITHUB_EVENT_PATH")
+        issue_comments_url=$(jq --raw-output .issue.comments_url "$GITHUB_EVENT_PATH")
         
         # Instancia o modelo do ChatGPT
-        openai.api_key = os.environ['OPENAI_API_KEY']
-        prompt = f"Problema: {issue_body}\nSolução possível:"
-        response = openai.Completion.create(
-            engine="davinci-codex",
-            prompt=prompt,
-            max_tokens=1024,
-            n=1,
-            stop=None,
-            temperature=0.5,
-        )
-        
-        # Obtém a resposta gerada pelo modelo
-        solution = response.choices[0].text.strip()
+        prompt="Problema: ${issue_body}\nSolução possível:"
+        solution=$(curl https://api.openai.com/v1/engines/davinci-codex/completions \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${OPENAI_API_KEY}" \
+          -d "{\"prompt\": \"${prompt}\", \"max_tokens\": 1024, \"n\": 1, \"stop\": null, \"temperature\": 0.5}" \
+          | jq --raw-output '.choices[].text' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
         
         # Cria a mensagem com a solução e posta como um comentário na issue
-        message = f"Solução possível para a issue #{issue_number}:\n\n{solution}"
-        headers = {'Authorization': f'token {os.environ["GITHUB_TOKEN"]}'}
-        data = {'body': message}
-        response = requests.post(issue_comments_url, headers=headers, json=data)
-        response.raise_for_status()
+        message="Solução possível para a issue #${issue_number}:\n\n${solution}"
+        curl -sS -H "Authorization: Bearer ${GITHUB_TOKEN}" -X POST -d "{\"body\": \"${message}\"}" "${issue_comments_url}" > /dev/null
