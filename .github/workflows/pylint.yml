@@ -87,6 +87,7 @@ jobs:
               
             }
           ' pylint_report.txt > PYREPORT.md
+          rm pylint_report.txt
           
       - name: Check for changes
         id: check_changes
