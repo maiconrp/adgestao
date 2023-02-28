@@ -91,7 +91,8 @@ jobs:
           fi
 
       - name: Commit changes
-        if: ${{ steps.check_changes.outputs.change }} == 'yes'
         run: |
-          git add PYREPORT.md && git commit -m ":wrench: chore: Add pylint issues"
-          git push
+          if [ ${{ steps.check_changes.outputs.change }} == 'yes' ]; then
+            git diff --quiet || git add PYREPORT.md && git commit -m ":wrench: chore: Add pylint issues"
+            git push
+          fi
