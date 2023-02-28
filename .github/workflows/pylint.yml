@@ -91,7 +91,7 @@ jobs:
           fi
 
       - name: Commit changes
-        if: $GITHUB_OUTPUT == 'yes'
+        if: ${{GITHUB_OUTPUT}}== 'yes'
         run: |
           git add PYREPORT.md && git commit -m ":wrench: chore: Add pylint issues"
           git push
