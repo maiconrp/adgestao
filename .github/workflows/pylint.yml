@@ -85,13 +85,13 @@ jobs:
         id: check_changes
         run: |
           if [ -z "$(git status --porcelain)" ]; then
-            echo "{change}={no}" >> $GITHUB_OUTPUT
+            echo "change=no" >> $GITHUB_OUTPUT
           else
-            echo "{change}={yes}" >> $GITHUB_OUTPUT
+            echo "change=yes" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit changes
-        if: ${{check_changes.GITHUB_OUTPUT}}== 'yes'
+        if: ${{ steps.check_changes.outputs.change }} == 'yes'
         run: |
           git add PYREPORT.md && git commit -m ":wrench: chore: Add pylint issues"
           git push
