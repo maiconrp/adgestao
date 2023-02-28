@@ -7,27 +7,19 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.8"]
-    
+   
     steps:
       - uses: actions/checkout@v2
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
-        
-      - name: Use Node.js 14
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14
+          python-version: '3.x'
         
       - name: Set up Git
         run: |
           git config --global user.email "github-actions@github.com"
-          git config --global user.name "Action Pylint"
+          git config --global user.name "PyReport Action"
         
       - name: Upgrade setuptools
         run: |
@@ -93,13 +85,13 @@ jobs:
         id: check_changes
         run: |
           if [ -z "$(git status --porcelain)" ]; then
-            echo "::set-output name=changes::no"
+            echo "{change}={no}" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=changes::yes"
+            echo "{change}={yes}" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit changes
-        if: steps.check_changes.outputs.changes == 'yes'
+        if: $GITHUB_OUTPUT == 'yes'
         run: |
           git add PYREPORT.md && git commit -m ":wrench: chore: Add pylint issues"
           git push
