@@ -1,12 +1,14 @@
 name: Responder Issue com ChatGPT
 
 on:
+  push:
   issues:
     types: [opened]
 
 jobs:
   responder-issue:
     runs-on: ubuntu-latest
+    if: github.event_name == 'issues'
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -28,7 +30,7 @@ jobs:
         import requests
         
         # Define as informações da issue
-        issue = context.payload['issue']
+        issue = github.event['issue']
         issue_number = issue['number']
         issue_body = issue['body']
         issue_comments_url = issue['comments_url']
