@@ -2,7 +2,7 @@ name: Responder Issue com ChatGPT
 
 on:
   issues:
-    types: [opened]
+    types: [opened, reopened, edited]
 
 jobs:
   responder-issue:
