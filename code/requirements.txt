@@ -17,4 +17,4 @@ pycodestyle==2.10.0
 six==1.16.0
 sqlparse==0.4.3
 tomli==2.0.1
-tzdata==2022.7
+tzdata==2023.3
