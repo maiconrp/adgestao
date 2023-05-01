@@ -22,12 +22,12 @@ class Usuario(User):
     cpf = models.CharField(
         max_length=13,
         primary_key=True,
-        validators=[validate_cpf]
+        
     )
 
     telefone = models.CharField(
         max_length=20,
-        validators=[validate_telefone]
+        
     )
 
     funcao = MultiSelectField(
