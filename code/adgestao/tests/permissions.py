@@ -53,19 +53,21 @@ class SetPermissionTestCase(TestCase):
         """
         Testa a função de permissões `set_permission`.
         """
-        content_type = ContentType.objects.get_for_model(Usuario)
 
         # Define as permissões do usuário Tesoureiro Sede
         usuario_ts = set_permission(self.usuario_ts)
-        self.assertIn(Group.objects.get(name='tesoureiro_sede'), usuario_ts.groups.all())
         self.assertTrue(usuario_ts.has_perm('accounts.tesoureiro_sede'))
+        self.assertFalse(usuario_ts.has_perm('accounts.tesoureiro'))
+        self.assertFalse(usuario_ts.has_perm('accounts.pastor'))
 
         # Define as permissões do usuário Tesoureiro
         usuario_t = set_permission(self.usuario_t)
-        self.assertIn(Group.objects.get(name='tesoureiro'), usuario_t.groups.all())
         self.assertTrue(usuario_t.has_perm('accounts.tesoureiro'))
+        self.assertFalse(usuario_t.has_perm('accounts.tesoureiro_sede'))
+        self.assertFalse(usuario_t.has_perm('accounts.pastor'))
 
         # Define as permissões do usuário Pastor
         usuario_p = set_permission(self.usuario_p)
-        self.assertIn(Group.objects.get(name='pastor'), usuario_p.groups.all())
         self.assertTrue(usuario_p.has_perm('accounts.pastor'))
+        self.assertFalse(usuario_t.has_perm('accounts.tesoureiro_sede'))
+        self.assertFalse(usuario_p.has_perm('accounts.tesoureiro'))
