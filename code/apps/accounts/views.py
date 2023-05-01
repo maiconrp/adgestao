@@ -1,10 +1,13 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse, HttpResponseRedirect 
 from django.shortcuts import render, reverse
-from . forms import UsuarioForm
+from .forms import UsuarioForm
 from .permissions import set_permission
 from .models import Usuario, SolicitacaoCadastro
 from django.contrib import messages
+
+def home(request):
+    return HttpResponse("Home")
 
 def solicitar_cadastro(request):
     """
@@ -33,7 +36,7 @@ def solicitar_cadastro(request):
                 'form_solicitacao': form_solicitacao
             }
             
-            return HttpResponseRedirect(reverse('acompanhar_cadastro'))
+            return HttpResponseRedirect(reverse('acompanhar_cadastro', args=[solicitacao.id]))
     
     form_solicitacao = UsuarioForm()
         
@@ -41,7 +44,7 @@ def solicitar_cadastro(request):
         'form_solicitacao': form_solicitacao
     }
     
-    return render(request, 'accounts/register.html', context)
+    return render(request, 'registration/register.html', context)
 
 def acompanhar_cadastro(request):
     """
@@ -59,24 +62,56 @@ def listar_cadastros(request):
 
     Esta view só pode ser acessada por usuários autenticados e com a permissão 'tesoureiro_sede'.
     """
-    return HttpResponse("Listar Cadastro")
+    todas = SolicitacaoCadastro.objects.all()
+    pendentes = SolicitacaoCadastro.objects.filter(situacao = "Pendente")
+    aprovadas = SolicitacaoCadastro.objects.filter(situacao = "Aprovada")
+    negadas = SolicitacaoCadastro.objects.filter(situacao = "Negada")
+
+    context = {
+        'todas': todas,
+        'pendentes': pendentes,
+        'aprovadas': aprovadas,
+        'negadas': negadas
+    }
+    return render(request, 'solicitacoes/listar.html', context)
 
 @login_required
 @permission_required('accounts.tesoureiro_sede')
-def detalhar_cadastros(request):
+def detalhar_cadastro(request, solicitacao_id):
     """
     View para detalhar cadastros.
 
     Esta view só pode ser acessada por usuários autenticados e com a permissão 'tesoureiro_sede'.
     """
-    return HttpResponse("Detalhar Cadastro")
+    solicitacao = SolicitacaoCadastro.objects.get(id=solicitacao_id)
+    context = {
+        'solicitacao': solicitacao,
+    }
+
+    return render(request, 'solicitacoes/detalhar.html', context)
 
 @login_required
 @permission_required('accounts.tesoureiro_sede')
-def responder_cadastro(request):
+def responder_cadastro(request, solicitacao_id, acao):
     """
     View para responder cadastro.
 
     Esta view só pode ser acessada por usuários autenticados e com a permissão 'tesoureiro_sede'.
     """
-    return HttpResponse("Responder Cadastro")
+    solicitacao = SolicitacaoCadastro.objects.get(id=solicitacao_id)
+    
+    if acao == 'autorizar':
+        solicitacao.usuario.is_active = True
+        solicitacao.situacao = 'Aprovada'
+        solicitacao.usuario.save()
+        solicitacao.save()
+        messages.success(request, 'Cadastro autorizado com sucesso!')
+
+    elif acao == 'negar':
+        solicitacao.situacao = 'Negada'
+        messages.error(request, 'Cadastro negado com sucesso!')
+    
+    else:
+        raise Exception('Açao deve ser negar ou autorizar')
+   
+    return HttpResponseRedirect(reverse('listar_cadastros'))
