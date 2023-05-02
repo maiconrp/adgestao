@@ -1,0 +1,43 @@
+{% block content %}
+  <h2>Saidas</h2>
+
+  {% if saidas %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Data</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Valor</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        {% for saida in saidas %}
+          <tr>
+            <td>{{ saida.data }}</td>
+            <td>{{ saida.descricao }}</td>
+            <td>{{ saida.valor }}</td>
+            
+            <td>
+              <a href="{% url 'detalhar_saida' saida.id %}" class="btn btn-success">Detalhar</a>
+              <a href="{% url 'excluir_saida' saida.id %}" class="btn btn-success">Excluir</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <br>
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  {% else %}
+    <p>Nenhuma saida adicionada.</p>
+    <a href="{% url 'adicionar_saida'%}" class="btn btn-success">Adicionar</a>
+    {% endif %}
+{% endblock %}

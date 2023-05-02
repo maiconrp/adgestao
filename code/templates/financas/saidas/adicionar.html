@@ -1,0 +1,20 @@
+{%load bootstrap%}
+
+{% block content %}
+
+<section>
+  <h2>
+    Adicionar Saidas
+  </h2> 
+  <div>
+    <form method="post">
+            
+      {% csrf_token %}
+      {{ form|bootstrap }}
+
+      <input type="submit" value="Cadastrar" />
+    </form>
+  </div>
+</section>
+
+{% endblock %}
