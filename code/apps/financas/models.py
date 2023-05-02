@@ -22,7 +22,7 @@ class Saida(models.Model):
     )
 
     data = models.DateField(
-        validators=[validate_data]
+        # validators=[validate_data]
     )
 
     descricao = models.TextField(
