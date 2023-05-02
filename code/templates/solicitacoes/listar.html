@@ -1,44 +1,132 @@
 {% block content %}
-  <h2>Solicitações de Cadastro Pendentes</h2>
+<h2>Solicitações de Cadastro</h2>
 
-  {% if todas %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">CPF</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Email</th>
-          <th scope="col">Telefone</th>
-          <th scope="col">Igreja</th>
-          <th scope="col">Ação</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for solicitacao in todas %}
-          <tr>
-            <td>{{ solicitacao.usuario.cpf }}</td>
-            <td>{{ solicitacao.usuario.nome }}</td>
-            <td>{{ solicitacao.usuario.email }}</td>
-            <td>{{ solicitacao.usuario.telefone }}</td>
-            <td>{{ solicitacao.usuario.igreja }}</td>
-            <td>
-              <a href="{% url 'detalhar_cadastro' solicitacao.id %}" class="btn btn-success">Detalhar</a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+<h4>Pendentes</h4>
 
-    {% if messages %}
-      <div class="messages">
-        {% for message in messages %}
-          <br>
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
+{% if pendentes %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">CPF</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Email</th>
+      <th scope="col">Telefone</th>
+      <th scope="col">Igreja</th>
+      <th scope="col">Ação</th>
+    </tr>
+    </0thead>
+  <tbody>
+    {% for solicitacao in pendentes %}
+    <tr>
+      <td>{{ solicitacao.usuario.cpf }}</td>
+      <td>{{ solicitacao.usuario.nome }}</td>
+      <td>{{ solicitacao.usuario.email }}</td>
+      <td>{{ solicitacao.usuario.telefone }}</td>
+      <td>{{ solicitacao.usuario.igreja }}</td>
+      <td>
+        <a href="{% url 'detalhar_cadastro' solicitacao.id %}" class="btn btn-success">Detalhar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
-  {% else %}
-    <p>Nenhuma solicitação de cadastro pendente no momento.</p>
-  {% endif %}
+{% if messages %}
+<div class="messages">
+  {% for message in messages %}
+  <br>
+  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% else %}
+<p>Nenhuma solicitação de cadastro pendente no momento.</p>
+{% endif %}
+
+<h4>Autorizadas</h4>
+
+{% if aprovadas %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">CPF</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Email</th>
+      <th scope="col">Telefone</th>
+      <th scope="col">Igreja</th>
+      <th scope="col">Ação</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for solicitacao in aprovadas %}
+    <tr>
+      <td>{{ solicitacao.usuario.cpf }}</td>
+      <td>{{ solicitacao.usuario.nome }}</td>
+      <td>{{ solicitacao.usuario.email }}</td>
+      <td>{{ solicitacao.usuario.telefone }}</td>
+      <td>{{ solicitacao.usuario.igreja }}</td>
+      <td>
+        <a href="{% url 'detalhar_cadastro' solicitacao.id %}" class="btn btn-success">Detalhar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if messages %}
+<div class="messages">
+  {% for message in messages %}
+  <br>
+  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% else %}
+<p>Nenhuma solicitação de cadastro autorizada no momento.</p>
+{% endif %}
+
+<h4>Negadas</h4>
+
+{% if negadas %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">CPF</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Email</th>
+      <th scope="col">Telefone</th>
+      <th scope="col">Igreja</th>
+      <th scope="col">Ação</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for solicitacao in negadas %}
+    <tr>
+      <td>{{ solicitacao.usuario.cpf }}</td>
+      <td>{{ solicitacao.usuario.nome }}</td>
+      <td>{{ solicitacao.usuario.email }}</td>
+      <td>{{ solicitacao.usuario.telefone }}</td>
+      <td>{{ solicitacao.usuario.igreja }}</td>
+      <td>
+        <a href="{% url 'detalhar_cadastro' solicitacao.id %}" class="btn btn-success">Detalhar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if messages %}
+<div class="messages">
+  {% for message in messages %}
+  <br>
+  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% else %}
+<p>Nenhuma solicitação de cadastro negada no momento.</p>
+{% endif %}
 {% endblock %}
