@@ -6,6 +6,8 @@ from django.contrib import messages
 from .models import Saida
 from .forms import SaidaForm
 from accounts.models import Usuario
+
+
 @login_required
 @permission_required('accounts.tesoureiro')
 def adicionar_saida(request):
