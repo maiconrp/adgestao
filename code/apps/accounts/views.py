@@ -7,7 +7,7 @@ from .models import Usuario, SolicitacaoCadastro
 from django.contrib import messages
 
 def home(request):
-    return HttpResponse("Home")
+    return render(request, "home.html")
 
 def solicitar_cadastro(request):
     """
@@ -62,13 +62,11 @@ def listar_cadastros(request):
 
     Esta view só pode ser acessada por usuários autenticados e com a permissão 'tesoureiro_sede'.
     """
-    todas = SolicitacaoCadastro.objects.all()
     pendentes = SolicitacaoCadastro.objects.filter(situacao = "Pendente")
     aprovadas = SolicitacaoCadastro.objects.filter(situacao = "Aprovada")
     negadas = SolicitacaoCadastro.objects.filter(situacao = "Negada")
 
     context = {
-        'todas': todas,
         'pendentes': pendentes,
         'aprovadas': aprovadas,
         'negadas': negadas
@@ -108,7 +106,10 @@ def responder_cadastro(request, solicitacao_id, acao):
         messages.success(request, 'Cadastro autorizado com sucesso!')
 
     elif acao == 'negar':
+        solicitacao.usuario.is_active = False
         solicitacao.situacao = 'Negada'
+        solicitacao.usuario.save()
+        solicitacao.save()
         messages.error(request, 'Cadastro negado com sucesso!')
     
     else:
