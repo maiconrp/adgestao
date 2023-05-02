@@ -1,5 +1,3 @@
-
-
 {% block content %}
 
   {% if form.errors %}
@@ -28,7 +26,7 @@
       </tr>
     </table>
     <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{% url 'home' %}" />
+    <input type="hidden" name="next" value="{{next}}" />
   </form>
 
   {# Assumes you setup the password_reset view in your URLconf #}
