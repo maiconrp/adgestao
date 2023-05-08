@@ -44,15 +44,20 @@ def solicitar_cadastro(request):
         'form_solicitacao': form_solicitacao
     }
     
-    return render(request, 'registration/register.html', context)
-
-def acompanhar_cadastro(request):
+    
+def acompanhar_cadastro(request, solicitacao_id):
     """
     View para acompanhamento de cadastro.
 
     Esta view pode ser acessada por qualquer usuário.
     """
-    return HttpResponse("Acompanhar Cadastro")
+    solicitacao = SolicitacaoCadastro.objects.get(id=solicitacao_id)
+    context={
+        'solicitacao': solicitacao
+    }
+    print(solicitacao.situacao)
+    return render(request, 'solicitacoes/acompanhar.html', context)
+
 
 @login_required
 @permission_required('accounts.tesoureiro_sede')
