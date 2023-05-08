@@ -3,6 +3,7 @@ from .views import *
 
 urlpatterns = [
     path('saidas/adicionar/', adicionar_saida, name='adicionar_saida'),
+    path('gerar_relatorio/', gerar_relatorio, name='gerar_relatorio'),
     path('saidas/excluir/<uuid:saida_id>/', excluir_saida, name='excluir_saida'),
     path('saidas/listar/', listar_saida, name='listar_saida'),
     path('saidas/detalhar/<uuid:saida_id>/', detalhar_saida, name='detalhar_saida'),
