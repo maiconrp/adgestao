@@ -1,0 +1,22 @@
+
+{% block content %}
+
+{% if user.funcao == "Pastor"%}
+        <h2>Criar Lista</h2>
+        <div class="card">
+            <div class="page-header">
+                <a href="/teacher/criar_lista/">
+                    <button class="btn btn-success">Criar Lista</button>
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <h2>Assinar lista</h2>
+        <div class="card">
+            <div class="page-header">
+                
+                    <h4>Procurando por listas...</h4>
+            </div>
+        </div>
+{% endif %}
+{% endblock %}

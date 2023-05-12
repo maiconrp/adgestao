@@ -1,0 +1,31 @@
+{% block content %}
+  <h2>membros</h2>
+
+  {% if membros %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Data de nascimento</th> 
+        </tr>
+      </thead>
+      <tbody>
+        {% for membro in membros %}
+          <tr>
+            <td>{{ membro.nome }}</td>
+            <td>{{ membro.data_nasc }}</td> 
+            <td>
+              <a href="{% url 'editar_membro' membro.id %}" class="btn btn-success">Editar</a>
+              <a href="{% url 'excluir_membro' membro.id %}" class="btn btn-success">Excluir</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      <a href="{% url 'cadastrar_membro' %}" class="btn btn-success">Cadastrar membro</a>
+    </table>
+
+  {% else %}
+    <p>Nenhum membro cadastrado.</p>
+    <a href="{% url 'cadastrar_membro'%}" class="btn btn-success">Adicionar</a>
+    {% endif %}
+{% endblock %}
