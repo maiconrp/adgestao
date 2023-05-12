@@ -51,11 +51,18 @@ class Membro(models.Model):
         sexo: Sexo do membro.
         cpf: CPF do membro.
     """
+
+    id = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False
+    )
+
     SEXO_CHOICES = (
         ("M", "Masculino"),
         ("F", "Feminino"),
         ("I", "Indefinido"),
     )
+    
 
     nome = models.CharField(
         max_length=100,
