@@ -6,6 +6,8 @@ from django.contrib import messages
 from .models import Saida
 from .forms import SaidaForm
 from accounts.models import Usuario
+from accounts.views import obterUsuario
+
 
 from django.http import FileResponse
 import io
@@ -17,16 +19,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
 from datetime import datetime
 
-@login_required
-def obterUsuario(request):
-    user = False
-    if Usuario.is_authenticated:
-        try: 
-            user = request.user.id
-            user = Usuario.objects.get(id=user)
-        except: 
-            pass
-    return user
+
 
 @login_required
 @permission_required('accounts.tesoureiro')
@@ -107,6 +100,7 @@ def detalhar_saida(request, saida_id):
 
 
 @login_required
+@permission_required('accounts.tesoureiro')
 def gerar_relatorio(request):
     data_atual = datetime.now()
     data_atual = data_atual.strftime("%d/%m/%Y às %H:%M")

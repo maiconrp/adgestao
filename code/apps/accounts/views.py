@@ -6,6 +6,17 @@ from .permissions import set_permission
 from .models import Usuario, SolicitacaoCadastro
 from django.contrib import messages
 
+@login_required
+def obterUsuario(request):
+    user = False
+    if Usuario.is_authenticated:
+        try: 
+            user = request.user.id
+            user = Usuario.objects.get(id=user)
+        except: 
+            pass
+    return user
+
 def home(request):
     return render(request, "home.html")
 
@@ -32,17 +43,16 @@ def solicitar_cadastro(request):
             
             messages.success(request, 'Solicitação de cadastro enviada com sucesso! Aguarde a aprovação de um administrador.')
             
-            context={
-                'form_solicitacao': form_solicitacao
-            }
             
             return HttpResponseRedirect(reverse('acompanhar_cadastro', args=[solicitacao.id]))
     
     form_solicitacao = UsuarioForm()
         
     context={
-        'form_solicitacao': form_solicitacao
+        'form': form_solicitacao
     }
+    return render(request, 'solicitacoes/cadastro.html', context)
+
     
     
 def acompanhar_cadastro(request, solicitacao_id):
