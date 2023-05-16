@@ -1,24 +1,26 @@
-{% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block 'content' %}
     <h1>Home</h1>
 
         <h2>Autenticação</h2>
             <h3>Users Comuns</h3>
                 <ul>
-                    <li><a href="{% url 'solicitar_cadastro'%}" class="btn btn-success">Solicitar Cadastro</a></li>
-                    <li><a href="{% url 'login'%}" class="btn btn-success">login</a></li>
+                    <li><a href="{% url 'solicitar_cadastro'%}" class="btn btn-info">Solicitar Cadastro</a></li>
+                    <li><a href="{% url 'login'%}" class="btn btn-info">login</a></li>
                 </ul>
             
             <h3>Users Admins</h3>
                 <ul>
-                    <li><a href="{% url 'listar_cadastros'%}" class="btn btn-success">Listar Cadastros</a></li>
+                    <li><a href="{% url 'listar_cadastros'%}" class="btn btn-info">Listar Cadastros</a></li>
                 </ul>
 
 
         <h2>Financas</h2>
 
             <ul>
-                <li><a href="{% url 'adicionar_saida'%}" class="btn btn-success">Adicionar Saidas</a></li>
-                <li><a href="{% url 'listar_saida'%}" class="btn btn-success">Listar Saidas</a></li>
+                <li><a href="{% url 'adicionar_saida'%}" class="btn btn-info">Adicionar Saidas</a></li>
+                <li><a href="{% url 'listar_saida'%}" class="btn btn-info">Listar Saidas</a></li>
             </ul>
 
 {% endblock %}

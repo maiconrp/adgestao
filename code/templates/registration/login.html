@@ -1,7 +1,43 @@
-{% block content %}
+{% load static %}
+{%load bootstrap%}
 
+
+<!doctype html>
+<html lang="en">
+ 
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Solicitar Cadastro</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link href="{% static 'assets/vendor/fonts/circular-std/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/libs/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/fonts/fontawesome/css/fontawesome-all.css' %}">
+    <style>
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    </style>
+</head>
+<!-- ============================================================== -->
+<!-- signup form  -->
+<!-- ============================================================== -->
+
+<body>
   {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
+    {{form.errors}}
   {% endif %}
 
   {% if next %}
@@ -12,24 +48,38 @@
       <p>Please login to see this page.</p>
     {% endif %}
   {% endif %}
+    <!-- ============================================================== -->
+    <!-- signup form  -->
+    <!-- ============================================================== -->
+    <form class="splash-container">
+      {% csrf_token %}
 
-  <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <table>
-      <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-      </tr>
-    </table>
-    <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{{next}}" />
+      <div class="card">
+          <div class="card-header">
+              <h3 class="mb-1">Registrations Form</h3>
+              <p>Please enter your user information.</p>
+          </div>
+          <div class="card-body">
+              <div class="form-group">
+                  <input class="form-control form-control-lg" type="text" name="username" required placeholder="CPF" autocomplete="off">
+              </div>
+              <div class="form-group">
+                  <input class="form-control form-control-lg" id="pass1" type="password" required placeholder="Senha">
+              </div>
+              <p><a href="{% url 'password_reset' %}">Esqueceu sua senha?</a></p>
+              
+              <div class="form-group pt-2">
+                  <input type="submit" value="login" class="btn btn-block btn-primary"/>
+                  <input type="hidden" name="next" value="{{next}}" />
+              </div>
+              
+          </div>
+          <div class="card-footer bg-white">
+              Não tem conta? <a href="{% url 'solicitar_cadastro' %}" class="text-secondary">Crie uma aqui.</a>
+          </div>
+      </div>
   </form>
+</body>
 
-  {# Assumes you setup the password_reset view in your URLconf #}
-  <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
-{% endblock %}
+ 
+</html>

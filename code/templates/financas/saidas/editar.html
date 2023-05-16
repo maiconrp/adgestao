@@ -1,6 +1,7 @@
+{% extends 'base.html' %}
 {%load bootstrap%}
 
-{% block content %}
+{% block 'content' %}
 
 <section>
   <h2>
@@ -12,7 +13,8 @@
       {% csrf_token %}
       {{ form|bootstrap }}
 
-      <input type="submit" value="Salvar" />
+      <input type="submit" class="btn btn-success" value="Salvar" />
+      <a href="{%url 'listar_saida' %}"><input class="btn btn-outline-info" value="Cancelar" /></a>
     </form>
   </div>
 </section>
