@@ -58,16 +58,16 @@ class Entrada(models.Model):
         default=F('ofertas.total') + F('dizimos.valor')
     )
 
-    ofertas = models.ForeignKey(
+    ofertas = models.ManyToManyField(
         igreja.models.Oferta,
-        related_name='Entrada_oferta',
-        on_delete=models.CASCADE,
+        related_name="entradas_ofertas",
+        blank=True
     )
 
-    dizimos = models.ForeignKey(
+    dizimos = models.ManyToManyField(
         igreja.models.Dizimo,
-        related_name='Entrada_dizimo',
-        on_delete=models.CASCADE,
+        related_name="entradas_dizimos",
+        blank=True
     )
 
     igreja = models.ForeignKey(
