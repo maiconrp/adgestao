@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, reverse
 from accounts.views import obterUsuario
+from financas.models import Entrada
 
 
 # Create your views here.
@@ -13,11 +14,13 @@ from accounts.views import obterUsuario
 @permission_required('accounts.tesoureiro_sede')
 def cadastrar_igreja(request):
     if request.method == 'POST':
-        
+    
         form = IgrejaForm(request.POST)
         if form.is_valid():
-            igreja = form.save()
-            igreja.save()            
+            igreja_cad = form.save()
+            igreja_cad.save()
+            Entrada.objects.create(igreja=form.instance, total=0)
+
             messages.success(request, 'Igreja cadastrada com sucesso !')
             context = {
                     'form': form,
