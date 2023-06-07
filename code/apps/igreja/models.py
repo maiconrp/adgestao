@@ -167,7 +167,8 @@ class Dizimo(models.Model):
 
     valor = models.DecimalField(
         max_digits=12,
-        decimal_places=3
+        decimal_places=3,
+       
     )
 
     membro = models.ForeignKey(
