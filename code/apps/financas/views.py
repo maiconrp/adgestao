@@ -3,7 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
-from .models import Saida
+from .models import Saida, Entrada
+from igreja.models import Oferta, Dizimo
+from igreja.forms import OfertaForm, DizimoForm
 from .forms import SaidaForm
 from accounts.models import Usuario
 from accounts.views import obterUsuario
@@ -24,11 +26,12 @@ from datetime import datetime
 @login_required
 @permission_required('accounts.tesoureiro')
 def adicionar_saida(request):
-    
+    user = obterUsuario(request)
     if request.method == 'POST':
         
         form = SaidaForm(request.POST)
         if form.is_valid():
+            form.instance.igreja = user.igreja
             saida = form.save()
             saida.save()            
             messages.success(request, 'Saída adicionada com sucesso!')
@@ -79,9 +82,8 @@ def excluir_saida(request, saida_id):
 @login_required
 @permission_required('accounts.tesoureiro')
 def listar_saida(request):
-    # usuario = Usuario.objects.get(pk=request.user.pk)
-    # saidas = Saida.objects.filter(igreja=usuario.igreja)
-    saidas = Saida.objects.all()
+    user = obterUsuario(request)
+    saidas = Saida.objects.filter(igreja=user.igreja)
     context = {
         'saidas': saidas
     }
@@ -97,6 +99,86 @@ def detalhar_saida(request, saida_id):
         'saida': saida
     }
     return render(request, 'financas/saidas/detalhar.html', context)
+
+@login_required
+@permission_required('accounts.tesoureiro')
+def adicionar_dizimo(request):
+    user = obterUsuario(request)
+    print(user.igreja)
+    entrada = Entrada.objects.get(igreja=user.igreja)
+    if request.method == 'POST':
+        
+        form = DizimoForm(request.POST)
+        if form.is_valid():
+            dizimo = form.save()
+            dizimo.save()            
+            messages.success(request, 'Dízimo adicionada com sucesso!')
+            entrada.dizimos.add(dizimo)
+            context = {
+                    'form': form,
+                }
+            return HttpResponseRedirect(reverse('listar_dizimos'))
+    else:
+        form = DizimoForm()
+        
+    context = {
+        'form' : form,
+    }
+    
+    return render(request, 'financas/entradas/dizimos/adicionar.html', context)
+
+
+@login_required
+@permission_required('accounts.tesoureiro')
+def editar_dizimo(request, dizimo_id):
+
+    dizimo = Dizimo.objects.get(id=dizimo_id)
+
+    if request.method == "POST":
+        form = DizimoForm(request.POST, instance=dizimo)
+        
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('detalhar_dizimo', args=[dizimo.id]))
+    else:
+        form = DizimoForm(instance=dizimo)
+
+    context = {
+        'form' : form,
+    }
+    return render(request, 'financas/entradas/dizimos/editar.html', context)
+
+
+@login_required
+@permission_required('accounts.tesoureiro')
+def excluir_dizimo(request, dizimo_id):
+    dizimo = Dizimo.objects.get(id=dizimo_id)
+    dizimo.delete()
+
+    return HttpResponseRedirect(reverse('listar_dizimos'))
+
+
+@login_required
+@permission_required('accounts.tesoureiro')
+def listar_dizimos(request):
+    # usuario = Usuario.objects.get(pk=request.user.pk)
+    # saidas = Saida.objects.filter(igreja=usuario.igreja)
+    dizimos = Dizimo.objects.all()
+    context = {
+        'dizimos': dizimos
+    }
+    return render(request, 'financas/entradas/dizimos/listar.html', context)
+
+
+@login_required
+@permission_required('accounts.tesoureiro')
+def detalhar_dizimo(request, dizimo_id):
+
+    dizimo = Dizimo.objects.get(id=dizimo_id)
+    context = {
+        'dizimo': dizimo
+    }
+    return render(request, 'financas/entradas/dizimos/detalhar.html', context)
 
 
 @login_required
