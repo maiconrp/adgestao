@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
 from .models import Saida, Entrada
-from igreja.models import Oferta, Dizimo
+from igreja.models import OfertaCulto, Dizimo, Igreja
 from igreja.forms import OfertaForm, DizimoForm
 from .forms import SaidaForm
 from accounts.models import Usuario
@@ -110,9 +110,11 @@ def adicionar_dizimo(request):
         
         form = DizimoForm(request.POST)
         if form.is_valid():
+            form.instance.igreja = user.igreja
             dizimo = form.save()
             dizimo.save()            
             messages.success(request, 'Dízimo adicionada com sucesso!')
+
             entrada.dizimos.add(dizimo)
             context = {
                     'form': form,
@@ -161,9 +163,11 @@ def excluir_dizimo(request, dizimo_id):
 @login_required
 @permission_required('accounts.tesoureiro')
 def listar_dizimos(request):
-    # usuario = Usuario.objects.get(pk=request.user.pk)
-    # saidas = Saida.objects.filter(igreja=usuario.igreja)
-    dizimos = Dizimo.objects.all()
+    usuario = obterUsuario(request)
+    igreja = Igreja.objects.get(nome=usuario.igreja.nome)
+  
+    dizimos = igreja.dizimos.all()
+    
     context = {
         'dizimos': dizimos
     }
@@ -179,6 +183,101 @@ def detalhar_dizimo(request, dizimo_id):
         'dizimo': dizimo
     }
     return render(request, 'financas/entradas/dizimos/detalhar.html', context)
+
+# Esta função soma os valores dos dízimos de um culto, considerando o dia e tipo de culto do dízimo
+def calc_soma_dizimo(oferta):
+    # Busca todos os dízimos cuja data é a mesma do relatório de culto 
+    dizimos = Dizimo.objects.filter(data_culto=oferta.data_culto)
+
+    # Cria a variável "valor_dizimo"
+    valor_dizimo = 0
+
+    # Loop que irá percorrer todos os objetos filtrados, contidos em 'dizimos'
+    for dizimo in dizimos:
+
+        #verifica se o dizimo em questão possui tanto a mesma data quanto o tipo de culto do relatório criado
+        if dizimo.tipo_culto == oferta.tipo_culto and dizimo.data_culto == oferta.data_culto:
+            valor_dizimo = valor_dizimo + dizimo.valor
+
+    return valor_dizimo
+
+def adicionar_oferta(request):
+    user = obterUsuario(request)
+    if request.method == 'POST':
+        
+        form = OfertaForm(request.POST)
+        if form.is_valid():
+            
+            # Atribui ao atributo 'igreja' do oferta a igreja do usuario que estao criando o relatório de oferta
+            form.instance.igreja = user.igreja
+
+            oferta = form.save()
+            oferta.save()     
+
+            # Chama a função que calcula a soma dos valores dos dizimos daquele culto
+            valor_dizimo = calc_soma_dizimo(oferta=oferta)
+
+            # Atribui ao atributo "valor_dizimo" o valor calculado anteriormento pela função
+            oferta.valor_dizimo = valor_dizimo
+
+            # Salva a nova atribuição
+            oferta.save()
+
+            messages.success(request, 'Oferta adicionada com sucesso!')
+            context = {
+                    'form': form,
+                }
+            return HttpResponseRedirect(reverse('listar_ofertas'))
+    else:
+        form = OfertaForm()
+        
+    context = {
+        'form' : form,
+    }
+    
+    return render(request, 'financas/entradas/ofertas/adicionar.html', context)
+
+def listar_ofertas(request):
+    ofertas = OfertaCulto.objects.all
+    context = {
+        'ofertas': ofertas
+    }
+    return render(request, 'financas/entradas/ofertas/listar.html', context)
+
+
+def excluir_oferta(request, oferta_id):
+    oferta = OfertaCulto.objects.get(id=oferta_id)
+    oferta.delete()
+
+    return HttpResponseRedirect(reverse('listar_ofertas'))
+
+
+def detalhar_oferta(request, oferta_id):
+   
+    oferta = OfertaCulto.objects.get(id=oferta_id)
+    context = {
+        'oferta': oferta
+    }
+    return render(request, 'financas/entradas/ofertas/detalhar.html', context)
+
+
+def editar_oferta(request, oferta_id):
+    oferta = OfertaCulto.objects.get(id=oferta_id)
+
+    if request.method == "POST":
+        form = OfertaForm(request.POST, instance=oferta)
+        
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('detalhar_oferta', args=[oferta.id]))
+    else:
+        form = OfertaForm(instance=oferta)
+
+    context = {
+        'form' : form,
+    }
+    return render(request, 'financas/entradas/dizimos/editar.html', context)
+
 
 
 @login_required
