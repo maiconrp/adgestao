@@ -94,60 +94,6 @@ class Membro(models.Model):
         return self.nome
 
 
-class Oferta(models.Model):
-    """
-    Classe que representa uma oferta de finança.
-    Attributes:
-        CULTO_CHOICE (tuple): As opções de culto.
-        valor_dizimo (DecimalField): O valor do dízimo.
-        valor_oferta (DecimalField): O valor da oferta.
-        tipo_culto (MultiSelectField): O tipo de culto.
-        validacao_pastor (BooleanField): A validação do pastor.
-    """
-
-    CULTO_CHOICE = (
-        ("N", "Normal"),
-        ("C", "Ceia"),
-    )
-
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
-    )
-
-    data_culto = models.DateField(
-        validators=[validate_data]
-    )
-
-    valor_dizimo = models.DecimalField(
-        max_digits=12,
-        decimal_places=3
-    )
-
-    valor_oferta = models.DecimalField(
-        max_digits=12,
-        decimal_places=3
-    )
-
-    # função F para referenciar os campos valor_culto e valor_dizimo
-    total = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,
-        default=F('valor_culto') + F('valor_dizimo')
-    )
-
-    tipo_culto = MultiSelectField(
-        max_length=20,
-        max_choices=1,
-        choices=CULTO_CHOICE,
-
-    )
-
-    def __str__(self):
-        return "Oferta -" + self.data_culto.strftime('%d/%m/%Y')
-
-
 class Dizimo(models.Model):
     """
     Classe que representa as informações de um Dízimo no sistema de finanças.
@@ -155,10 +101,33 @@ class Dizimo(models.Model):
         valor_dizimo (DecimalField): o valor do dízimo doado
     """
 
+    CULTO_CHOICE = (
+        ("N", "Normal"),
+        ("C", "Ceia"),
+    )
+
+    tipo_culto = MultiSelectField(
+        max_length=20,
+        max_choices=1,
+        choices=CULTO_CHOICE,
+    )
+
+    data_culto = models.DateField(
+        validators=[validate_data]
+    )
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False
+    )
+
+    igreja = models.ForeignKey(
+        Igreja,
+        related_name='dizimos',
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True
     )
 
     data = models.DateField(
@@ -180,3 +149,72 @@ class Dizimo(models.Model):
 
     def __str__(self):
         return "Dizimo:" + self.membro.nome if self.membro else "Dizimo: Membro Excluido"
+
+
+
+class OfertaCulto(models.Model):
+    """
+    Classe que representa uma oferta de finança.
+    Attributes:
+        CULTO_CHOICE (tuple): As opções de culto.
+        valor_dizimo (DecimalField): O valor do dízimo.
+        valor_oferta (DecimalField): O valor da oferta.
+        tipo_culto (MultiSelectField): O tipo de culto.
+        validacao_pastor (BooleanField): A validação do pastor.
+    """
+
+    CULTO_CHOICE = (
+        ("N", "Normal"),
+        ("C", "Ceia"),
+    )
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+
+    igreja = models.ForeignKey(
+        Igreja,
+        related_name='ofertas_culto',
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True
+    )
+
+    data_culto = models.DateField(
+        validators=[validate_data]
+    )
+
+    valor_dizimo = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        default=0
+    )
+
+    valor_oferta = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        default=0
+    )
+
+
+    # função F para referenciar os campos valor_culto e valor_dizimo
+    total = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        null=True
+    )
+
+    tipo_culto = MultiSelectField(
+        max_length=20,
+        max_choices=1,
+        choices=CULTO_CHOICE,
+    )
+
+    def save(self, *args, **kwargs):
+        self.total = self.valor_oferta + self.valor_dizimo
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return "Oferta -" + self.data_culto.strftime('%d/%m/%Y')
