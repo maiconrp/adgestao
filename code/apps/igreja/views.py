@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from django.db import transaction
 from .forms import IgrejaForm, MembroForm
-from .models import Igreja, Membro
+from .models import Igreja, Membro, Dizimo
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
@@ -8,19 +9,34 @@ from django.shortcuts import render, reverse
 from accounts.views import obterUsuario
 from financas.models import Entrada
 
+# Esta função  TENTA limpar os registros do atributo ManyToMany, 
+# uma vez que ao criar uma Entrada, os registros de outras igrejas são relacionados automaticamente
+def limpar_registro_entradas(entrada):
+    dizimos_remover = Dizimo.objects.exclude(igreja=entrada.igreja)
+    entrada.dizimos.remove(*dizimos_remover)
+
 
 # Create your views here.
 @login_required
 @permission_required('accounts.tesoureiro_sede')
 def cadastrar_igreja(request):
+
+    usuario = obterUsuario(request)
+
     if request.method == 'POST':
     
         form = IgrejaForm(request.POST)
         if form.is_valid():
             igreja_cad = form.save()
             igreja_cad.save()
-            Entrada.objects.create(igreja=form.instance, total=0)
 
+            #   Ao cadastrar uma nova igreja, uma instância do objeto Entrada é criado. Este objeto é vinculado a uma igreja
+            # e contém o registro de todos os dízimos e ofertas da mesma
+            entrada_criada = Entrada(total=0, igreja=igreja_cad)
+            entrada_criada.save()
+
+            limpar_registro_entradas(entrada=entrada_criada)
+           
             messages.success(request, 'Igreja cadastrada com sucesso !')
             context = {
                     'form': form,
@@ -34,6 +50,8 @@ def cadastrar_igreja(request):
     }
     
     return render(request, 'igreja/cadastrar.html', context)
+
+
 
 @login_required
 @permission_required('accounts.tesoureiro_sede')
