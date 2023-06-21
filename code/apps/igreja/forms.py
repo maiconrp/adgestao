@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Igreja, Membro, Dizimo, Oferta
+from .models import Igreja, Membro, Dizimo, OfertaCulto
 
 class IgrejaForm(forms.ModelForm):
 
@@ -21,11 +21,11 @@ class DizimoForm(forms.ModelForm):
 
     class Meta:
         model = Dizimo
-        fields = ['data', 'valor', 'membro']
+        fields = ['data', 'valor', 'membro', 'tipo_culto', 'data_culto']
 
 
 class OfertaForm(forms.ModelForm):
 
     class Meta:
-        model = Oferta
-        fields = ['data_culto', 'tipo_culto', 'valor_oferta']
+        model = OfertaCulto
+        fields = ['data_culto', 'valor_oferta', 'tipo_culto']
