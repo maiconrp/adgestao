@@ -59,7 +59,7 @@ class Entrada(models.Model):
     )
 
     ofertas = models.ManyToManyField(
-        igreja.models.Oferta,
+        igreja.models.OfertaCulto,
         related_name="entradas_ofertas",
         blank=True
     )
@@ -75,6 +75,7 @@ class Entrada(models.Model):
         related_name='entradas',
         on_delete=models.CASCADE,
     )
+        
 
     def __str__(self):
         return "Entrada -" 
