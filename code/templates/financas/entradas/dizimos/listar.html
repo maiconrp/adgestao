@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block 'content' %}
+<!-- ============================================================== -->
+<!-- pageheader  -->
+<!-- ============================================================== -->
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="page-header">
+          <h2 class="mb-2">Dízimos</h2>
+          <div class="page-breadcrumb">
+              <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                      <li class="breadcrumb-item">Accounts</li>
+                      <li class="breadcrumb-item">Cadastros</li>
+                      <li class="breadcrumb-item active" aria-current="page">Listar</li>
+                  </ol>
+              </nav>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- ============================================================== -->
+<!-- end pageheader  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- pendentes responsive table -->
+<!-- ============================================================== -->
+{% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <br>
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+      <div class="card-body">
+          <div class="table-responsive ">
+              {% if dizimos %}
+              <table class="table">
+                  <thead>
+                      <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Membro</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    
+                    {% for dizimo in dizimos %}
+                    <tr>
+                      <th scope="col">{{ dizimo.data }}</th>
+                      <td>{{ dizimo.valor }}</td>
+                      <td>{{ dizimo.membro }}</td>
+                      
+                      <td>
+                        <a href="{% url 'detalhar_dizimo' dizimo.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="{% url 'excluir_dizimo' dizimo.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                      
+                  </tbody>
+              </table>
+              {% else %}
+    <p>Nenhuma dízimo adicionado.</p>
+    {% endif %}
+          </div>
+
+          
+      </div>
+  </div>
+  <a href="{% url 'adicionar_dizimo'%}" class="btn btn-success">Adicionar</a>
+    
+</div>
+    
+
+
+<!-- ============================================================== -->
+<!-- end responsive table -->
+<!-- ============================================================== -->
+  {%endblock%}

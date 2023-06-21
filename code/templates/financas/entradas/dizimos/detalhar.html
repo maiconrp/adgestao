@@ -1,0 +1,9 @@
+{% if dizimo %}
+    <h2>Informações do dízimo</h2>
+    <p>Data: {{ dizimo.data }}</p>
+    <p>Valor: {{ dizimo.valor }}</p>
+    <p>Igreja: {{ dizimo.membro }}</p>
+
+    <a href="{% url 'editar_dizimo' dizimo.id %}" class="btn btn-success">Editar</a>
+    <a href="{% url 'excluir_dizimo' dizimo.id %}" class="btn btn-success">Excluir</a>
+{% endif %}
