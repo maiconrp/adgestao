@@ -136,7 +136,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, '../apps'))
 
-LOGIN_REDIRECT_URL = "/home"
+LOGIN_REDIRECT_URL = "/accounts/home"
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [ str(BASE_DIR) + "/static"]
