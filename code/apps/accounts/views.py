@@ -18,7 +18,7 @@ def obterUsuario(request):
     return user
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "home/home.html")
 
 def solicitar_cadastro(request):
     """
