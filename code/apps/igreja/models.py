@@ -24,6 +24,7 @@ class Igreja(models.Model):
 
     nome = models.CharField(
         max_length=100,
+        unique=True
     )
 
     localizacao = models.CharField(
@@ -199,7 +200,6 @@ class OfertaCulto(models.Model):
     )
 
 
-    # função F para referenciar os campos valor_culto e valor_dizimo
     total = models.DecimalField(
         max_digits=12,
         decimal_places=3,

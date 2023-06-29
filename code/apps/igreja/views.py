@@ -7,18 +7,14 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, reverse
 from accounts.views import obterUsuario
+from financas.views import criar_relatorio_mensal
 from financas.models import Entrada
 
-# Esta função  TENTA limpar os registros do atributo ManyToMany, 
-# uma vez que ao criar uma Entrada, os registros de outras igrejas são relacionados automaticamente
-def limpar_registro_entradas(entrada):
-    dizimos_remover = Dizimo.objects.exclude(igreja=entrada.igreja)
-    entrada.dizimos.remove(*dizimos_remover)
 
 
 # Create your views here.
 @login_required
-@permission_required('accounts.tesoureiro_sede')
+#@permission_required('accounts.tesoureiro_sede')
 def cadastrar_igreja(request):
 
     usuario = obterUsuario(request)
@@ -32,10 +28,10 @@ def cadastrar_igreja(request):
 
             #   Ao cadastrar uma nova igreja, uma instância do objeto Entrada é criado. Este objeto é vinculado a uma igreja
             # e contém o registro de todos os dízimos e ofertas da mesma
-            entrada_criada = Entrada(total=0, igreja=igreja_cad)
+            entrada_criada = Entrada(igreja=igreja_cad)
             entrada_criada.save()
 
-            limpar_registro_entradas(entrada=entrada_criada)
+            criar_relatorio_mensal(igreja_cad, entrada_criada)
            
             messages.success(request, 'Igreja cadastrada com sucesso !')
             context = {
@@ -54,7 +50,7 @@ def cadastrar_igreja(request):
 
 
 @login_required
-@permission_required('accounts.tesoureiro_sede')
+@permission_required('accounts.tesoureiro')
 def listar_igrejas(request):
     igrejas = Igreja.objects.all()
     context = {
