@@ -1,7 +1,7 @@
 
 {% block content %}
 
-{% if user.funcao == "Pastor"%}
+{% if user.funcao == "Tesoureiro Sede"%}
         <h2>Criar Lista</h2>
         <div class="card">
             <div class="page-header">
@@ -11,11 +11,20 @@
             </div>
         </div>
     {% else %}
-        <h2>Assinar lista</h2>
+        <h2>Home</h2>
         <div class="card">
             <div class="page-header">
                 
-                    <h4>Procurando por listas...</h4>
+                    <a href="/financas/ofertas/listar">listar ofertas</a>
+                    <a href="/financas/dizimos/listar">listar dizimos</a>
+                    <a href="/financas/saidas/listar/">listar saidas</a>
+
+                    <a href="/igrejas/membros/listar">listar membros</a>
+                    <a href="/igrejas/listar">listar igrejas</a>
+                    <a href="/financas/relatorios/mensal/listar/">listar relatorios mensais</a>
+
+
+                        
             </div>
         </div>
 {% endif %}
