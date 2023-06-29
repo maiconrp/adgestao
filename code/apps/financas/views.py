@@ -2,12 +2,12 @@ from django.shortcuts import render, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
+from django.db.models import Q
 
-from .models import Saida, Entrada
+from .models import Saida, Entrada, RelatorioMensal
 from igreja.models import OfertaCulto, Dizimo, Igreja
 from igreja.forms import OfertaForm, DizimoForm
 from .forms import SaidaForm
-from accounts.models import Usuario
 from accounts.views import obterUsuario
 
 
@@ -164,6 +164,7 @@ def excluir_dizimo(request, dizimo_id):
 @permission_required('accounts.tesoureiro')
 def listar_dizimos(request):
     usuario = obterUsuario(request)
+
     igreja = Igreja.objects.get(nome=usuario.igreja.nome)
   
     dizimos = igreja.dizimos.all()
@@ -187,7 +188,9 @@ def detalhar_dizimo(request, dizimo_id):
 # Esta função soma os valores dos dízimos de um culto, considerando o dia e tipo de culto do dízimo
 def calc_soma_dizimo(oferta):
     # Busca todos os dízimos cuja data é a mesma do relatório de culto 
-    dizimos = Dizimo.objects.filter(data_culto=oferta.data_culto)
+    dizimos = Dizimo.objects.filter(
+    Q(data_culto=oferta.data_culto) & Q(igreja=oferta.igreja)
+    )
 
     # Cria a variável "valor_dizimo"
     valor_dizimo = 0
@@ -208,7 +211,7 @@ def adicionar_oferta(request):
         form = OfertaForm(request.POST)
         if form.is_valid():
             
-            # Atribui ao atributo 'igreja' do oferta a igreja do usuario que estao criando o relatório de oferta
+            # Atribui ao atributo 'igreja' da oferta a igreja do usuario que esta criando o relatório de oferta
             form.instance.igreja = user.igreja
 
             oferta = form.save()
@@ -238,7 +241,12 @@ def adicionar_oferta(request):
     return render(request, 'financas/entradas/ofertas/adicionar.html', context)
 
 def listar_ofertas(request):
-    ofertas = OfertaCulto.objects.all
+    usuario = obterUsuario(request)
+
+    igreja = Igreja.objects.get(nome=usuario.igreja.nome)
+  
+    ofertas = igreja.ofertas_culto.all()
+
     context = {
         'ofertas': ofertas
     }
@@ -277,6 +285,40 @@ def editar_oferta(request, oferta_id):
         'form' : form,
     }
     return render(request, 'financas/entradas/dizimos/editar.html', context)
+
+
+
+###################### - - - - - - RELATÓRIO MENSAL - - - - - -  ############################
+
+def criar_relatorio_mensal(igreja, entrada):
+    data_criacao = datetime.now()
+    data_criacao = data_criacao.strftime("%Y-%m-%d")
+    relatorio_mensal = RelatorioMensal(igreja=igreja, entradas=entrada, data_inicio=data_criacao)
+    relatorio_mensal.save()
+
+def listar_relatorios_mensais(request):
+    usuario = obterUsuario(request)
+    relatorios_mensais = RelatorioMensal.objects.filter(igreja=usuario.igreja)
+    context = {
+        'relatorios': relatorios_mensais
+    }
+    return render(request, 'financas/relatorios/mensal/listar.html', context)
+
+
+def excluir_relatorio_mensal(request, relatorio_id):
+    relatorio_mensal = RelatorioMensal.objects.get(id=relatorio_id)
+    relatorio_mensal.delete()
+
+    return HttpResponseRedirect(reverse('listar_relatorios_mensais'))
+
+
+def detalhar_relatorio_mensal(request, relatorio_id):
+   
+    relatorio_mensal = RelatorioMensal.objects.get(id=relatorio_id)
+    context = {
+        'relatorio_mensal': relatorio_mensal
+    }
+    return render(request, 'financas/relatorios/detalhar.html', context)
 
 
 

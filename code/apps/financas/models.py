@@ -50,14 +50,6 @@ class Saida(models.Model):
 
 
 class Entrada(models.Model):
-
-    # função F para referenciar os campos valor_culto e valor_dizimo
-    total = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,
-        default=F('ofertas.total') + F('dizimos.valor')
-    )
-
     ofertas = models.ManyToManyField(
         igreja.models.OfertaCulto,
         related_name="entradas_ofertas",
@@ -75,10 +67,17 @@ class Entrada(models.Model):
         related_name='entradas',
         on_delete=models.CASCADE,
     )
-        
+
+  
+    def save(self, *args, **kwargs):
+            is_new_instance = not self.pk
+            super().save(*args, **kwargs)
+            if is_new_instance:
+                self.ofertas.set([])
+                self.dizimos.set([])       
 
     def __str__(self):
-        return "Entrada -" 
+        return f"Entrada - {self.igreja.nome} - {self.igreja.pk}" 
     # + self.data.strftime('%d/%m/%Y')
 
     def gerar_relatorio(self, **kargs):
@@ -203,39 +202,13 @@ class RelatorioGeral(models.Model):
 
 class RelatorioMensal(models.Model):
 
-    data = models.DateField(
+    data_inicio = models.DateField(
         validators=[validate_data]
     )
 
-    pagamento_obreiro = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,
-        default=F('entradas.total')*0.1
-    )
-
-    missoes_sede = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,
-        default=F('entradas.total')*0.1
-    )
-
-    fundo_convencional = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,
-        default=F('entradas.total')*0.05
-    )
-
-    saldo = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,
-        default=F('entradas.total')-F('fundo_convencional') -
-        F('missoes_sede')-F('pagamento_obreiro')-F('saidas.total')
-    )
-
-    igreja = models.ForeignKey(
-        igreja.models.Igreja,
-        related_name='relatorio_mensal',
-        on_delete=models.CASCADE,
+    data_fim = models.CharField(
+        max_length=10,
+        default='2023-00-00'
     )
 
     entradas = models.ForeignKey(
@@ -244,20 +217,42 @@ class RelatorioMensal(models.Model):
         on_delete=models.CASCADE,
     )
 
-    saidas = models.ForeignKey(
-        Saida,
-        related_name='relatorio_mensal_saidas',
+
+    pagamento_obreiro = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        default=0
+    )
+
+    missoes_sede = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        default=0
+    )
+
+    fundo_convencional = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        default=0
+
+    )
+
+    saldo = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        default=0
+        
+    )
+
+    igreja = models.ForeignKey(
+        igreja.models.Igreja,
+        related_name='relatorio_mensal',
         on_delete=models.CASCADE,
     )
 
-    tesoureiro_sede = models.ForeignKey(
-        accounts.models.Usuario,
-        related_name='relatorio_mensal_tesoureiro_sede',
-        on_delete=models.DO_NOTHING,
-    )
 
     def __str__(self):
-        return "Relatório Mensal -" + self.data.strftime('%d/%m/%Y')
+        return "Relatório Mensal - " + self.igreja.nome + " " + self.data_inicio.strftime('%d/%m/%Y')
 
     def baixar(self):
         return "Baixar Relatório"

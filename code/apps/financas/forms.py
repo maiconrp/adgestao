@@ -15,4 +15,4 @@ class EntradaForm(forms.ModelForm):
 
     class Meta:
         model = Entrada
-        fields = ['total', 'igreja']
+        fields = ['igreja']
