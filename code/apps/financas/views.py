@@ -23,8 +23,8 @@ from datetime import datetime
 
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+##@login_required
+##@permission_required('accounts.tesoureiro')
 def adicionar_saida(request):
     user = obterUsuario(request)
     if request.method == 'POST':
@@ -49,8 +49,8 @@ def adicionar_saida(request):
     return render(request, 'financas/saidas/adicionar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+##@login_required
+##@permission_required('accounts.tesoureiro')
 def editar_saida(request, saida_id):
 
     saida = Saida.objects.get(id=saida_id)
@@ -70,8 +70,8 @@ def editar_saida(request, saida_id):
     return render(request, 'financas/saidas/editar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+##@login_required
+##@permission_required('accounts.tesoureiro')
 def excluir_saida(request, saida_id):
     saida = Saida.objects.get(id=saida_id)
     saida.delete()
@@ -79,8 +79,8 @@ def excluir_saida(request, saida_id):
     return HttpResponseRedirect(reverse('listar_saida'))
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+##@login_required
+##@permission_required('accounts.tesoureiro')
 def listar_saida(request):
     user = obterUsuario(request)
     saidas = Saida.objects.filter(igreja=user.igreja)
@@ -90,8 +90,8 @@ def listar_saida(request):
     return render(request, 'financas/saidas/listar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+##@login_required
+#@permission_required('accounts.tesoureiro')
 def detalhar_saida(request, saida_id):
 
     saida = Saida.objects.get(id=saida_id)
@@ -100,8 +100,8 @@ def detalhar_saida(request, saida_id):
     }
     return render(request, 'financas/saidas/detalhar.html', context)
 
-@login_required
-@permission_required('accounts.tesoureiro')
+##@login_required
+##@permission_required('accounts.tesoureiro')
 def adicionar_dizimo(request):
     user = obterUsuario(request)
     print(user.igreja)
@@ -130,8 +130,8 @@ def adicionar_dizimo(request):
     return render(request, 'financas/entradas/dizimos/adicionar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+##@login_required
+##@permission_required('accounts.tesoureiro')
 def editar_dizimo(request, dizimo_id):
 
     dizimo = Dizimo.objects.get(id=dizimo_id)
@@ -151,8 +151,8 @@ def editar_dizimo(request, dizimo_id):
     return render(request, 'financas/entradas/dizimos/editar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+##@login_required
+##@permission_required('accounts.tesoureiro')
 def excluir_dizimo(request, dizimo_id):
     dizimo = Dizimo.objects.get(id=dizimo_id)
     dizimo.delete()
@@ -160,8 +160,8 @@ def excluir_dizimo(request, dizimo_id):
     return HttpResponseRedirect(reverse('listar_dizimos'))
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+#@login_required
+#@permission_required('accounts.tesoureiro')
 def listar_dizimos(request):
     usuario = obterUsuario(request)
 
@@ -175,8 +175,8 @@ def listar_dizimos(request):
     return render(request, 'financas/entradas/dizimos/listar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+#@login_required
+#@permission_required('accounts.tesoureiro')
 def detalhar_dizimo(request, dizimo_id):
 
     dizimo = Dizimo.objects.get(id=dizimo_id)
@@ -322,8 +322,8 @@ def detalhar_relatorio_mensal(request, relatorio_id):
 
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+#@login_required
+#@permission_required('accounts.tesoureiro')
 def gerar_relatorio(request):
     data_atual = datetime.now()
     data_atual = data_atual.strftime("%d/%m/%Y às %H:%M")
@@ -376,3 +376,13 @@ def gerar_relatorio(request):
     c.save()
     buf.seek(0)
     return FileResponse(buf, as_attachment=True, filename= 'lista.pdf')
+###############################################  FILTROS  ##################################################################
+
+def filtrar_ofertas(request):
+    if request.method == 'POST':
+        date_input = request.POST.get('date_input')  # Obtém o valor do input do template
+        ofertas_filtradas = OfertaCulto.objects.filter(data_culto=date_input)  # Realiza a filtragem do modelo
+
+        return render(request, '/financas/entradas/ofertas/listar.html', {'ofertas_filtradas': ofertas_filtradas})
+
+    return render(request, '/financas/entradas/ofertas/listar.html')
