@@ -13,6 +13,11 @@
                       <li class="breadcrumb-item">Accounts</li>
                       <li class="breadcrumb-item">Cadastros</li>
                       <li class="breadcrumb-item active" aria-current="page">Listar</li>
+                      <form method="POST" action="{% url 'filtrar_ofertas' %}">
+                        {% csrf_token %}
+                        <input type="date" name="date_input">
+                        <button type="submit">Filtrar</button>                    </form>
+
                   </ol>
               </nav>
           </div>
@@ -37,6 +42,39 @@
   <div class="card">
       <div class="card-body">
           <div class="table-responsive ">
+
+          {% if ofertas %}
+          <table class="table">
+              <thead>
+                  <tr>
+                    <th scope="col">Data</th>
+                    <th scope="col">Culto</th>
+                    <th scope="col">Total arrecadado</th>
+                  </tr>
+              </thead>
+              <tbody>
+                
+                {% for oferta in ofertas_filtradas %}
+                <tr>
+                  <th scope="col">{{ oferta.data_culto }}</th>
+                  <td>{{ oferta.tipo_culto }}</td>
+                  <td>{{ oferta.total }}</td>
+                  
+                  <td>
+                    <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
+                    <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+              {% endfor %}
+                  
+              </tbody>
+          </table>
+          {% else %}
+<p>Nenhuma oferta adicionada.</p>
+{% endif %}
+
+
+
               {% if ofertas %}
               <table class="table">
                   <thead>
