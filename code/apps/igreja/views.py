@@ -13,7 +13,7 @@ from financas.models import Entrada
 
 
 # Create your views here.
-@login_required
+#@login_required
 #@permission_required('accounts.tesoureiro_sede')
 def cadastrar_igreja(request):
 
@@ -49,8 +49,8 @@ def cadastrar_igreja(request):
 
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+#@login_required
+#@permission_required('accounts.tesoureiro')
 def listar_igrejas(request):
     igrejas = Igreja.objects.all()
     context = {
@@ -58,8 +58,8 @@ def listar_igrejas(request):
     }
     return render(request, 'igreja/listar.html', context)
 
-@login_required
-@permission_required('accounts.tesoureiro_sede')
+#@login_required
+#@permission_required('accounts.tesoureiro_sede')
 def editar_igreja(request, igreja_id):
     igreja = Igreja.objects.get(id=igreja_id)
 
@@ -77,7 +77,7 @@ def editar_igreja(request, igreja_id):
     }
     return render(request, 'igreja/editar.html', context)
 
-@login_required
+#@login_required
 def cadastrar_membro(request):
     user = obterUsuario(request)
     if request.method == 'POST':
@@ -100,7 +100,7 @@ def cadastrar_membro(request):
     
     return render(request, 'igreja/membros/cadastrar.html', context)
 
-@login_required
+#@login_required
 def listar_membros(request):
     user = obterUsuario(request)
     membros = Membro.objects.filter(igreja=user.igreja)
@@ -109,7 +109,7 @@ def listar_membros(request):
     }
     return render(request, 'igreja/membros/listar.html', context)
 
-@login_required
+#@login_required
 def editar_membro(request, membro_id):
     membro = Membro.objects.get(id=membro_id)
     if request.method == "POST":
@@ -126,7 +126,7 @@ def editar_membro(request, membro_id):
     }
     return render(request, 'igreja/membros/editar.html', context)
 
-@login_required
+#@login_required
 def excluir_membro(request, membro_id):
     membro = Membro.objects.get(id=membro_id)
     membro.delete()
