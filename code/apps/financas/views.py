@@ -376,13 +376,17 @@ def gerar_relatorio(request):
     c.save()
     buf.seek(0)
     return FileResponse(buf, as_attachment=True, filename= 'lista.pdf')
+
+
+
 ###############################################  FILTROS  ##################################################################
+
 
 def filtrar_ofertas(request):
     if request.method == 'POST':
         date_input = request.POST.get('date_input')  # Obtém o valor do input do template
         ofertas_filtradas = OfertaCulto.objects.filter(data_culto=date_input)  # Realiza a filtragem do modelo
 
-        return render(request, '/financas/entradas/ofertas/listar.html', {'ofertas_filtradas': ofertas_filtradas})
+        return render(request, 'financas/entradas/ofertas/listar.html', {'ofertas_filtradas': ofertas_filtradas})
 
-    return render(request, '/financas/entradas/ofertas/listar.html')
+    return render(request, 'financas/entradas/ofertas/listar.html')
