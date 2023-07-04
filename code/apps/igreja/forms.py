@@ -21,7 +21,7 @@ class DizimoForm(forms.ModelForm):
 
     class Meta:
         model = Dizimo
-        fields = ['data', 'valor', 'membro', 'tipo_culto', 'data_culto']
+        fields = ['valor', 'membro', 'tipo_culto', 'data_culto']
 
 
 class OfertaForm(forms.ModelForm):

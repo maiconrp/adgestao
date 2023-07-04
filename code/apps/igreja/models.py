@@ -131,10 +131,6 @@ class Dizimo(models.Model):
         null=True
     )
 
-    data = models.DateField(
-        validators=[validate_data]
-    )
-
     valor = models.DecimalField(
         max_digits=12,
         decimal_places=3,
