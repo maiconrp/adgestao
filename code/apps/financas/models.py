@@ -1,5 +1,6 @@
 import uuid
 
+from decimal import Decimal
 import accounts.models
 import igreja.models
 from django.db import models
@@ -224,12 +225,6 @@ class RelatorioMensal(models.Model):
     )
 
 
-    pagamento_obreiro = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,
-        default=0
-    )
-
     missoes_sede = models.DecimalField(
         max_digits=12,
         decimal_places=3,
@@ -256,6 +251,7 @@ class RelatorioMensal(models.Model):
         on_delete=models.CASCADE,
     )
 
+
     @property
     def total_entradas(self):
         mes_relatorio = self.data_inicio.month
@@ -269,6 +265,32 @@ class RelatorioMensal(models.Model):
             total_entradas = total_entradas + oferta.total
 
         return total_entradas
+
+    
+    @property
+    def pagamento_obreiro(self):
+        total_entradas = self.total_entradas
+        pagamento_obreiro = Decimal(total_entradas) * Decimal('0.1')
+        pagamento_obreiro = format(pagamento_obreiro, '.2f')
+        return pagamento_obreiro
+
+
+
+    @property
+    def missoes_sede(self):
+        total_entradas = self.total_entradas
+        missoes_sede = Decimal(total_entradas) * Decimal('0.1')
+        missoes_sede = format(missoes_sede, '.2f')
+        return missoes_sede
+
+    
+
+    @property
+    def fundo_convencional(self):
+        total_entradas = self.total_entradas
+        fundo_convencional = Decimal(total_entradas) * Decimal('0.05')
+        fundo_convencional = format(fundo_convencional, '.2f')
+        return  fundo_convencional
 
 
 
