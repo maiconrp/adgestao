@@ -206,6 +206,7 @@ def calc_soma_dizimo(oferta):
 
 def adicionar_oferta(request):
     user = obterUsuario(request)
+    entrada = Entrada.objects.get(igreja=user.igreja)
     if request.method == 'POST':
         
         form = OfertaForm(request.POST)
@@ -227,6 +228,9 @@ def adicionar_oferta(request):
             oferta.save()
 
             messages.success(request, 'Oferta adicionada com sucesso!')
+
+            entrada.ofertas.add(oferta)
+
             context = {
                     'form': form,
                 }
@@ -318,7 +322,7 @@ def detalhar_relatorio_mensal(request, relatorio_id):
     context = {
         'relatorio_mensal': relatorio_mensal
     }
-    return render(request, 'financas/relatorios/detalhar.html', context)
+    return render(request, 'financas/relatorios/mensal/detalhar.html', context)
 
 
 

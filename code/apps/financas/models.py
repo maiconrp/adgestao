@@ -3,7 +3,8 @@ import uuid
 import accounts.models
 import igreja.models
 from django.db import models
-from django.db.models import F
+from django.db.models import F, Q
+
 
 from adgestao.validators import validate_cpf, validate_data
 
@@ -201,6 +202,11 @@ class RelatorioGeral(models.Model):
 
 
 class RelatorioMensal(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
 
     data_inicio = models.DateField(
         validators=[validate_data]
@@ -249,6 +255,21 @@ class RelatorioMensal(models.Model):
         related_name='relatorio_mensal',
         on_delete=models.CASCADE,
     )
+
+    @property
+    def total_entradas(self):
+        mes_relatorio = self.data_inicio.month
+        ano_relatorio = self.data_inicio.year
+        
+        ofertas_mes = self.entradas.ofertas.filter(Q(data_culto__month=mes_relatorio) & Q(data_culto__year=ano_relatorio))
+        
+        total_entradas = 0
+
+        for oferta in ofertas_mes:
+            total_entradas = total_entradas + oferta.total
+
+        return total_entradas
+
 
 
     def __str__(self):
