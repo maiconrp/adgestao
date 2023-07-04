@@ -5,18 +5,29 @@
 <!-- ============================================================== -->
 <div class="row">
   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-      <div class="page-header">
-          <h2 class="mb-2">Entradas por culto</h2>
-          <div class="page-breadcrumb">
-              <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                      <li class="breadcrumb-item">Accounts</li>
-                      <li class="breadcrumb-item">Cadastros</li>
-                      <li class="breadcrumb-item active" aria-current="page">Listar</li>
-                  </ol>
-              </nav>
-          </div>
+    <div class="page-header">
+      <h2 class="mb-2">Ofertas</h2>
+      <div class="page-breadcrumb">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Accounts</li>
+            <li class="breadcrumb-item">Cadastros</li>
+            <li class="breadcrumb-item active" aria-current="page">Listar</li>
+
+          </ol>
+        </nav>
+        {% if ofertas %}
+        <br>
+        <form method="POST" action="{% url 'filtrar_ofertas' %}">
+          {% csrf_token %}
+          <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker" inline="true">
+            <input type="date" name="date_input">
+          <button type="submit" class="btn btn-info btn-sm">Filtrar</button>
+        </div>
+        </form>
+        {% endif %}
       </div>
+    </div>
   </div>
 </div>
 <!-- ============================================================== -->
@@ -26,58 +37,61 @@
 <!-- pendentes responsive table -->
 <!-- ============================================================== -->
 {% if messages %}
-      <div class="messages">
-        {% for message in messages %}
-          <br>
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
+<div class="messages">
+  {% for message in messages %}
+  <br>
+  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
   <div class="card">
-      <div class="card-body">
-          <div class="table-responsive ">
-              {% if ofertas %}
-              <table class="table">
-                  <thead>
-                      <tr>
-                        <th scope="col">Data</th>
-                        <th scope="col">Culto</th>
-                        <th scope="col">Total arrecadado</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    
-                    {% for oferta in ofertas %}
-                    <tr>
-                      <th scope="col">{{ oferta.data_culto }}</th>
-                      <td>{{ oferta.tipo_culto }}</td>
-                      <td>{{ oferta.total }}</td>
-                      
-                      <td>
-                        <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                      </td>
-                    </tr>
-                  {% endfor %}
-                      
-                  </tbody>
-              </table>
-              {% else %}
-    <p>Nenhuma oferta adicionada.</p>
-    {% endif %}
-          </div>
+    <div class="card-body">
+      <div class="table-responsive ">
 
-          
+        {% if ofertas %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Data</th>
+              <th scope="col">Culto</th>
+              <th scope="col">Total arrecadado</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for oferta in ofertas %}
+            <tr>
+              <th scope="col">{{ oferta.data_culto }}</th>
+              <td>{{ oferta.tipo_culto }}</td>
+              <td>{{ oferta.total }}</td>
+
+              <td>
+                <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i
+                    class="fas fa-external-link-alt"></i></a>
+                <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i
+                    class="fas fa-trash-alt"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        {% else %}
+        <p>Nenhuma oferta adicionada.</p>
+        {% endif %}
       </div>
+
+
+    </div>
   </div>
   <a href="{% url 'adicionar_oferta'%}" class="btn btn-success">Adicionar</a>
-    
+
 </div>
-    
+
 
 
 <!-- ============================================================== -->
 <!-- end responsive table -->
 <!-- ============================================================== -->
-  {%endblock%}
+{%endblock%}

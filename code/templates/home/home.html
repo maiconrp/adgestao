@@ -1,5 +1,6 @@
-
-{% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block 'content' %}
 
 {% if user.funcao == "Tesoureiro Sede"%}
         <h2>Criar Lista</h2>
@@ -12,8 +13,9 @@
         </div>
     {% else %}
         <h2>Home</h2>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="card">
-            <div class="page-header">
+            
                 
                     <a href="/financas/ofertas/listar">listar ofertas</a>
                     <a href="/financas/dizimos/listar">listar dizimos</a>
@@ -25,7 +27,8 @@
 
 
                         
-            </div>
+          
+        </div>
         </div>
 {% endif %}
 {% endblock %}

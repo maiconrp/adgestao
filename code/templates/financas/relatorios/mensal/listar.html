@@ -51,13 +51,14 @@
                     
                     {% for relatorio in relatorios %}
                     <tr>
-                      <th scope="col">{{ relatorio.data_inicio.month }}</th>
+                      <th scope="col">{{ relatorio.data_inicio }}</th>
                       <td>{{ relatorio.data_fim }}</td>
                       <td>{{ relatorio.saldo }}</td>
                       
 
+                      
                       <td>
-                        <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-primary">Detalhar</a>    
+                        <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
                         <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
