@@ -5,9 +5,10 @@
     <p>Pagamento para obreiros: {{ relatorio_mensal.pagamento_obreiro }}</p>
     <p>Fundo convencional: {{ relatorio_mensal.fundo_convencional }}</p>
     <p>Missões sede: {{ relatorio_mensal.missoes_sede }}</p>
+    <p>Total de entradas: {{ relatorio_mensal.total_entradas }}</p>
     <p>Saldo: {{ relatorio_mensal.saldo }}</p>
 
 
-    <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-success">Excluir</a>
+    <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-success">Excluir</a>
 {% endif %}
 
