@@ -1,5 +1,24 @@
+
 {% block content %}
   <h2>membros</h2>
+
+
+    <form method="POST" action="{% url 'filtrar_membro' %}">
+      {% csrf_token %}
+      <input type="text" name="nome" placeholder="Digite o nome do membro">
+      <button type="submit">Filtrar</button>
+    </form>
+
+
+      {% if membros_filtrados %}
+        {% for membro in membros_filtrados %}
+           <td>{{ membro.nome }}</td>
+           <td>{{ membro.data_nasc }}</td> 
+           <td>{{ membro.cpf }}</td> 
+          {% endfor %}
+      {% else %}
+             <p>Nenhum membro encont.</p>
+     {% endif %}
 
   {% if membros %}
     <table class="table">
