@@ -134,3 +134,33 @@ def excluir_membro(request, membro_id):
     return HttpResponseRedirect(reverse('listar_membros'))
 
 
+#####################           FILTROS             ########################################
+
+def filtrar_membro(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome', '')  # Obtém o nome do membro do formulário
+        membros = Membro.objects.filter(nome__icontains=nome)  # Filtra os membros com base no nome
+        
+        context = {
+            'membros_filtrados': membros
+        }
+        return render(request, 'igreja/membros/listar.html', context)
+    else:
+        return render(request, 'igreja/membros/listar.html')
+
+        from django.shortcuts import render
+from .models import Igreja
+#####################################       IGREJA POR NOME        ###############################################
+
+
+def filtrar_igreja(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome', '')  # Obtém a parte do nome fornecida no formulário
+        igrejas = Igreja.objects.filter(nome__icontains=nome)  # Filtra as igrejas cujos nomes contenham a parte fornecida
+        
+        context = {
+            'igrejas_filtradas': igrejas
+        }
+        return render(request, 'igreja/listar.html', context)
+    else:
+        return render(request, 'igreja/listar.html')
