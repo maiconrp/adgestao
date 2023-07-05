@@ -6,6 +6,10 @@ from .permissions import set_permission
 from .models import Usuario, SolicitacaoCadastro
 from django.contrib import messages
 
+
+from financas.models import Saida, Entrada
+from igreja.models import Dizimo, OfertaCulto, Membro
+
 @login_required
 def obterUsuario(request):
     user = False
