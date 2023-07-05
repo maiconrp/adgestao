@@ -1,14 +1,30 @@
 {% block content %}
+
   <h2>Igrejas</h2>
 
-  {% if igrejas %}
+  <form method="POST" action="{% url 'filtrar_igreja' %}">
+    {% csrf_token %}
+    <input type="text" name="nome" placeholder="Digite o nome da igreja">
+    <button type="submit">Filtrar</button>
+  </form>
+
+  {% if igrejas_filtradas %}
+    {% for igreja in igrejas_filtradas %}
+      <td>{{ igreja.nome }}</td>
+      <td>{{ igreja.localizacao }}</td>
+      <td>{{ igreja.saldo }}</td>
+    {% endfor %}
+  {% else %}
+    <p>Nenhum igreja encontrada.</p>
+  {% endif %}
+
+  {% if not igrejas_filtradas and igrejas %}
     <table class="table">
       <thead>
         <tr>
           <th scope="col">Nome</th>
           <th scope="col">Local</th>
           <th scope="col">Saldo</th>
-          
         </tr>
       </thead>
       <tbody>
@@ -17,18 +33,14 @@
             <td>{{ igreja.nome }}</td>
             <td>{{ igreja.localizacao }}</td>
             <td>{{ igreja.saldo }}</td>
-            
             <td>
               <a href="{% url 'editar_igreja' igreja.id %}" class="btn btn-success">Editar</a>
             </td>
           </tr>
         {% endfor %}
       </tbody>
-      <a href="{% url 'cadastrar_igreja' %}" class="btn btn-success">Cadastrar igreja</a>
     </table>
-
-  {% else %}
-    <p>Nenhuma igreja encontrada.</p>
-    <a href="{% url 'cadastrar_igreja'%}" class="btn btn-success">Adicionar</a>
-    {% endif %}
+  {% endif %}
 {% endblock %}
+
+
