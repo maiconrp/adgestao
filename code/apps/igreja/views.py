@@ -148,9 +148,7 @@ def filtrar_membro(request):
     else:
         return render(request, 'igreja/membros/listar.html')
 
-        from django.shortcuts import render
-from .models import Igreja
-#####################################       IGREJA POR NOME        ###############################################
+
 
 
 def filtrar_igreja(request):
