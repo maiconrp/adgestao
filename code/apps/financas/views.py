@@ -390,3 +390,23 @@ def filtrar_ofertas(request):
         return render(request, 'financas/entradas/ofertas/listar.html', {'ofertas_filtradas': ofertas_filtradas})
 
     return render(request, 'financas/entradas/ofertas/listar.html')
+
+def filtrar_saidas(request):
+    if request.method == 'POST':
+        date_input = request.POST.get('date_input')  # Obtém o valor do input do template
+        saidas_filtradas = Saida.objects.filter(data=date_input)  # Realiza a filtragem do modelo
+
+        return render(request, 'financas/saidas/listar.html', {'saidas_filtradas': saidas_filtradas})
+
+    return render(request, 'financas/saidas/listar.html')
+
+def filtrar_dizimos(request):
+    if request.method == 'POST':
+        membro = request.POST.get('membro', '')  # Obtém o nome do membro do formulário
+        dizimos = Dizimo.objects.filter(membro__nome__icontains=membro)  # Filtra os dizimos com base no nome do membro
+        context = {
+            'dizimos_filtrados': dizimos
+        }
+        return render(request, 'financas/entradas/dizimos/listar.html', context)
+    else:
+        return render(request, 'financas/entradas/dizimos/listar.html')
