@@ -231,6 +231,12 @@ class RelatorioMensal(models.Model):
         default=0
     )
 
+    pagamento_obreiro = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        default=0
+    )
+
     fundo_convencional = models.DecimalField(
         max_digits=12,
         decimal_places=3,
@@ -268,7 +274,7 @@ class RelatorioMensal(models.Model):
 
     
     @property
-    def pagamento_obreiro(self):
+    def calc_pagamento_obreiro(self):
         total_entradas = self.total_entradas
         pagamento_obreiro = Decimal(total_entradas) * Decimal('0.1')
         pagamento_obreiro = format(pagamento_obreiro, '.2f')
@@ -277,7 +283,7 @@ class RelatorioMensal(models.Model):
 
 
     @property
-    def missoes_sede(self):
+    def calc_missoes_sede(self):
         total_entradas = self.total_entradas
         missoes_sede = Decimal(total_entradas) * Decimal('0.1')
         missoes_sede = format(missoes_sede, '.2f')
@@ -286,11 +292,16 @@ class RelatorioMensal(models.Model):
     
 
     @property
-    def fundo_convencional(self):
+    def calc_fundo_convencional(self):
         total_entradas = self.total_entradas
         fundo_convencional = Decimal(total_entradas) * Decimal('0.05')
         fundo_convencional = format(fundo_convencional, '.2f')
         return  fundo_convencional
+        
+
+    def save(self, *args, **kwargs):
+        self.pagamento_obreiro = Decimal(self.calc_pagamento_obreiro)
+        super().save(*args, **kwargs)
 
 
 

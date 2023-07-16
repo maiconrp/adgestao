@@ -325,6 +325,39 @@ def detalhar_relatorio_mensal(request, relatorio_id):
     return render(request, 'financas/relatorios/mensal/detalhar.html', context)
 
 
+####################### - - - RELATÓRIO GERAL - - - ######################
+
+def criar_relatorio_geral(igreja, entrada):
+    data_criacao = datetime.now()
+    data_criacao = data_criacao.strftime("%Y-%m-%d")
+    relatorio_mensal = RelatorioMensal(igreja=igreja, entradas=entrada, data_inicio=data_criacao)
+    relatorio_mensal.save()
+
+def listar_relatorios_gerais(request):
+    usuario = obterUsuario(request)
+    relatorios_gerais = RelatorioGeral.objects.filter(igreja=usuario.igreja)
+    context = {
+        'relatorios': relatorios_gerais
+    }
+    return render(request, 'financas/relatorios/geral/listar.html', context)
+
+
+def excluir_relatorio_geral(request, relatorio_id):
+    relatorio_geral = RelatorioGeral.objects.get(id=relatorio_id)
+    relatorio_geral.delete()
+
+    return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
+
+
+def detalhar_relatorio_geral(request, relatorio_id):
+   
+    relatorio_geral = RelatorioGeral.objects.get(id=relatorio_id)
+    context = {
+        'relatorio_geral': relatorio_geral
+    }
+    return render(request, 'financas/relatorios/mensal/detalhar.html', context)
+
+
 
 @login_required
 @permission_required('accounts.tesoureiro')
