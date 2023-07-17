@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.db.models import Q
 
-from .models import Saida, Entrada, RelatorioMensal
+from .models import Saida, Entrada, RelatorioMensal, RelatorioGeral
 from igreja.models import OfertaCulto, Dizimo, Igreja
 from igreja.forms import OfertaForm, DizimoForm
 from .forms import SaidaForm
@@ -327,15 +327,17 @@ def detalhar_relatorio_mensal(request, relatorio_id):
 
 ####################### - - - RELATÓRIO GERAL - - - ######################
 
-def criar_relatorio_geral(igreja, entrada):
+def criar_relatorio_geral(tesoureiro_sede, entrada):
+    print('chamou a funcao')
     data_criacao = datetime.now()
     data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_mensal = RelatorioMensal(igreja=igreja, entradas=entrada, data_inicio=data_criacao)
-    relatorio_mensal.save()
+    relatorio_geral = RelatorioGeral(tesoureiro_sede=tesoureiro_sede, entradas_sede=entrada, data_inicio=data_criacao)
+    relatorio_geral.save()
+    print('criou o relatorio')
 
 def listar_relatorios_gerais(request):
     usuario = obterUsuario(request)
-    relatorios_gerais = RelatorioGeral.objects.filter(igreja=usuario.igreja)
+    relatorios_gerais = RelatorioGeral.objects.filter(tesoureiro_sede=usuario)
     context = {
         'relatorios': relatorios_gerais
     }

@@ -90,6 +90,11 @@ class RelatorioGeral(models.Model):
     """
     Modelo para relatório geral de entrada e saída de caixa.
     """
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
 
     saldo = models.DecimalField(
         max_digits=12,
@@ -102,15 +107,15 @@ class RelatorioGeral(models.Model):
         validators=[validate_data]
     )
 
-    data_fim = models.DateField(
-        validators=[validate_data]
+    data_fim = models.CharField(
+        max_length=10,
+        default='2023-00-00'
     )
 
-    entradas_sede = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,
-        default=0,
-        verbose_name='Entradas Sede',
+    entradas_sede = models.ForeignKey(
+        Entrada,
+        related_name='relatorio_mensal_entradas',
+        on_delete=models.CASCADE,
     )
 
     entradas_locais = models.DecimalField(
@@ -188,6 +193,34 @@ class RelatorioGeral(models.Model):
         related_name='relatorio_geral',
         on_delete=models.DO_NOTHING,
     )
+
+
+    @property
+    def entradas_sede(self):
+        mes_relatorio = self.data_inicio.month
+        ano_relatorio = self.data_inicio.year
+        
+        #entradas_mes = Entrada.objects.filter(ofertas__data_culto__month=mes_relatorio, ofertas__data_culto__year=ano_relatorio)
+        entradas_mes = Entrada.ofertas.all.count()
+        print(entradas_mes)
+        total_entradas = 0
+
+        for entradas in entradas_mes:
+            total_entradas = total_entradas + entradas.total
+
+        return total_entradas
+
+
+    @property
+    def saidas_sede(self):
+        saidas = Saida.objects.filter(igreja=self.tesoureiro_sede.igreja)
+
+        total_saidas = 0
+
+        for saida in saidas:
+            total_saidas = total_saidas + saida.valor
+
+        return total_saidas
 
     def __str__(self):
         """
@@ -298,10 +331,6 @@ class RelatorioMensal(models.Model):
         fundo_convencional = format(fundo_convencional, '.2f')
         return  fundo_convencional
         
-
-    def save(self, *args, **kwargs):
-        self.pagamento_obreiro = Decimal(self.calc_pagamento_obreiro)
-        super().save(*args, **kwargs)
 
 
 

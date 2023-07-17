@@ -7,8 +7,8 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, reverse
 from accounts.views import obterUsuario
-from financas.views import criar_relatorio_mensal
-from financas.models import Entrada
+from financas.views import criar_relatorio_mensal, criar_relatorio_geral
+from financas.models import Entrada, RelatorioGeral
 
 
 
@@ -16,6 +16,7 @@ from financas.models import Entrada
 @login_required
 #@permission_required('accounts.tesoureiro_sede')
 def cadastrar_igreja(request):
+    numero_igrejas_criadas = Igreja.objects.count()
 
     usuario = obterUsuario(request)
 
@@ -40,6 +41,14 @@ def cadastrar_igreja(request):
             return HttpResponseRedirect(reverse('listar_igrejas'))
     else:
         form = IgrejaForm()
+    print(numero_igrejas_criadas)
+    if numero_igrejas_criadas == 1:
+        igreja = usuario.igreja
+        entrada_sede = igreja.entradas
+        print(igreja.entradas.dizimos)
+        criar_relatorio_geral(usuario, entrada_sede)
+    else:
+        print('Mais de uma igreja foi criada, o relatorio geral ja foi criado !')
         
     context = {
         'form' : form,
