@@ -100,7 +100,7 @@ class RelatorioGeral(models.Model):
     saldo = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        default=0,
+        null=True,
         verbose_name='Saldo',
     )
 
@@ -113,11 +113,11 @@ class RelatorioGeral(models.Model):
         default='2023-00-00'
     )
 
-    entradas_sede = models.ForeignKey(
-        Entrada,
-        related_name='relatorio_geral_entradas_sede',
-        on_delete=models.CASCADE,
-        null=True,
+    entradas_sede = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        default=0,
+        verbose_name='Entradas Sede',
     )
 
     entradas_locais = models.DecimalField(
@@ -198,7 +198,7 @@ class RelatorioGeral(models.Model):
 
 
     @property
-    def entradas_sede(self):
+    def calc_entradas_sede(self):
         mes_relatorio = self.data_inicio.month
         ano_relatorio = self.data_inicio.year
         
@@ -208,11 +208,16 @@ class RelatorioGeral(models.Model):
 
         for entradas in entradas_mes:
             total_entradas = total_entradas + entradas.total
+        
+        relatorio_geral = RelatorioGeral.objects.get(tesoureiro_sede=self.tesoureiro_sede)
+        
+        relatorio_geral.entradas_sede = total_entradas
+        relatorio_geral.save()
 
         return total_entradas
 
     @property
-    def entradas_locais(self):
+    def calc_entradas_locais(self):
         mes_relatorio = self.data_inicio.month
         ano_relatorio = self.data_inicio.year
         
@@ -222,12 +227,17 @@ class RelatorioGeral(models.Model):
 
         for entradas in entradas_mes:
             total_entradas = total_entradas + entradas.total
+        
+        relatorio_geral = RelatorioGeral.objects.get(tesoureiro_sede=self.tesoureiro_sede)
+        
+        relatorio_geral.entradas_locais = total_entradas
+        relatorio_geral.save()
 
         return total_entradas
 
 
     @property
-    def saidas_sede(self):
+    def calc_saidas_sede(self):
         mes_relatorio = self.data_inicio.month
         ano_relatorio = self.data_inicio.year
 
@@ -242,7 +252,7 @@ class RelatorioGeral(models.Model):
 
 
     @property
-    def saidas_locais(self):
+    def calc_saidas_locais(self):
         mes_relatorio = self.data_inicio.month
         ano_relatorio = self.data_inicio.year
 
@@ -256,12 +266,16 @@ class RelatorioGeral(models.Model):
         return total_saidas
 
     @property
-    def saldo(self):
+    def calc_saldo(self):
         total_saidas = self.saidas_locais + self.saidas_sede
         total_entradas = self.entradas_locais + self.entradas_sede
 
         saldo = total_entradas - total_saidas
         return saldo
+
+    def save(self, *args, **kwargs):
+            super().save(*args, **kwargs)
+
 
     def __str__(self):
         """

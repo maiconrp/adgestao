@@ -7,7 +7,7 @@ from django.db.models import Q
 from .models import Saida, Entrada, RelatorioMensal, RelatorioGeral
 from igreja.models import OfertaCulto, Dizimo, Igreja
 from igreja.forms import OfertaForm, DizimoForm
-from .forms import SaidaForm
+from .forms import SaidaForm, RelatorioGeralForm
 from accounts.views import obterUsuario
 
 
@@ -352,12 +352,33 @@ def excluir_relatorio_geral(request, relatorio_id):
 
 
 def detalhar_relatorio_geral(request, relatorio_id):
-   
+
     relatorio_geral = RelatorioGeral.objects.get(id=relatorio_id)
+
+    if request.method == "POST":
+        form = RelatorioGeralForm(request.POST, instance=relatorio_geral)
+        
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('detalhar_relatorio_geral', args=[relatorio_geral.id]))
+    else:
+        form = RelatorioGeralForm(instance=relatorio_geral)
+   
+    
     context = {
-        'relatorio_geral': relatorio_geral
+        'relatorio_geral': relatorio_geral,
+        'form' : form,
     }
     return render(request, 'financas/relatorios/geral/detalhar.html', context)
+
+   
+
+ 
+
+
+
+
+
 
 
 
