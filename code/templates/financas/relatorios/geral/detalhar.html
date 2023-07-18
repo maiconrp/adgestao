@@ -1,13 +1,15 @@
-{% if relatorio_mensal %}
-    <h2>Informações do Relatório mensal</h2>
-    <p>Data de início: {{ relatorio_mensal.data_inicio }}</p>
-    <p>Data de término: {{ relatorio_mensal.data_fim }}</p>
-    <p>Pagamento para obreiros: {{ relatorio_mensal.calc_pagamento_obreiro }}</p>
-    <p>Fundo convencional: {{ relatorio_mensal.calc_fundo_convencional }}</p>
-    <p>Missões sede: {{ relatorio_mensal.calc_missoes_sede }}</p>
-    <p>Total entradas: {{ relatorio_mensal.total_entradas }}</p>
+{% if relatorio_geral %}
+    <h2>Informações do Relatório geral</h2>
+    <p>Data de início: {{ relatorio_geral.data_inicio }}</p>
+    <p>Data de término: {{ relatorio_geral.data_fim }}</p>
+    <p>Total entradas da sede: {{ relatorio_geral.entradas_sede }}</p>
+    <p>Total saida da sede: {{ relatorio_geral.saidas_sede }}</p>
+    <p>Total entradas locais: {{ relatorio_geral.entradas_locais }}</p>
+    <p>Total saida locais: {{ relatorio_geral.saidas_locais }}</p>
 
 
-    <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-success">Excluir</a>
+    <p>Tesoureiro Sede: {{ relatorio_geral.tesoureiro_sede.nome }}</p>
+
+
 {% endif %}
 

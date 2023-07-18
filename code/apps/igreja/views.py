@@ -43,10 +43,9 @@ def cadastrar_igreja(request):
         form = IgrejaForm()
     print(numero_igrejas_criadas)
     if numero_igrejas_criadas == 1:
-        igreja = usuario.igreja
-        entrada_sede = igreja.entradas
-        print(igreja.entradas.dizimos)
-        criar_relatorio_geral(usuario, entrada_sede)
+        #entrada_sede = Entrada.objects.get(igreja=usuario.igreja)
+        #print(entrada_sede.igreja)
+        criar_relatorio_geral(usuario)
     else:
         print('Mais de uma igreja foi criada, o relatorio geral ja foi criado !')
         

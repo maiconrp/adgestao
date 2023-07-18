@@ -3,6 +3,7 @@ import uuid
 from decimal import Decimal
 import accounts.models
 import igreja.models
+from igreja.models import OfertaCulto
 from django.db import models
 from django.db.models import F, Q
 
@@ -24,7 +25,7 @@ class Saida(models.Model):
     )
 
     data = models.DateField(
-        # validators=[validate_data]
+        validators=[validate_data]
     )
 
     descricao = models.TextField(
@@ -114,8 +115,9 @@ class RelatorioGeral(models.Model):
 
     entradas_sede = models.ForeignKey(
         Entrada,
-        related_name='relatorio_mensal_entradas',
+        related_name='relatorio_geral_entradas_sede',
         on_delete=models.CASCADE,
+        null=True,
     )
 
     entradas_locais = models.DecimalField(
@@ -200,9 +202,22 @@ class RelatorioGeral(models.Model):
         mes_relatorio = self.data_inicio.month
         ano_relatorio = self.data_inicio.year
         
-        #entradas_mes = Entrada.objects.filter(ofertas__data_culto__month=mes_relatorio, ofertas__data_culto__year=ano_relatorio)
-        entradas_mes = Entrada.ofertas.all.count()
-        print(entradas_mes)
+        entradas_mes = OfertaCulto.objects.filter(data_culto__month=mes_relatorio, data_culto__year=ano_relatorio, igreja=self.tesoureiro_sede.igreja)
+        
+        total_entradas = 0
+
+        for entradas in entradas_mes:
+            total_entradas = total_entradas + entradas.total
+
+        return total_entradas
+
+    @property
+    def entradas_locais(self):
+        mes_relatorio = self.data_inicio.month
+        ano_relatorio = self.data_inicio.year
+        
+        entradas_mes = OfertaCulto.objects.filter(data_culto__month=mes_relatorio, data_culto__year=ano_relatorio).exclude(igreja=self.tesoureiro_sede.igreja)
+        
         total_entradas = 0
 
         for entradas in entradas_mes:
@@ -213,7 +228,10 @@ class RelatorioGeral(models.Model):
 
     @property
     def saidas_sede(self):
-        saidas = Saida.objects.filter(igreja=self.tesoureiro_sede.igreja)
+        mes_relatorio = self.data_inicio.month
+        ano_relatorio = self.data_inicio.year
+
+        saidas = Saida.objects.filter(data__month=mes_relatorio, data__year=ano_relatorio, igreja=self.tesoureiro_sede.igreja)
 
         total_saidas = 0
 
@@ -221,6 +239,22 @@ class RelatorioGeral(models.Model):
             total_saidas = total_saidas + saida.valor
 
         return total_saidas
+
+
+    @property
+    def saidas_locais(self):
+        mes_relatorio = self.data_inicio.month
+        ano_relatorio = self.data_inicio.year
+
+        saidas = Saida.objects.filter(data__month=mes_relatorio, data__year=ano_relatorio).exclude(igreja=self.tesoureiro_sede.igreja)
+
+        total_saidas = 0
+
+        for saida in saidas:
+            total_saidas = total_saidas + saida.valor
+
+        return total_saidas
+
 
     def __str__(self):
         """

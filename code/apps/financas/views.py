@@ -327,11 +327,11 @@ def detalhar_relatorio_mensal(request, relatorio_id):
 
 ####################### - - - RELATÓRIO GERAL - - - ######################
 
-def criar_relatorio_geral(tesoureiro_sede, entrada):
+def criar_relatorio_geral(tesoureiro):
     print('chamou a funcao')
     data_criacao = datetime.now()
     data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_geral = RelatorioGeral(tesoureiro_sede=tesoureiro_sede, entradas_sede=entrada, data_inicio=data_criacao)
+    relatorio_geral = RelatorioGeral(tesoureiro_sede=tesoureiro, data_inicio=data_criacao)
     relatorio_geral.save()
     print('criou o relatorio')
 
@@ -357,7 +357,7 @@ def detalhar_relatorio_geral(request, relatorio_id):
     context = {
         'relatorio_geral': relatorio_geral
     }
-    return render(request, 'financas/relatorios/mensal/detalhar.html', context)
+    return render(request, 'financas/relatorios/geral/detalhar.html', context)
 
 
 
