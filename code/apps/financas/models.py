@@ -255,6 +255,13 @@ class RelatorioGeral(models.Model):
 
         return total_saidas
 
+    @property
+    def saldo(self):
+        total_saidas = self.saidas_locais + self.saidas_sede
+        total_entradas = self.entradas_locais + self.entradas_sede
+
+        saldo = total_entradas - total_saidas
+        return saldo
 
     def __str__(self):
         """
