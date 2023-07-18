@@ -15,17 +15,7 @@
             <li class="breadcrumb-item active" aria-current="page">Listar</li>
 
           </ol>
-        </nav>
-        {% if ofertas %}
-        <br>
-        <form method="POST" action="{% url 'filtrar_ofertas' %}">
-          {% csrf_token %}
-          <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker" inline="true">
-            <input type="date" name="date_input">
-          <button type="submit" class="btn btn-info btn-sm">Filtrar</button>
-        </div>
-        </form>
-        {% endif %}
+        </nav>   
       </div>
     </div>
   </div>
