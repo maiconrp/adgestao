@@ -1,0 +1,23 @@
+{% extends 'base-no-side.html' %}
+{% load static %}
+
+{%block title%} | Login{%endblock%}
+
+{% block 'breadcump_title' %}
+Logout
+{% endblock %}
+
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Igrejas</li>
+{% endblock %}
+
+{% block 'content' %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+
+
+    <div class="card-body">
+  <p>Logged out!</p>
+  <a href="{% url 'login'%}">Click here to login again.</a>
+{% endblock %}

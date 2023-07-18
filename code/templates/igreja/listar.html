@@ -1,34 +1,57 @@
-{% block content %}
-  <h2>Igrejas</h2>
+{% extends 'base.html' %}
+{% load static %}
 
-  {% if igrejas %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Nome</th>
-          <th scope="col">Local</th>
-          <th scope="col">Saldo</th>
-          
-        </tr>
-      </thead>
-      <tbody>
-        {% for igreja in igrejas %}
+{%block title%} | Igrejas{%endblock%}
+
+{% block 'breadcump_title' %}
+Igrejas
+{% endblock %}
+
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Igrejas</li>
+{% endblock %}
+
+{% block 'content' %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+
+
+    <div class="card-body">
+      {% if igrejas %}
+      <table class="table">
+        <thead class="bg-light">
+          <tr class="border-0">
+            <th class="border-0 scope="col">Nome</th>
+            <th class="border-0 scope="col">Local</th>
+            <th class="border-0 scope="col">Saldo</th>
+            <th class="border-0 scope="col">Ação</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for igreja in igrejas %}
           <tr>
             <td>{{ igreja.nome }}</td>
             <td>{{ igreja.localizacao }}</td>
             <td>{{ igreja.saldo }}</td>
-            
+
             <td>
-              <a href="{% url 'editar_igreja' igreja.id %}" class="btn btn-success">Editar</a>
+              <a href="{% url 'editar_igreja' igreja.id %}" class="btn btn-info">Editar</a>
             </td>
           </tr>
-        {% endfor %}
-      </tbody>
-      <a href="{% url 'cadastrar_igreja' %}" class="btn btn-success">Cadastrar igreja</a>
-    </table>
+          {% endfor %}
+        </tbody>
+      </table>
 
-  {% else %}
-    <p>Nenhuma igreja encontrada.</p>
-    <a href="{% url 'cadastrar_igreja'%}" class="btn btn-success">Adicionar</a>
-    {% endif %}
+      {% else %}
+      <p>Nenhuma Igreja cadastrada.</p>
+      {% endif %}
+
+    </div>
+  </div>
+  <a href="{% url 'cadastrar_igreja' %}" class="btn btn-success">Cadastrar igreja</a>
+</div>
+
+
 {% endblock %}

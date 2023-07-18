@@ -6,6 +6,18 @@
 {% block content %}
 
 <section>
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+      {% for error in form.non_field_errors %}
+      {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if next %}
+    <div class="alert alert-yellow">
+     Faça login continuar
+    </div>
+    {% endif %}
   <h2>
     Informe seus dados <br />
     para poder prosseguir

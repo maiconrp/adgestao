@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {%load bootstrap%}
+
+{%block title%} | Ofertas | Adicionar{%endblock%}
+
+
 {% block 'content' %}
 
 <section>
@@ -15,6 +19,10 @@
       <input type="submit" class="btn btn-success"value="Cadastrar" />
     </form>
   </div>
+  {{usuario.igreja}}<br><br>
+  {%for e in entradas%}
+  {{e.igreja}}<br>
+{%endfor%}
 </section>
 
 {% endblock %}

@@ -1,6 +1,9 @@
-{%load bootstrap%}
+{% extends 'base.html' %}
 
-{% block content %}
+{%load bootstrap%}
+{%block title%} | Membros | Editar{%endblock%}
+
+{% block 'content' %}
 
 <section>
   <h2>
@@ -12,7 +15,7 @@
       {% csrf_token %}
       {{ form|bootstrap }}
 
-      <input type="submit" value="Salvar" />
+      <input type="submit" class="btn btn-success" value="Salvar" />
     </form>
   </div>
 </section>

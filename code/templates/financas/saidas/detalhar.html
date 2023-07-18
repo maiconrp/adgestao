@@ -1,10 +1,25 @@
-{% if saida %}
-    <h2>Informações da Saida</h2>
-    <p>Data: {{ saida.data }}</p>
-    <p>Descrição: {{ saida.descricao }}</p>
-    <p>Valor: {{ saida.valor }}</p>
-    <p>Igreja: {{ saida.igreja.nome }}</p>
+{% extends 'base.html' %}
 
+{%block title%} | Saídas | Detalhar{%endblock%}
+
+{% block 'content' %}
+
+{% if saida %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card border-3 border-top border-top-primary">
+        <div class="card-body">
+
+            <h2>Informações da Saida</h2>
+            <p>Data: {{ saida.data }}</p>
+            <p>Descrição: {{ saida.descricao }}</p>
+            <p>Valor: {{ saida.valor }}</p>
+            <p>Igreja: {{ saida.igreja.nome }}</p>
+        </div>
+    </div>
     <a href="{% url 'editar_saida' saida.id %}" class="btn btn-success">Editar</a>
-    <a href="{% url 'excluir_saida' saida.id %}" class="btn btn-success">Excluir</a>
+    <a href="{% url 'excluir_saida' saida.id %}" class="btn btn-danger">Excluir</a>
+</div>
+
 {% endif %}
+{% endblock %}

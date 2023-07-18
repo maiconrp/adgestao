@@ -1,32 +1,34 @@
 {% extends 'base.html' %}
-{% block 'content' %}
 <!-- ============================================================== -->
 <!-- pageheader  -->
 <!-- ============================================================== -->
-<div class="row">
-  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-      <div class="page-header">
-          <h3 class="mb-2">Solicitaçoes de Cadastro</h3>
-          <div class="page-breadcrumb">
-              <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                      <li class="breadcrumb-item">Accounts</li>
-                      <li class="breadcrumb-item">Cadastros</li>
-                      <li class="breadcrumb-item active" aria-current="page">Listar</li>
-                  </ol>
-              </nav>
-          </div>
-      </div>
-  </div>
-</div>
+{%block title%} | Solicitações{%endblock%}
+
+{% block 'breadcump_title' %} 
+    Solicitações de  Cadastro
+{% endblock %}
+
+{% block 'breadcump1' %}
+    <li class="breadcrumb-item active" aria-current="page">Solicitações</li>
+{% endblock %}
 <!-- ============================================================== -->
 <!-- end pageheader  -->
 <!-- ============================================================== -->
+
+{% block 'content' %}
 
 <!-- ============================================================== -->
 <!-- pendentes responsive table -->
 <!-- ============================================================== -->
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+    <br>
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
   <div class="card">
       <h5 class="card-header">Pendentes</h5>
       <div class="card-body">
@@ -77,6 +79,7 @@
 <!-- ============================================================== -->
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  
   <div class="card">
       <h5 class="card-header">Negadas</h5>
       <div class="card-body">
