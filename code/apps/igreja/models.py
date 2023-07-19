@@ -105,6 +105,7 @@ class Dizimo(models.Model):
     CULTO_CHOICE = (
         ("N", "Normal"),
         ("C", "Ceia"),
+        ("M", "Missões"),
     )
 
     tipo_culto = MultiSelectField(
@@ -163,6 +164,7 @@ class OfertaCulto(models.Model):
     CULTO_CHOICE = (
         ("N", "Normal"),
         ("C", "Ceia"),
+        ("M", "Missões"),
     )
 
     id = models.UUIDField(
