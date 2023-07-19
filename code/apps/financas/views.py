@@ -21,35 +21,61 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
 from datetime import datetime
+import calendar
+
 
 def atualizar_registro_model(financa, user):
+    # Setando objetos
     relatorio_geral = RelatorioGeral.objects.get(status='ativo')
     relatorio_mensal = RelatorioMensal.objects.get(igreja=user.igreja, status='ativo')
+    igreja = user.igreja
+    saida = Saida.objects.last()
 
     if financa == 'saida':
+
+        # Atualizando registros no model de RealatórioGeral
         relatorio_geral.saidas_sede = relatorio_geral.calc_saidas_sede
         relatorio_geral.saidas_locais = relatorio_geral.calc_saidas_locais
         relatorio_geral.saldo = relatorio_geral.calc_saldo
 
         relatorio_geral.save() 
 
+        # Atualizando registros no model de RealatórioMensal
         relatorio_mensal.total_saidas = relatorio_mensal.calc_saidas
         relatorio_mensal.saldo = relatorio_mensal.calc_saldo
+        relatorio_mensal.pagamento_obreiro = relatorio_mensal.calc_pagamento_obreiro
+        relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
+        relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
 
         relatorio_mensal.save() 
 
+        # Atualizando registro de saldo no model de Igreja
+        igreja.saldo = saida.calc_saldo
+        print('saldo att')
+        igreja.save()
+
 
     else:
+        # Atualizando registros no model de RealatórioGeral
         relatorio_geral.entradas_sede = relatorio_geral.calc_entradas_sede
         relatorio_geral.entradas_locais = relatorio_geral.calc_entradas_locais
         relatorio_geral.saldo = relatorio_geral.calc_saldo
 
         relatorio_geral.save()  
 
+        # Atualizando registros no model de RealatórioMensal
         relatorio_mensal.total_entradas = relatorio_mensal.calc_total_entradas
         relatorio_mensal.saldo = relatorio_mensal.calc_saldo
+        relatorio_mensal.pagamento_obreiro = relatorio_mensal.calc_pagamento_obreiro
+        relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
+        relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
 
         relatorio_mensal.save() 
+
+        # Atualizando registro de saldo no model de Igreja
+        igreja.saldo = saida.calc_saldo
+        print('saldo atualizado')
+        igreja.save()
 
 @login_required
 @permission_required('accounts.tesoureiro')
@@ -142,7 +168,7 @@ def detalhar_saida(request, saida_id):
 #@permission_required('accounts.tesoureiro')
 def adicionar_dizimo(request):
     user = obterUsuario(request)
-    print(user.igreja)
+    
     entrada = Entrada.objects.get(igreja=user.igreja)
     if request.method == 'POST':
         
@@ -382,11 +408,47 @@ def editar_oferta(request, oferta_id):
 
 ###################### - - - - - - RELATÓRIO MENSAL - - - - - -  ############################
 
-def criar_relatorio_mensal(igreja, entrada, data_fim):
+def criar_primeiro_relatorio_mensal(igreja, entrada):
+    ############ obtendo a data que contém o último dia do mês
+    data_atual = datetime.now()
+
+    # Obtém o último dia do mês
+    ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
+
+    # Cria a data do último dia do mês
+    data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
+
+    # Formata a data no formato "dd/mm/aaaa"
+    data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
+    
     data_criacao = datetime.now()
     data_criacao = data_criacao.strftime("%Y-%m-%d")
     relatorio_mensal = RelatorioMensal(igreja=igreja, entradas=entrada, data_inicio=data_criacao, data_fim=data_fim)
     relatorio_mensal.save()
+
+
+def criar_novo_relatorio_mensal(request):
+    user = obterUsuario(request)
+    igreja = Igreja.objects.get(nome=user.igreja.nome)
+    entrada = Entrada.objects.get(igreja=user.igreja)
+    ############ obtendo a data que contém o último dia do mês
+    data_atual = datetime.now()
+
+    # Obtém o último dia do mês
+    ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
+
+    # Cria a data do último dia do mês
+    data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
+
+    # Formata a data no formato "dd/mm/aaaa"
+    data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
+    
+    data_criacao = datetime.now()
+    data_criacao = data_criacao.strftime("%Y-%m-%d")
+    relatorio_mensal = RelatorioMensal(igreja=igreja, entradas=entrada, data_inicio=data_criacao, data_fim=data_fim)
+    relatorio_mensal.save()
+
+    return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
 
 
 def listar_relatorios_mensais(request):
@@ -414,20 +476,61 @@ def detalhar_relatorio_mensal(request, relatorio_id):
     return render(request, 'financas/relatorios/mensal/detalhar.html', context)
 
 
-def finalizar_relatorio_geral(request, relatorio_id):
-    relatorio = RelatorioGeral.objects.get(id=relatorio_id)
+def finalizar_relatorio_mensal(request, relatorio_id):
+    relatorio = RelatorioMensal.objects.get(id=relatorio_id)
     relatorio.status = 'finalizado'
     relatorio.save()
+    criar_novo_relatorio_mensal(request)
+    return HttpResponseRedirect(reverse('listar_relatorios_mensais'))
 
 ####################### - - - RELATÓRIO GERAL - - - ######################
 
-def criar_relatorio_geral(tesoureiro, data_fim):
+def criar_primeiro_relatorio_geral(tesoureiro):
+    ############ obtendo a data que contém o último dia do mês
+    data_atual = datetime.now()
+
+    # Obtém o último dia do mês
+    ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
+
+    # Cria a data do último dia do mês
+    data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
+
+    # Formata a data no formato "dd/mm/aaaa"
+    data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
+    
     print('chamou a funcao')
     data_criacao = datetime.now()
     data_criacao = data_criacao.strftime("%Y-%m-%d")
     relatorio_geral = RelatorioGeral(tesoureiro_sede=tesoureiro, data_inicio=data_criacao,  data_fim=data_fim)
     relatorio_geral.save()
     print('criou o relatorio')
+
+
+def criar_novo_relatorio_geral(request):
+    user = obterUsuario(request)
+    entrada = Entrada.objects.get(igreja=user.igreja)
+
+    ############ obtendo a data que contém o último dia do mês
+    data_atual = datetime.now()
+
+    # Obtém o último dia do mês
+    ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
+
+    # Cria a data do último dia do mês
+    data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
+
+    # Formata a data no formato "dd/mm/aaaa"
+    data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
+    
+    print('chamou a funcao')
+    data_criacao = datetime.now()
+    data_criacao = data_criacao.strftime("%Y-%m-%d")
+    relatorio_geral = RelatorioGeral(tesoureiro_sede=user, data_inicio=data_criacao,  data_fim=data_fim)
+    relatorio_geral.save()
+    print('criou o relatorio')
+
+    return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
+
 
 def listar_relatorios_gerais(request):
     usuario = obterUsuario(request)
@@ -467,13 +570,16 @@ def detalhar_relatorio_geral(request, relatorio_id):
 
    
 
-def finalizar_relatorio_mensal(request, relatorio_id):
+def finalizar_relatorio_geral(request, relatorio_id):
     relatorio = RelatorioGeral.objects.get(id=relatorio_id)
     relatorio.status = 'finalizado'
     relatorio.save()
 
+    criar_novo_relatorio_geral(request)
+    return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
 
-############################ gerar pdf
+
+############################ Gerar PDF  #######################
 @login_required
 @permission_required('accounts.tesoureiro')
 def gerar_relatorio(request):

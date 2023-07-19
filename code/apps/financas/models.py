@@ -45,6 +45,31 @@ class Saida(models.Model):
 
     REQUIRED_FIELDS = ['descricao', 'data', 'valor', 'igreja']
 
+
+    @property
+    def calc_saldo(self):
+        saidas = Saida.objects.all()
+
+        total_saidas = Decimal('0')  # Inicializa como um objeto Decimal
+
+        for saida in saidas:
+            total_saidas += saida.valor  # Utiliza a sintaxe de soma para Decimal
+
+        entradas = OfertaCulto.objects.all()
+
+        total_entradas = Decimal('0')  # Inicializa como um objeto Decimal
+
+        for entrada in entradas:
+            total_entradas += entrada.total  # Utiliza a sintaxe de soma para Decimal
+
+        saldo = total_entradas - total_saidas
+
+        return saldo
+
+    def save(self, *args, **kwargs):
+            super().save(*args, **kwargs)
+
+
     def __str__(self):
         return "Saída -" + self.data.strftime('%d/%m/%Y')
 
@@ -105,7 +130,7 @@ class RelatorioGeral(models.Model):
     saldo = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        null=True,
+        default=0,
         verbose_name='Saldo',
     )
 
@@ -345,7 +370,7 @@ class RelatorioMensal(models.Model):
     saldo = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        null=True,
+        default=0,
         verbose_name='Saldo',
     )
 
@@ -415,7 +440,8 @@ class RelatorioMensal(models.Model):
         return  fundo_convencional
         
 
-
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return "Relatório Mensal - " + self.igreja.nome + " " + self.data_inicio.strftime('%d/%m/%Y')
