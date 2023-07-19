@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+<<<<<<< HEAD
 <!-- ============================================================== -->
 <!-- pageheader  -->
 <!-- ============================================================== -->
@@ -70,3 +71,28 @@
 </div>
 {% endif %}
 {% endblock %}
+=======
+{%load bootstrap%}
+
+{% block 'content' %}
+
+{% if relatorio_mensal %}
+    <h2>Informações do Relatório mensal</h2>
+    <p>Status: {{ relatorio_mensal.status }}</p>
+    <p>Data de início: {{ relatorio_mensal.data_inicio }}</p>
+    <p>Data de término: {{ relatorio_mensal.data_fim }}</p>
+    <p>Pagamento para obreiros: {{ relatorio_mensal.calc_pagamento_obreiro }}</p>
+    <p>Fundo convencional: {{ relatorio_mensal.calc_fundo_convencional }}</p>
+    <p>Missões sede: {{ relatorio_mensal.calc_missoes_sede }}</p>
+    <p>Total entradas: {{ relatorio_mensal.total_entradas }}</p>
+
+
+    <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-success">Excluir</a>
+
+    <input type="submit" class="btn btn-success" value="Finalizar" onclick="window.location.href='{% url 'finalizar_relatorio_mensal' relatorio_mensal.id %}'" />
+
+{% endif %}
+
+{% endblock %}
+
+>>>>>>> origin/feat/relatorio-geral

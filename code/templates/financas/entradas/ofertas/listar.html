@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+<<<<<<< HEAD
 {% load static %}
 
 {%block title%} | Ofertas{%endblock%}
@@ -14,14 +15,42 @@
 
 {% block 'content' %}
 <!-- ============================================================== -->
+=======
+{% block 'content' %}
+<!-- ============================================================== -->
+<!-- pageheader  -->
+<!-- ============================================================== -->
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="page-header">
+      <h2 class="mb-2">Ofertas</h2>
+      <div class="page-breadcrumb">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Accounts</li>
+            <li class="breadcrumb-item">Cadastros</li>
+            <li class="breadcrumb-item active" aria-current="page">Listar</li>
+
+          </ol>
+        </nav>   
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ============================================================== -->
+>>>>>>> origin/feat/relatorio-geral
 <!-- end pageheader  -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
 <!-- pendentes responsive table -->
 <!-- ============================================================== -->
+<<<<<<< HEAD
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
   {% if messages %}
+=======
+{% if messages %}
+>>>>>>> origin/feat/relatorio-geral
 <div class="messages">
   {% for message in messages %}
   <br>
@@ -29,32 +58,53 @@
   {% endfor %}
 </div>
 {% endif %}
+<<<<<<< HEAD
+=======
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+>>>>>>> origin/feat/relatorio-geral
   <div class="card">
     <div class="card-body">
       <div class="table-responsive ">
 
         {% if ofertas %}
         <table class="table">
+<<<<<<< HEAD
           <thead class="bg-light">
       <tr class="border-0">
           <th class="border-0 scope="col">Data</th>
               <th class="border-0 scope="col">Culto</th>
               <th class="border-0 scope="col">Total</th>
               <th class="border-0 scope="col">Ação</th>
+=======
+          <thead>
+            <tr>
+              <th scope="col">Data</th>
+              <th scope="col">Culto</th>
+              <th scope="col">Total arrecadado</th>
+>>>>>>> origin/feat/relatorio-geral
             </tr>
           </thead>
           <tbody>
 
             {% for oferta in ofertas %}
             <tr>
+<<<<<<< HEAD
               <th scope="col">{{ oferta.data_culto|date:"d/M" }}</th>
+=======
+              <th scope="col">{{ oferta.data_culto }}</th>
+>>>>>>> origin/feat/relatorio-geral
               <td>{{ oferta.tipo_culto }}</td>
               <td>{{ oferta.total }}</td>
 
               <td>
                 <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i
                     class="fas fa-external-link-alt"></i></a>
+<<<<<<< HEAD
                 
+=======
+                <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i
+                    class="fas fa-trash-alt"></i></a>
+>>>>>>> origin/feat/relatorio-geral
               </td>
             </tr>
             {% endfor %}

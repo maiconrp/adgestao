@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %}
 
 {%block title%} | Saídas | Detalhar{%endblock%}
@@ -23,3 +24,15 @@
 
 {% endif %}
 {% endblock %}
+=======
+{% if saida %}
+    <h2>Informações da Saida</h2>
+    <p>Data: {{ saida.data }}</p>
+    <p>Descrição: {{ saida.descricao }}</p>
+    <p>Valor: {{ saida.valor }}</p>
+    <p>Igreja: {{ saida.igreja.nome }}</p>
+
+    <a href="{% url 'editar_saida' saida.id %}" class="btn btn-success">Editar</a>
+    <a href="{% url 'excluir_saida' saida.id %}" class="btn btn-success">Excluir</a>
+{% endif %}
+>>>>>>> origin/feat/relatorio-geral

@@ -4,12 +4,12 @@
 <!-- ============================================================== -->
 {%block title%} | Solicitações{%endblock%}
 
-{% block 'breadcump_title' %} 
-    Solicitações de  Cadastro
+{% block 'breadcump_title' %}
+Solicitações de Cadastro
 {% endblock %}
 
 {% block 'breadcump1' %}
-    <li class="breadcrumb-item active" aria-current="page">Solicitações</li>
+<li class="breadcrumb-item active" aria-current="page">Solicitações</li>
 {% endblock %}
 <!-- ============================================================== -->
 <!-- end pageheader  -->
@@ -30,43 +30,44 @@
   </div>
   {% endif %}
   <div class="card">
-      <h5 class="card-header">Pendentes</h5>
-      <div class="card-body">
-          <div class="table-responsive ">
-              {% if pendentes %}
-              <table class="table">
-                  <thead>
-                      <tr>
-                        <th scope="col">CPF</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">Igreja</th>
-                        <th scope="col">Ação</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    {% for solicitacao in pendentes %}
-                      <tr>
-                        <th scope="col">{{ solicitacao.usuario.cpf }}</th>
-                        <td>{{ solicitacao.usuario.nome }}</td>
-                        <td>{{ solicitacao.usuario.email }}</td>
-                        <td>{{ solicitacao.usuario.telefone }}</td>
-                        <td>{{ solicitacao.usuario.igreja }}</td>
-                        <td>
-                          <a href="{% url 'detalhar_cadastro' solicitacao.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
-                        </td>
-                      </tr>
-                    {% endfor %}
-                      
-                  </tbody>
-              </table>
-              {% else %}
-          <p>Nenhuma solicitação de cadastro pendente no momento.</p>
-          {% endif %}
-          </div>
-          
+    <h5 class="card-header">Pendentes</h5>
+    <div class="card-body">
+      <div class="table-responsive ">
+        {% if pendentes %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">CPF</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Email</th>
+              <th scope="col">Telefone</th>
+              <th scope="col">Igreja</th>
+              <th scope="col">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for solicitacao in pendentes %}
+            <tr>
+              <th scope="col">{{ solicitacao.usuario.cpf }}</th>
+              <td>{{ solicitacao.usuario.nome }}</td>
+              <td>{{ solicitacao.usuario.email }}</td>
+              <td>{{ solicitacao.usuario.telefone }}</td>
+              <td>{{ solicitacao.usuario.igreja }}</td>
+              <td>
+                <a href="{% url 'detalhar_cadastro' solicitacao.id %}" class="btn btn-info"><i
+                    class="fas fa-external-link-alt"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        {% else %}
+        <p>Nenhuma solicitação de cadastro pendente no momento.</p>
+        {% endif %}
       </div>
+
+    </div>
   </div>
 </div>
 
@@ -79,48 +80,49 @@
 <!-- ============================================================== -->
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-  
-  <div class="card">
-      <h5 class="card-header">Negadas</h5>
-      <div class="card-body">
-          <div class="table-responsive ">
-            {% if negadas %}
-              <table class="table">
-                  <thead>
-                      <tr>
-                        <th scope="col">CPF</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">Igreja</th>
-                        <th scope="col">Ação</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    {% for solicitacao in negadas %}
-                      <tr>
-                        <th scope="col">{{ solicitacao.usuario.cpf }}</th>
-                        <td>{{ solicitacao.usuario.nome }}</td>
-                        <td>{{ solicitacao.usuario.email }}</td>
-                        <td>{{ solicitacao.usuario.telefone }}</td>
-                        <td>{{ solicitacao.usuario.igreja }}</td>
-                        <td>
-                          <a href="{% url 'detalhar_cadastro' solicitacao.id %}" class="btn btn-error"><i class="fas fa-external-link-alt"></i></a>
-                        </td>
-                      </tr>
-                    {% endfor %}
 
-                    
-                      
-                  </tbody>
-                  
-              </table>
-              {% else %}
-              <p>Nenhuma solicitação de cadastro negada no momento.</p>
-              {% endif %}
-          </div>
-          
+  <div class="card">
+    <h5 class="card-header">Negadas</h5>
+    <div class="card-body">
+      <div class="table-responsive ">
+        {% if negadas %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">CPF</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Email</th>
+              <th scope="col">Telefone</th>
+              <th scope="col">Igreja</th>
+              <th scope="col">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for solicitacao in negadas %}
+            <tr>
+              <th scope="col">{{ solicitacao.usuario.cpf }}</th>
+              <td>{{ solicitacao.usuario.nome }}</td>
+              <td>{{ solicitacao.usuario.email }}</td>
+              <td>{{ solicitacao.usuario.telefone }}</td>
+              <td>{{ solicitacao.usuario.igreja }}</td>
+              <td>
+                <a href="{% url 'detalhar_cadastro' solicitacao.id %}" class="btn btn-error"><i
+                    class="fas fa-external-link-alt"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+
+
+
+          </tbody>
+
+        </table>
+        {% else %}
+        <p>Nenhuma solicitação de cadastro negada no momento.</p>
+        {% endif %}
       </div>
+
+    </div>
   </div>
 </div>
 <!-- ============================================================== -->
@@ -133,43 +135,44 @@
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
   <div class="card">
-      <h5 class="card-header">Aprovadas</h5>
-      <div class="card-body">
-          <div class="table-responsive ">
-            {% if aprovadas %}
-              <table class="table">
-                  <thead>
-                      <tr>
-                        <th scope="col">CPF</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">Igreja</th>
-                        <th scope="col">Ação</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    {% for solicitacao in aprovadas %}
-                      <tr>
-                        <th scope="col">{{ solicitacao.usuario.cpf }}</th>
-                        <td>{{ solicitacao.usuario.nome }}</td>
-                        <td>{{ solicitacao.usuario.email }}</td>
-                        <td>{{ solicitacao.usuario.telefone }}</td>
-                        <td>{{ solicitacao.usuario.igreja }}</td>
-                        <td>
-                          <a href="{% url 'detalhar_cadastro' solicitacao.id %}" class="btn btn-success"><i class="fas fa-external-link-alt"></i></a>
-                        </td>
-                      </tr>
-                    {% endfor %}
-                      
-                  </tbody>
-              </table>
-              {% else %}
+    <h5 class="card-header">Aprovadas</h5>
+    <div class="card-body">
+      <div class="table-responsive ">
+        {% if aprovadas %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">CPF</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Email</th>
+              <th scope="col">Telefone</th>
+              <th scope="col">Igreja</th>
+              <th scope="col">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for solicitacao in aprovadas %}
+            <tr>
+              <th scope="col">{{ solicitacao.usuario.cpf }}</th>
+              <td>{{ solicitacao.usuario.nome }}</td>
+              <td>{{ solicitacao.usuario.email }}</td>
+              <td>{{ solicitacao.usuario.telefone }}</td>
+              <td>{{ solicitacao.usuario.igreja }}</td>
+              <td>
+                <a href="{% url 'detalhar_cadastro' solicitacao.id %}" class="btn btn-success"><i
+                    class="fas fa-external-link-alt"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        {% else %}
         <p>Nenhuma solicitação de cadastro aprovada ainda.</p>
         {% endif %}
-          </div>
-          
       </div>
+
+    </div>
   </div>
 </div>
 <!-- ============================================================== -->

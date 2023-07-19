@@ -2,61 +2,62 @@
 {% load static %}
 {%block title%} | Membros{%endblock%}
 
-{% block 'breadcump_title' %} 
-    Membros
+{% block 'breadcump_title' %}
+Membros
 {% endblock %}
 
 {% block 'breadcump1' %}
-    <li class="breadcrumb-item active" aria-current="page">Membros</li>
+<li class="breadcrumb-item active" aria-current="page">Membros</li>
 {% endblock %}
 
 {% block 'content' %}
-  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-    {% if messages %}
-      <div class="messages">
-        {% for message in messages %}
-          <br>
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+    <br>
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
   <div class="card">
 
-        <div class="card-header">
-            Total
+    <div class="card-header">
+      Total
 
-        </div>
-        <div class="card-body">
-  {% if membros %}
-  <table class="table">
-    <thead class="bg-light">
-      <tr class="border-0">
-          <th class="border-0 scope="col">Nome</th>
-          <th class="border-0 scope="col">Data de nascimento</th> 
-          <th class="border-0 scope="col">Ação</th> 
-        </tr>
-      </thead>
-      <tbody>
-        {% for membro in membros %}
+    </div>
+    <div class="card-body">
+      {% if membros %}
+      <table class="table">
+        <thead class="bg-light">
+          <tr class="border-0">
+            <th class="border-0 scope=" col">Nome</th>
+            <th class="border-0 scope=" col">Data de nascimento</th>
+            <th class="border-0 scope=" col">Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for membro in membros %}
           <tr>
             <td>{{ membro.nome }}</td>
-            <td>{{ membro.data_nasc|date:"d/m/y" }}</td> 
+            <td>{{ membro.data_nasc|date:"d/m/y" }}</td>
             <td>
-              <a href="{% url 'editar_membro' membro.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
+              <a href="{% url 'editar_membro' membro.id %}" class="btn btn-info"><i
+                  class="fas fa-external-link-alt"></i></a>
               <a href="{% url 'excluir_membro' membro.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
             </td>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+          {% endfor %}
+        </tbody>
+      </table>
 
-  {% else %}
-    <p>Nenhum membro cadastrado.</p>
-  {% endif %}
+      {% else %}
+      <p>Nenhum membro cadastrado.</p>
+      {% endif %}
 
-</div>
-</div>
-    <a href="{% url 'cadastrar_membro'%}" class="btn btn-success">Adicionar</a>
+    </div>
   </div>
+  <a href="{% url 'cadastrar_membro'%}" class="btn btn-success">Adicionar</a>
+</div>
 
 {% endblock %}

@@ -1,7 +1,7 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
- 
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -24,7 +24,7 @@
         <!-- ============================================================== -->
         {% include '-nav.html' %}
         <!-- ============================================================== -->
-        
+
         <!-- ============================================================== -->
         <!-- left sidebar -->
         <!-- ============================================================== -->
@@ -39,11 +39,13 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
-                            <h2 class="pageheader-title"><a href="{%url 'home'%}"><i class="fas fa-home"></i></a>{% block 'breadcump_title' %}{% endblock %}</h2>
+                            <h2 class="pageheader-title"><a href="{%url 'home'%}"><i class="fas fa-home"></i></a>{%
+                                block 'breadcump_title' %}{% endblock %}</h2>
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="breadcrumb-link">AD Gestão</a></li>
+                                        <li class="breadcrumb-item"><a href="{% url 'home' %}"
+                                                class="breadcrumb-link">AD Gestão</a></li>
                                         {% block 'breadcump1' %} {% endblock %}
                                         {% block 'breadcump2' %} {% endblock %}
                                     </ol>
@@ -55,9 +57,9 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         {% block 'content' %}
-                        
+
                         {%endblock%}
-                        
+
                     </div>
                 </div>
             </div>
@@ -73,7 +75,7 @@
     <!-- end block content -->
     <!-- ============================================================== -->
 
-    
+
     <!-- Optional JavaScript -->
     <script src="{% static 'assets/vendor/jquery/jquery-3.3.1.min.js' %} "></script>
     <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.js' %} "></script>
@@ -82,5 +84,5 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </body>
- 
+
 </html>

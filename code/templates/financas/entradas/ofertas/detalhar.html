@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %}
 {%load bootstrap%}
 {% load static %}
@@ -32,3 +33,16 @@ Informações da oferta
 </div>
 {% endif %}
 {% endblock %}
+=======
+{% if oferta %}
+    <h2>Informações da oferta</h2>
+    <p>Data: {{ oferta.data_culto }}</p>
+    <p>Culto: {{ oferta.tipo_culto }}</p>
+    <p>Valor do dízimo: {{ oferta.valor_dizimo }}</p>
+    <p>Valor das ofertas: {{ oferta.valor_oferta }}</p>
+    <p>Total arrecadado: {{ oferta.total }}</p>
+
+    <a href="{% url 'editar_oferta' oferta.id %}" class="btn btn-success">Editar</a>
+    <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-success">Excluir</a>
+{% endif %}
+>>>>>>> origin/feat/relatorio-geral

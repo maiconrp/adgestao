@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+<<<<<<< HEAD
 <!-- ============================================================== -->
 <!-- pageheader  -->
 <!-- ============================================================== -->
@@ -75,9 +76,92 @@ Saídas
   
 </div>
 
+=======
+{% block 'content' %}
+<!-- ============================================================== -->
+<!-- pageheader  -->
+<!-- ============================================================== -->
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="page-header">
+          <h2 class="mb-2">Saídas</h2>
+          <div class="page-breadcrumb">
+              <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                      <li class="breadcrumb-item">Accounts</li>
+                      <li class="breadcrumb-item">Cadastros</li>
+                      <li class="breadcrumb-item active" aria-current="page">Listar</li>
+                  </ol>
+              </nav>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- ============================================================== -->
+<!-- end pageheader  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- pendentes responsive table -->
+<!-- ============================================================== -->
+{% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <br>
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+      <div class="card-body">
+          <div class="table-responsive ">
+              {% if saidas %}
+              <table class="table">
+                  <thead>
+                      <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Ação</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    
+                    {% for saida in saidas %}
+                    <tr>
+                      <th scope="col">{{ saida.data }}</th>
+                      <td>{{ saida.descricao }}</td>
+                      <td>{{ saida.valor }}</td>
+                      
+                      <td>
+                        <a href="{% url 'detalhar_saida' saida.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="{% url 'excluir_saida' saida.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                      
+                  </tbody>
+              </table>
+              {% else %}
+    <p>Nenhuma saida adicionada.</p>
+    {% endif %}
+          </div>
+
+          
+      </div>
+  </div>
+  <a href="{% url 'adicionar_saida'%}" class="btn btn-success">Adicionar</a>
+    <a href="{% url 'gerar_relatorio' %}" class="btn btn-info">Gerar relatório</a>
+</div>
+    
+>>>>>>> origin/feat/relatorio-geral
 
 
 <!-- ============================================================== -->
 <!-- end responsive table -->
 <!-- ============================================================== -->
+<<<<<<< HEAD
 {%endblock%}
+=======
+  {%endblock%}
+>>>>>>> origin/feat/relatorio-geral

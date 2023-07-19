@@ -3,37 +3,37 @@
 {%block 'content'%}
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-    
-    <div class="card">
-      <div class="card-body">
-        <div class="table-responsive">
-          {% if solicitacao %}
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">CPF</th>
-                <th scope="col">E-mail</th>
-                <th scope="col">Telefone</th>
-                <th scope="col">Situação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ solicitacao.usuario.nome }}</td>
-                <td>{{ solicitacao.usuario.cpf }}</td>
-                <td>{{ solicitacao.usuario.email }}</td>
-                <td>{{ solicitacao.usuario.telefone }}</td>
-                <td>{{ solicitacao.situacao }}</td>
-              </tr>
-            </tbody>
-          </table>
-          {% else %}
-          <p>Nenhuma solicitação encontrada.</p>
-          {% endif %}
-        </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        {% if solicitacao %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Nome</th>
+              <th scope="col">CPF</th>
+              <th scope="col">E-mail</th>
+              <th scope="col">Telefone</th>
+              <th scope="col">Situação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ solicitacao.usuario.nome }}</td>
+              <td>{{ solicitacao.usuario.cpf }}</td>
+              <td>{{ solicitacao.usuario.email }}</td>
+              <td>{{ solicitacao.usuario.telefone }}</td>
+              <td>{{ solicitacao.situacao }}</td>
+            </tr>
+          </tbody>
+        </table>
+        {% else %}
+        <p>Nenhuma solicitação encontrada.</p>
+        {% endif %}
       </div>
     </div>
   </div>
-  
+</div>
+
 {% endblock %}
