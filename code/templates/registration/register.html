@@ -1,30 +1,35 @@
 
 
+{% extends 'base.html' %}
 {%load bootstrap%}
 
 {% block content %}
 
-<section class="banner">
-  <h2 class="float-left">
+<section>
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+      {% for error in form.non_field_errors %}
+      {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if next %}
+    <div class="alert alert-yellow">
+     Faça login continuar
+    </div>
+    {% endif %}
+  <h2>
     Informe seus dados <br />
     para poder prosseguir
   </h2> 
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 col-md-12 col-xl-7">
-        <div class="col-md-12">
-       
-          <form method="post" class="feature-item mb-5 mb-lg-5">
+  <div>
+    <form method="post">
             
-            {% csrf_token %}
-            {{ form_solicitacao|bootstrap }}
+      {% csrf_token %}
+      {{ form_solicitacao|bootstrap }}
 
-            <input class="btn btn-primary btn-lg" type="submit" value="Cadastrar" />
-          </form>
-       
-        </div>
-      </div>
-    </div>
+      <input type="submit" value="Cadastrar" />
+    </form>
   </div>
 </section>
 

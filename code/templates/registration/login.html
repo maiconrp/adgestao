@@ -1,37 +1,91 @@
+{% load static %}
+{%load bootstrap%}
 
 
-{% block content %}
+<!doctype html>
+<html lang="en">
 
-  {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>AD Gestão | Login</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+  <link href="{% static 'assets/vendor/fonts/circular-std/style.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'assets/libs/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/vendor/fonts/fontawesome/css/fontawesome-all.css' %}">
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
 
-  {% if next %}
-    {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-    {% else %}
-      <p>Please login to see this page.</p>
+    body {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+      align-items: center;
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+  </style>
+</head>
+<!-- ============================================================== -->
+<!-- signup form  -->
+<!-- ============================================================== -->
+
+<body>
+
+  <!-- ============================================================== -->
+  <!-- signup form  -->
+  <!-- ============================================================== -->
+
+  <form class="splash-container" method="POST">
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+      {% for error in form.non_field_errors %}
+      {{ error }}
+      {% endfor %}
+    </div>
     {% endif %}
-  {% endif %}
-
-  <form method="post" action="{% url 'login' %}">
+    {% if next %}
+    <div class="alert alert-primary" role="alert">
+      Faça login para continuar
+    </div>
+    {% endif %}
     {% csrf_token %}
-    <table>
-      <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-      </tr>
-    </table>
-    <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{% url 'home' %}" />
+
+    <div class="card">
+
+
+
+      <div class="card-header">
+        <h3 class="mb-1">Entre na sua conta</h3>
+        <p>Insira seus dados para acessar o sistema.</p>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <input class="form-control form-control-lg" type="text" name="username" required placeholder="CPF"
+            autocomplete="off">
+        </div>
+        <div class="form-group">
+          <input class="form-control form-control-lg" type="password" name="password" required placeholder="Senha">
+        </div>
+        <p><a href="{% url 'password_reset' %}">Esqueceu sua senha?</a></p>
+
+        <div class="form-group pt-2">
+          <input type="submit" value="login" class="btn btn-block btn-primary" />
+          <input type="hidden" name="next" value="{{next}}" />
+        </div>
+
+      </div>
+      <div class="card-footer bg-white">
+        Não tem conta? <a href="{% url 'solicitar_cadastro' %}" class="text-secondary">Crie uma aqui.</a>
+      </div>
+    </div>
   </form>
+</body>
 
-  {# Assumes you setup the password_reset view in your URLconf #}
-  <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
 
-{% endblock %}
+</html>

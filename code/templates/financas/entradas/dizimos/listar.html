@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'breadcump_title' %}
+Dízimos
+{% endblock %}
+
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Dízimos</li>
+{% endblock %}
+
+{% block 'content' %}
+<!-- ============================================================== -->
+<!-- end pageheader  -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- pendentes responsive table -->
+<!-- ============================================================== -->
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  {% if messages %}
+<div class="messages">
+  {% for message in messages %}
+  <br>
+  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        {% if dizimos %}
+        <table class="table">
+          <thead class="bg-light">
+            <tr class="border-0">
+              <th class="border-0" scope="col">Data</th>
+              <th class="border-0" scope="col">Valor</th>
+              <th class="border-0" scope="col">Membro</th>
+              <th class="border-0" scope="col">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for dizimo in dizimos %}
+            <tr>
+              <td>{{ dizimo.data_culto|date:"d/M" }}</th>
+              <td>{{ dizimo.valor }}</td>
+              <td><a href="{% url 'editar_membro' dizimo.membro.id %}">{{ dizimo.membro }}</a></td>
+
+              <td>
+                <a href="{% url 'detalhar_dizimo' dizimo.id %}" class="btn btn-info"><i
+                    class="fas fa-external-link-alt"></i></a>
+               
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        {% else %}
+        <p>Nenhuma dízimo adicionado.</p>
+        {% endif %}
+      </div>
+
+
+    </div>
+  </div>
+  <a href="{% url 'adicionar_dizimo'%}" class="btn btn-success">Adicionar</a>
+
+</div>
+
+
+
+<!-- ============================================================== -->
+<!-- end responsive table -->
+<!-- ============================================================== -->
+{%endblock%}

@@ -1,0 +1,47 @@
+
+{% extends 'base.html' %}
+{%load bootstrap%}
+{%block title%} | Igrejas | Editar{%endblock%}
+
+{% load static %}
+
+{% block 'breadcump_title' %} 
+Igrejas
+{% endblock %}
+
+{% block 'breadcump1' %}
+    <li class="breadcrumb-item"><a href="{% url 'listar_igrejas' %}" class="breadcrumb-link">Igrejas</a></li>
+
+{% endblock %}
+
+{% block 'breadcump2' %}
+    <li class="breadcrumb-item active" aria-current="page">{{ igreja.id }}</li>
+{% endblock %}
+{% block 'content' %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+
+        <div class="card-header">
+    Editar igreja
+
+        </div>
+        <div class="card-body">
+<section>
+  <h2>
+  </h2> 
+  <div>
+    <form method="post">
+            
+      {% csrf_token %}
+      {{ form|bootstrap }}
+
+      <input type="submit" value="Salvar" class="btn btn-success" />
+    </form>
+  </div>
+</section>
+</div>
+</div>
+</div>
+
+{% endblock %}

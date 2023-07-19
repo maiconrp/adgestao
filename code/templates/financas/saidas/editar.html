@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{%block title%} | Saídas | Editar{%endblock%}
+
+{%load bootstrap%}
+
+{% block 'content' %}
+
+<section>
+  <h2>
+    Adicionar Saidas
+  </h2> 
+  <div>
+    <form method="post">
+            
+      {% csrf_token %}
+      {{ form|bootstrap }}
+
+      <input type="submit" class="btn btn-success" value="Salvar" />
+      <a href="{%url 'listar_saida' %}"><input class="btn btn-outline-info" value="Cancelar" /></a>
+    </form>
+  </div>
+</section>
+
+{% endblock %}

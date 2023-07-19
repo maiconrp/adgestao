@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import os, sys
+import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-bj_xd+7+^kae#l$2%s)zbz=h(s^=n_xosy!h$ri=g#f+248p4c"
+SECRET_KEY = ""
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,12 +39,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
+
     # Meus apps
     'accounts',
     'igreja',
     'financas',
-    
+
     # Úteis
     'phonenumbers',
     'bootstrapform'
@@ -122,7 +123,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -136,4 +136,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, '../apps'))
 
-LOGIN_REDIRECT_URL = "/home"
+LOGIN_REDIRECT_URL = "/accounts/home"
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [str(BASE_DIR) + "/static"]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+

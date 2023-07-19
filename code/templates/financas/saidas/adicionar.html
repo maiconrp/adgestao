@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{%load bootstrap%}
+
+{%block title%} | Saídas | Adicionar{%endblock%}
+
+
+{% block 'content' %}
+
+<section>
+  <h2>
+    Adicionar Saidas
+  </h2> 
+  <div>
+    <form method="post">
+            
+      {% csrf_token %}
+      {{ form|bootstrap }}
+
+      <input type="submit" class="btn btn-success"value="Cadastrar" />
+    </form>
+  </div>
+</section>
+
+{% endblock %}

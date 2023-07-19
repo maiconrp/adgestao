@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'breadcump_title' %}
+Paz do Senhor, {{usuario_nome}}
+{% endblock %}
+
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Home</li>
+{% endblock %}
+
+{% block 'content' %}
+
+<div class="row">
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Dizimos</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">R${{total_dizimos}}</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light">
+                        <i class="fa fa-fw fa-arrow-up"></i></span><span class="ml-1">{{variacao_dizimos|floatformat:0}}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Ofertas</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">R${{total_ofertas}}</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right text-success font-weight-bold">
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light"><i
+                            class="fa fa-fw fa-arrow-up"></i></span><span class="ml-1">{{variacao_ofertas|floatformat:0}}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h4 class="text-muted">Saidas</h4>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">R${{total_saidas}}</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right font-weight-bold">
+                    {% if variacao_saidas > 0 %}
+                    <span class="icon-circle-small icon-box-xs text-danger bg-danger-light">
+                        <i class="fa fa-fw fa-arrow-up"></i>
+                    </span>
+                    {% else %}
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light">
+                        <i class="fa fa-fw fa-arrow-down"></i>
+                    </span>
+                    {% endif %}
+                    <span class="ml-1">{{ variacao_saidas|floatformat:0 }}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+        <div class="card border-3 border-top border-top-primary">
+            <div class="card-body">
+                <h5 class="text-muted">Total</h5>
+                <div class="metric-value d-inline-block">
+                    <h1 class="mb-1">R${{total}}</h1>
+                </div>
+                <div class="metric-label d-inline-block float-right font-weight-bold">
+                    {% if variacao_total > 0 %}
+                    <span class="icon-circle-small icon-box-xs text-success bg-success-light">
+                        <i class="fa fa-fw fa-arrow-up"></i>
+                    </span>
+                    {% else %}
+                    <span class="icon-circle-small icon-box-xs text-danger bg-danger-light">
+                        <i class="fa fa-fw fa-arrow-down"></i>
+                    </span>
+                    {% endif %}
+                    <span class="ml-1">{{ variacao_total|floatformat:0}}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+
+        <div class="card">
+            <h4 class="card-header">Membros</h4>
+            <div class="card-body">
+                {% if membros %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="bg-light">
+                            <tr class="border-0">
+                                <th class="border-0">Nome</th>
+                                <th class="border-0">Data de Nascimento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for membro in membros%}
+                            <tr>
+                                <td>{{membro.nome}} </td>
+                                <td>{{membro.data_nasc}} </td>
+                                {% comment %} <td><span class="badge-dot badge-brand mr-1"></span>InTransit </td>
+                                {%endcomment %}
+                            </tr>
+                            {%endfor%}
+                            <tr>
+                                <td colspan="9"><a href="{% url 'listar_membros' %}"
+                                        class="btn btn-outline-light float-right">Ver detalhes</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {% else %}
+                <p>Nenhum membro cadastrado.</p>
+                {% endif %}
+            </div>
+        </div>
+        {% if perms.accounts.tesoureiro_sede %}
+        <div class="card">
+            <h4 class="card-header">Igrejas</h4>
+            <div class="card-body">
+                {% if igrejas %}
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="bg-light">
+                            <tr class="border-0">
+                                <th class="border-0">Nome</th>
+                                <th class="border-0">Local</th>
+                                <th class="border-0">Saldo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for igreja in igrejas %}
+                            <tr>
+                                <td>{{ igreja.nome }}</td>
+                                <td>{{ igreja.localizacao }}</td>
+                                <td>{{ igreja.saldo }}</td>
+
+
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="9"><a href="{% url 'listar_igrejas' %}"
+                                        class="btn btn-outline-light float-right">Ver detalhes</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p>Nenhuma Igreja Cadastrada</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {%endif%}
+    </div>
+
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <h5 class="card-header">Saldos</h5>
+            <div class="card-body">
+                <canvas id="myChart"></canvas>
+            </div>
+            <div class="card-footer"></div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for m in mes %}'{{ m }}', {% endfor %}],
+        datasets: [{
+            label: 'Total dos últimos 5 meses',
+            data: [{% for t in total_meses_data %}{{ t }}, {% endfor %}],
+        borderWidth: 1,
+        backgroundColor: [{% for color in total_meses_color %} '{{color}}', {% endfor %}],
+            }]
+        },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                    grid: {
+                    display: false
+                },
+                ticks: {
+                    callback: function (value, index, values) {
+                        return 'R$ ' + value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    }
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+        },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        var label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        label += 'R$ ' + context.parsed.y.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                        return label;
+                    }
+                }
+            }
+        }
+    }
+    });
+</script>
+
+
+<!-- Restante do seu código HTML -->
+
+
+{% endblock %}

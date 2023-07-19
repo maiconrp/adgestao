@@ -1,9 +1,11 @@
 import uuid
 
+from decimal import Decimal
 import accounts.models
 import igreja.models
 from django.db import models
-from django.db.models import F
+from django.db.models import F, Q
+
 
 from adgestao.validators import validate_cpf, validate_data
 
@@ -22,7 +24,7 @@ class Saida(models.Model):
     )
 
     data = models.DateField(
-        validators=[validate_data]
+        # validators=[validate_data]
     )
 
     descricao = models.TextField(
@@ -50,24 +52,16 @@ class Saida(models.Model):
 
 
 class Entrada(models.Model):
-
-    # função F para referenciar os campos valor_culto e valor_dizimo
-    total = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,
-        default=F('ofertas.total') + F('dizimos.valor')
+    ofertas = models.ManyToManyField(
+        igreja.models.OfertaCulto,
+        related_name="entradas_ofertas",
+        blank=True
     )
 
-    ofertas = models.ForeignKey(
-        igreja.models.Oferta,
-        related_name='Entrada_oferta',
-        on_delete=models.CASCADE,
-    )
-
-    dizimos = models.ForeignKey(
+    dizimos = models.ManyToManyField(
         igreja.models.Dizimo,
-        related_name='Entrada_dizimo',
-        on_delete=models.CASCADE,
+        related_name="entradas_dizimos",
+        blank=True
     )
 
     igreja = models.ForeignKey(
@@ -76,8 +70,16 @@ class Entrada(models.Model):
         on_delete=models.CASCADE,
     )
 
+  
+    def save(self, *args, **kwargs):
+            is_new_instance = not self.pk
+            super().save(*args, **kwargs)
+            if is_new_instance:
+                self.ofertas.set([])
+                self.dizimos.set([])       
+
     def __str__(self):
-        return "Entrada -" 
+        return f"Entrada - {self.igreja.nome} - {self.igreja.pk}" 
     # + self.data.strftime('%d/%m/%Y')
 
     def gerar_relatorio(self, **kargs):
@@ -201,34 +203,57 @@ class RelatorioGeral(models.Model):
 
 
 class RelatorioMensal(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
 
-    data = models.DateField(
+    data_inicio = models.DateField(
         validators=[validate_data]
     )
 
-    pagamento_obreiro = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,
-        default=F('entradas.total')*0.1
+    data_fim = models.CharField(
+        max_length=10,
+        default=data_inicio,
+        validators=[validate_data]
+
+    )
+
+    entradas = models.ForeignKey(
+        Entrada,
+        related_name='relatorio_mensal_entradas',
+        on_delete=models.DO_NOTHING,
+        blank=True,
+        null=True
+    )
+
+    saidas = models.ForeignKey(
+        Saida,
+        related_name='relatorio_mensal_saida',
+        on_delete=models.DO_NOTHING,
+        blank=True,
+        null=True
     )
 
     missoes_sede = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        default=F('entradas.total')*0.1
+        default=0
     )
 
     fundo_convencional = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        default=F('entradas.total')*0.05
+        default=0
+
     )
 
     saldo = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        default=F('entradas.total')-F('fundo_convencional') -
-        F('missoes_sede')-F('pagamento_obreiro')-F('saidas.total')
+        default=0
+        
     )
 
     igreja = models.ForeignKey(
@@ -237,26 +262,49 @@ class RelatorioMensal(models.Model):
         on_delete=models.CASCADE,
     )
 
-    entradas = models.ForeignKey(
-        Entrada,
-        related_name='relatorio_mensal_entradas',
-        on_delete=models.CASCADE,
-    )
 
-    saidas = models.ForeignKey(
-        Saida,
-        related_name='relatorio_mensal_saidas',
-        on_delete=models.CASCADE,
-    )
+    @property
+    def total_entradas(self):
+        mes_relatorio = self.data_inicio.month
+        ano_relatorio = self.data_inicio.year
+        
+        ofertas_mes = self.entradas.ofertas.filter(Q(data_culto__month=mes_relatorio) & Q(data_culto__year=ano_relatorio))
+        
+        total_entradas = 0
 
-    tesoureiro_sede = models.ForeignKey(
-        accounts.models.Usuario,
-        related_name='relatorio_mensal_tesoureiro_sede',
-        on_delete=models.DO_NOTHING,
-    )
+        for oferta in ofertas_mes:
+            total_entradas = total_entradas + oferta.total
+
+        return total_entradas
+
+    
+    @property
+    def pagamento_obreiro(self):
+        total_entradas = self.total_entradas
+        pagamento_obreiro = Decimal(total_entradas) * Decimal('0.1')
+        pagamento_obreiro = format(pagamento_obreiro, '.2f')
+        return pagamento_obreiro
+
+    @property
+    def missoes_sede(self):
+        total_entradas = self.total_entradas
+        missoes_sede = Decimal(total_entradas) * Decimal('0.1')
+        missoes_sede = format(missoes_sede, '.2f')
+        return missoes_sede
+
+    
+
+    @property
+    def fundo_convencional(self):
+        total_entradas = self.total_entradas
+        fundo_convencional = Decimal(total_entradas) * Decimal('0.05')
+        fundo_convencional = format(fundo_convencional, '.2f')
+        return  fundo_convencional
+
+
 
     def __str__(self):
-        return "Relatório Mensal -" + self.data.strftime('%d/%m/%Y')
+        return "Relatório Mensal - " + self.igreja.nome + " " + self.data_inicio.strftime('%d/%m/%Y')
 
     def baixar(self):
         return "Baixar Relatório"

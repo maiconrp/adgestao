@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{%load bootstrap%}
+
+{%block title%} | Relatórios | Editar{%endblock%}
+
+{% block 'content' %}
+
+<section>
+  <h2>
+    Editar Relatório mensal
+  </h2> 
+  <div>
+    <form method="post">
+            
+      {% csrf_token %}
+      {{ form|bootstrap }}
+
+      <input type="submit" class="btn btn-success" value="Salvar" />
+
+    </form>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+ 
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>AD Gestão{% block title %}{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %} ">
+    <link href="{% static 'assets/vendor/fonts/circular-std/style.css' %} " rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/libs/css/style.css' %} ">
+    <link rel="stylesheet" href="{% static 'assets/vendor/fonts/fontawesome/css/fontawesome-all.css' %} ">
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Nav bar-->
+        <!-- ============================================================== -->
+        {% include '-nav.html' %}
+        <!-- ============================================================== -->
+        
+        <!-- ============================================================== -->
+        <!-- left sidebar -->
+        <!-- ============================================================== -->
+        {% include '-left-sidebar.html' %}
+        <!-- ============================================================== -->
+
+        <!-- ============================================================== -->
+        <!-- block content  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="container-fluid dashboard-content">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h2 class="pageheader-title"><a href="{%url 'home'%}"><i class="fas fa-home"></i></a>{% block 'breadcump_title' %}{% endblock %}</h2>
+                            <div class="page-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="breadcrumb-link">AD Gestão</a></li>
+                                        {% block 'breadcump1' %} {% endblock %}
+                                        {% block 'breadcump2' %} {% endblock %}
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {% block 'content' %}
+                        
+                        {%endblock%}
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- footer -->
+            {% include '-footer.html' %}
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end block content -->
+    <!-- ============================================================== -->
+
+    
+    <!-- Optional JavaScript -->
+    <script src="{% static 'assets/vendor/jquery/jquery-3.3.1.min.js' %} "></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.js' %} "></script>
+    <script src="{% static 'assets/vendor/slimscroll/jquery.slimscroll.js' %} "></script>
+    <script src="{% static 'assets/libs/js/main-js.js' %} "></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+ 
+</html>

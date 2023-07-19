@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{%load bootstrap%}
+{% load static %}
+
+{%block title%} | Ofertas | Detalhar{%endblock%}
+
+{% block 'breadcump_title' %}
+Informações da oferta
+{% endblock %}
+
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Dízimos</li>
+{% endblock %}
+
+{% block 'content' %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card border-3 border-top border-top-primary">
+        <div class="card-body">
+            {% if oferta %}
+            <p>Data: {{ oferta.data_culto }}</p>
+            <p>Culto: {{ oferta.tipo_culto }}</p>
+            <p>Valor do dízimo: {{ oferta.valor_dizimo }}</p>
+            <p>Valor das ofertas: {{ oferta.valor_oferta }}</p>
+            <p>Total arrecadado: {{ oferta.total }}</p>
+
+        </div>
+    </div>
+    <a href="{% url 'editar_oferta' oferta.id %}" class="btn btn-info">Editar</a>
+    <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i
+        class="fas fa-trash-alt"></i></a>
+</div>
+{% endif %}
+{% endblock %}

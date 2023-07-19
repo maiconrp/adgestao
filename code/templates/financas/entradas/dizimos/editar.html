@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{%load bootstrap%}
+
+
+{% block 'breadcump_title' %}
+Dízimo
+{% endblock %}
+
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Dízimos</li>
+{% endblock %}
+
+{% block 'breadcump2' %}
+<li class="breadcrumb-item active" aria-current="page">{{dizimo.id}}</li>
+{% endblock %}
+{% block 'content' %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+    <div class="card-body">
+      <section>
+        <h2>
+          Editar dízimo
+        </h2>
+        
+          <form method="post">
+
+            {% csrf_token %}
+            {{ form|bootstrap }}
+          </div>
+        </div>
+            <input type="submit" class="btn btn-success" value="Salvar" />
+            <a href="{%url 'listar_dizimos' %}"><input class="btn btn-outline-info" value="Cancelar" /></a>
+          </form>
+      </section>
+    
+</div>
+{% endblock %}

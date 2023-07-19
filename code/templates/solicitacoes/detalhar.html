@@ -1,11 +1,58 @@
-{% if solicitacao %}
-    <h2>Informações da Solicitação</h2>
-    <p>Nome: {{ solicitacao.usuario.nome }}</p>
-    <p>CPF: {{ solicitacao.usuario.cpf }}</p>
-    <p>E-mail: {{ solicitacao.usuario.email }}</p>
-    <p>Telefone: {{ solicitacao.usuario.telefone }}</p>
-    <p>Situação: {{ solicitacao.usuario.situacao }}</p>
+{% extends 'base.html' %}
+{% load static %}
+{%block title%} | Solicitação | Detalhar{%endblock%}
 
+{% block 'breadcump_title' %} 
+    Solicitação
+{% endblock %}
+
+{% block 'breadcump1' %}
+    <li class="breadcrumb-item"><a href="{% url 'listar_cadastros' %}" class="breadcrumb-link">Solicitações</a></li>
+
+{% endblock %}
+
+{% block 'breadcump2' %}
+    <li class="breadcrumb-item active" aria-current="page">{{ solicitacao.usuario.nome }}</li>
+{% endblock %}
+
+{% block 'content' %}
+
+{% if solicitacao %}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card">
+        <h5 class="card-header">Solicitação de {{ solicitacao.usuario.nome }}</h5>
+        <div class="card-body">
+            <div class="table-responsive ">
+                <table class="table">
+                    <thead>
+                        <tr>
+                          <th scope="col">CPF</th>
+                          <th scope="col">Nome</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Telefone</th>
+                          <th scope="col">Igreja</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                          <th scope="col">{{ solicitacao.usuario.cpf }}</th>
+                          <td>{{ solicitacao.usuario.nome }}</td>
+                          <td>{{ solicitacao.usuario.email }}</td>
+                          <td>{{ solicitacao.usuario.telefone }}</td>
+                          <td>{{ solicitacao.usuario.igreja }}</td>
+                          
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
     <a href="{% url 'responder_cadastro' solicitacao.id 'autorizar' %}" class="btn btn-success">Autorizar</a>
     <a href="{% url 'responder_cadastro' solicitacao.id 'negar' %}" class="btn btn-danger">Negar</a>
+  </div>
+
 {% endif %}
+
+{% endblock %}

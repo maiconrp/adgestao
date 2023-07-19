@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+<!-- ============================================================== -->
+<!-- pageheader  -->
+<!-- ============================================================== -->
+
+{%block title%} | Relatórios | Detalhar{%endblock%}
+
+
+{% block 'breadcump_title' %} 
+    Relatórios
+{% endblock %}
+
+{% block 'breadcump1' %}
+    <li class="breadcrumb-item"><a href="{% url 'listar_relatorios_mensais' %}" class="breadcrumb-link">Finanças</a></li>
+
+{% endblock %}
+
+{% block 'breadcump2' %}
+    <li class="breadcrumb-item active" aria-current="page">Relatório Mensal</li>
+{% endblock %}
+
+{% block 'content' %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive ">
+
+{% if relatorio_mensal %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th colspan="2">Informações do Relatório Mensal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Data de início</td>
+                <td>{{ relatorio_mensal.data_inicio }}</td>
+            </tr>
+            <tr>
+                <td>Data de término</td>
+                <td>{{ relatorio_mensal.data_fim }}</td>
+            </tr>
+            <tr>
+                <td>Pagamento para obreiros</td>
+                <td>{{ relatorio_mensal.pagamento_obreiro }}</td>
+            </tr>
+            <tr>
+                <td>Fundo convencional</td>
+                <td>{{ relatorio_mensal.fundo_convencional }}</td>
+            </tr>
+            <tr>
+                <td>Missões sede</td>
+                <td>{{ relatorio_mensal.missoes_sede }}</td>
+            </tr>
+            <tr>
+                <td>Saldo</td>
+                <td>{{ relatorio_mensal.igreja.ofertas }}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+    </div>
+    
+    </div>
+    </div>
+  <a href="{% url 'gerar_relatorio'%}" class="btn btn-success">Baixar</a>
+  <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-danger">Excluir</a>
+</div>
+{% endif %}
+{% endblock %}

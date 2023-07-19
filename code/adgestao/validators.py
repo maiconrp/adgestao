@@ -31,19 +31,24 @@ def validate_cpf(value):
         raise ValidationError("CPF inválido.")
 
 
-def validate_data(date):
-    if not isinstance(date, (str, datetime.datetime)):
-        raise ValidationError("Tipo inválido. A data deve ser representada como uma string ou um objeto datetime.")
+import datetime
 
+def validate_data(date):
     if isinstance(date, str):
         try:
             datetime.datetime.strptime(date, "%d/%m/%Y")
         except ValueError:
             raise ValidationError("Data inválida. Utilize o formato 'dia/mês/ano'")
 
+        # Verificar se o ano está entre 1900 e o ano atual
+        day, month, year = map(int, date.split('/'))
+        if year < 1900 or year > datetime.datetime.now().year:
+            raise ValidationError(f"Data inválida. Insira um ano entre 1900 e {datetime.datetime.now().year}")
+
     if isinstance(date, datetime.datetime):
         if date.year < 1900 or date.year > datetime.datetime.now().year:
-            raise ValidationError(f"Data inválida. Isira um ano entre 1900 e {datetime.datetime.now().year}")
+            raise ValidationError(f"Data inválida. Insira um ano entre 1900 e {datetime.datetime.now().year}")
+
 
 def validate_telefone(value):
     try:
