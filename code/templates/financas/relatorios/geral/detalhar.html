@@ -6,6 +6,7 @@
 {% if relatorio_geral %}
     <p>Tesoureiro Sede: {{ relatorio_geral.tesoureiro_sede.nome }}</p>
     <h2>Informações do Relatório geral</h2>
+    <p>Status: {{ relatorio_geral.status }}</p>
     <p>Data de início: {{ relatorio_geral.data_inicio }}</p>
     <p>Data de término: {{ relatorio_geral.data_fim }}</p>
     <p>Total entradas da sede: {{ relatorio_geral.calc_entradas_sede }}</p>
@@ -32,7 +33,7 @@
         </div>
       </section>
 
-    
+      <input type="submit" class="btn btn-success" value="Finalizar" onclick="window.location.href='{% url 'finalizar_relatorio_geral' relatorio_geral.id %}'" />
 
 {% endif %}
 {% endblock %}
