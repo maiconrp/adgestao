@@ -22,6 +22,9 @@ urlpatterns = [
     path('relatorios/mensal/excluir/<uuid:relatorio_id>/', excluir_relatorio_mensal, name='excluir_relatorio_mensal'),
     path('relatorios/mensal/listar/', listar_relatorios_mensais, name='listar_relatorios_mensais'),
     path('relatorios/mensal/detalhar/<uuid:relatorio_id>/', detalhar_relatorio_mensal, name='detalhar_relatorio_mensal'),
+    path('relatorios/mensal/finalizar/<uuid:relatorio_id>/', finalizar_relatorio_mensal, name='finalizar_relatorio_mensal'),
     path('relatorios/geral/listar/', listar_relatorios_gerais, name='listar_relatorios_gerais'),
     path('relatorios/geral/detalhar/<uuid:relatorio_id>/', detalhar_relatorio_geral, name='detalhar_relatorio_geral'),
+    path('relatorios/geral/finalizar/<uuid:relatorio_id>/', finalizar_relatorio_geral, name='finalizar_relatorio_geral'),
+
 ]
