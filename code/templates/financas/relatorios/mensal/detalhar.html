@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+{%load bootstrap%}
+
+{% block 'content' %}
+
 {% if relatorio_mensal %}
     <h2>Informações do Relatório mensal</h2>
     <p>Data de início: {{ relatorio_mensal.data_inicio }}</p>
@@ -10,4 +15,6 @@
 
     <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-success">Excluir</a>
 {% endif %}
+
+{% endblock %}
 

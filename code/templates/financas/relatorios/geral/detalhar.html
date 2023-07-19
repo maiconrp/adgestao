@@ -4,6 +4,7 @@
 {% block 'content' %}
 
 {% if relatorio_geral %}
+    <p>Tesoureiro Sede: {{ relatorio_geral.tesoureiro_sede.nome }}</p>
     <h2>Informações do Relatório geral</h2>
     <p>Data de início: {{ relatorio_geral.data_inicio }}</p>
     <p>Data de término: {{ relatorio_geral.data_fim }}</p>
@@ -11,6 +12,8 @@
     <p>Total saida da sede: {{ relatorio_geral.calc_saidas_sede }}</p>
     <p>Total entradas locais: {{ relatorio_geral.calc_entradas_locais }}</p>
     <p>Total saida locais: {{ relatorio_geral.calc_saidas_locais }}</p>
+    <p>Saldo: {{ relatorio_geral.calc_saldo }}</p>
+
     
 
     <section>
@@ -29,7 +32,7 @@
         </div>
       </section>
 
-    <p>Tesoureiro Sede: {{ relatorio_geral.tesoureiro_sede.nome }}</p>
+    
 
 {% endif %}
 {% endblock %}
