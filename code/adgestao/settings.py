@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ""
+SECRET_KEY = "django-insecure-bj_xd+7+^kae#l$2%s)zbz=h(s^=n_xosy!h$ri=g#f+248p4c"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -140,6 +140,3 @@ LOGIN_REDIRECT_URL = "/accounts/home"
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [str(BASE_DIR) + "/static"]
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
