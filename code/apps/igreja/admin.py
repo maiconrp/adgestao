@@ -10,7 +10,9 @@ class DizimoAdminForm(forms.ModelForm):
 
 class DizimoAdmin(admin.ModelAdmin):
     form = DizimoAdminForm
+    list_display = ('membro', 'igreja', 'data_culto', 'valor')
 
+    
 
 admin.site.register(Dizimo, DizimoAdmin)
 admin.site.register(OfertaCulto)
