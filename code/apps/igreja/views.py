@@ -9,15 +9,29 @@ from django.shortcuts import render, reverse
 from accounts.views import obterUsuario
 from financas.views import criar_relatorio_mensal, criar_relatorio_geral
 from financas.models import Entrada, RelatorioGeral
+import calendar
+from datetime import datetime
 
 
 
 # Create your views here.
 @login_required
-#@permission_required('accounts.tesoureiro_sede')
+@permission_required('accounts.tesoureiro_sede')
 def cadastrar_igreja(request):
     numero_igrejas_criadas = Igreja.objects.count()
 
+    ############ obtendo a data que contém o último dia do mês
+    data_atual = datetime.now()
+
+    # Obtém o último dia do mês
+    ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
+
+    # Cria a data do último dia do mês
+    data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
+
+    # Formata a data no formato "dd/mm/aaaa"
+    data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
+    print(data_fim)
     usuario = obterUsuario(request)
 
     if request.method == 'POST':
@@ -32,7 +46,7 @@ def cadastrar_igreja(request):
             entrada_criada = Entrada(igreja=igreja_cad)
             entrada_criada.save()
 
-            criar_relatorio_mensal(igreja_cad, entrada_criada)
+            criar_relatorio_mensal(igreja_cad, entrada_criada, data_fim)
            
             messages.success(request, 'Igreja cadastrada com sucesso !')
             context = {
@@ -41,11 +55,10 @@ def cadastrar_igreja(request):
             return HttpResponseRedirect(reverse('listar_igrejas'))
     else:
         form = IgrejaForm()
-    print(numero_igrejas_criadas)
+    
     if numero_igrejas_criadas == 1:
-        #entrada_sede = Entrada.objects.get(igreja=usuario.igreja)
-        #print(entrada_sede.igreja)
-        criar_relatorio_geral(usuario)
+        criar_relatorio_geral(usuario, data_fim)
+
     else:
         print('Mais de uma igreja foi criada, o relatorio geral ja foi criado !')
         
