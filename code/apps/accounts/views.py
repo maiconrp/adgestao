@@ -8,9 +8,8 @@ from .models import Usuario, SolicitacaoCadastro
 from django.contrib import messages
 
 
-from financas.models import Saida
+from financas.models import Saida, Entrada
 from igreja.models import Dizimo, OfertaCulto, Membro, Igreja
-
 
 @login_required
 def obterUsuario(request):
