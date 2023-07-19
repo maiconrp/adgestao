@@ -7,15 +7,18 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, reverse
 from accounts.views import obterUsuario
-from financas.views import criar_relatorio_mensal
-from financas.models import Entrada
+from financas.views import criar_primeiro_relatorio_mensal, criar_primeiro_relatorio_geral
+from financas.models import Entrada, RelatorioGeral
+import calendar
+from datetime import datetime
+
 
 
 # Create your views here.
 @login_required
 @permission_required('accounts.tesoureiro_sede')
 def cadastrar_igreja(request):
-
+    numero_igrejas_criadas = Igreja.objects.count()
     usuario = obterUsuario(request)
 
     if request.method == 'POST':
@@ -30,7 +33,7 @@ def cadastrar_igreja(request):
             entrada_criada = Entrada(igreja=igreja_cad)
             entrada_criada.save()
 
-            criar_relatorio_mensal(igreja_cad, entrada_criada)
+            criar_primeiro_relatorio_mensal(igreja_cad, entrada_criada)
            
             messages.success(request, 'Igreja cadastrada com sucesso !')
             context = {
@@ -39,22 +42,26 @@ def cadastrar_igreja(request):
             return HttpResponseRedirect(reverse('listar_igrejas'))
     else:
         form = IgrejaForm()
+    
+    if numero_igrejas_criadas == 1:
+        criar_primeiro_relatorio_geral(usuario)
+
+    else:
+        print('Mais de uma igreja foi criada, o relatorio geral ja foi criado !')
         
     context = {
         'form' : form,
     }
- 
+    
     return render(request, 'igreja/cadastrar.html', context)
 
+
+
 @login_required
-@permission_required('accounts.tesoureiro_sede')
+@permission_required('accounts.tesoureiro')
 def listar_igrejas(request):
-    usuario = obterUsuario(request)
-    
     igrejas = Igreja.objects.all()
     context = {
-        'usuario': usuario,
-        'igreja': usuario.igreja,
         'igrejas': igrejas
     }
     return render(request, 'igreja/listar.html', context)
