@@ -96,6 +96,11 @@ class RelatorioGeral(models.Model):
         default=uuid.uuid4,
         editable=False
     )
+    
+    status = models.CharField(
+        max_length=10,
+        default='ativo'
+    )
 
     saldo = models.DecimalField(
         max_digits=12,
@@ -108,9 +113,8 @@ class RelatorioGeral(models.Model):
         validators=[validate_data]
     )
 
-    data_fim = models.CharField(
-        max_length=10,
-        default='2023-00-00'
+    data_fim = models.DateField(
+        validators=[validate_data]
     )
 
     entradas_sede = models.DecimalField(
@@ -137,16 +141,14 @@ class RelatorioGeral(models.Model):
     saidas_sede = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        blank=True,
-        null=True,
+        default=0,
         verbose_name='Saídas Sede',
     )
 
     saidas_locais = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        blank=True,
-        null=True,
+        default=0,
         verbose_name='Saídas Locais',
     )
 
@@ -204,15 +206,10 @@ class RelatorioGeral(models.Model):
         
         entradas_mes = OfertaCulto.objects.filter(data_culto__month=mes_relatorio, data_culto__year=ano_relatorio, igreja=self.tesoureiro_sede.igreja)
         
-        total_entradas = 0
+        total_entradas = Decimal('0')
 
         for entradas in entradas_mes:
-            total_entradas = total_entradas + entradas.total
-        
-        relatorio_geral = RelatorioGeral.objects.get(tesoureiro_sede=self.tesoureiro_sede)
-        
-        relatorio_geral.entradas_sede = total_entradas
-        relatorio_geral.save()
+            total_entradas += entradas.total
 
         return total_entradas
 
@@ -223,15 +220,11 @@ class RelatorioGeral(models.Model):
         
         entradas_mes = OfertaCulto.objects.filter(data_culto__month=mes_relatorio, data_culto__year=ano_relatorio).exclude(igreja=self.tesoureiro_sede.igreja)
         
-        total_entradas = 0
+        total_entradas = Decimal('0')
 
         for entradas in entradas_mes:
-            total_entradas = total_entradas + entradas.total
+            total_entradas += entradas.total
         
-        relatorio_geral = RelatorioGeral.objects.get(tesoureiro_sede=self.tesoureiro_sede)
-        
-        relatorio_geral.entradas_locais = total_entradas
-        relatorio_geral.save()
 
         return total_entradas
 
@@ -243,10 +236,10 @@ class RelatorioGeral(models.Model):
 
         saidas = Saida.objects.filter(data__month=mes_relatorio, data__year=ano_relatorio, igreja=self.tesoureiro_sede.igreja)
 
-        total_saidas = 0
+        total_saidas = Decimal('0')  # Inicializa como um objeto Decimal
 
         for saida in saidas:
-            total_saidas = total_saidas + saida.valor
+            total_saidas += saida.valor  # Utiliza a sintaxe de soma para Decimal
 
         return total_saidas
 
@@ -258,10 +251,10 @@ class RelatorioGeral(models.Model):
 
         saidas = Saida.objects.filter(data__month=mes_relatorio, data__year=ano_relatorio).exclude(igreja=self.tesoureiro_sede.igreja)
 
-        total_saidas = 0
+        total_saidas = Decimal('0')  # Inicializa como um objeto Decimal
 
         for saida in saidas:
-            total_saidas = total_saidas + saida.valor
+            total_saidas += saida.valor  # Utiliza a sintaxe de soma para Decimal
 
         return total_saidas
 
@@ -297,13 +290,17 @@ class RelatorioMensal(models.Model):
         editable=False
     )
 
+    status = models.CharField(
+        max_length=10,
+        default='ativo'
+    )
+
     data_inicio = models.DateField(
         validators=[validate_data]
     )
 
-    data_fim = models.CharField(
-        max_length=10,
-        default='2023-00-00'
+    data_fim = models.DateField(
+        validators=[validate_data]
     )
 
     entradas = models.ForeignKey(
@@ -312,6 +309,19 @@ class RelatorioMensal(models.Model):
         on_delete=models.CASCADE,
     )
 
+    total_entradas = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        default=0,
+        verbose_name='Entradas',
+    )
+
+    total_saidas = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,
+        default=0,
+        verbose_name='Saídas',
+    )
 
     missoes_sede = models.DecimalField(
         max_digits=12,
@@ -335,8 +345,8 @@ class RelatorioMensal(models.Model):
     saldo = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        default=0
-        
+        null=True,
+        verbose_name='Saldo',
     )
 
     igreja = models.ForeignKey(
@@ -347,7 +357,7 @@ class RelatorioMensal(models.Model):
 
 
     @property
-    def total_entradas(self):
+    def calc_total_entradas(self):
         mes_relatorio = self.data_inicio.month
         ano_relatorio = self.data_inicio.year
         
@@ -360,14 +370,33 @@ class RelatorioMensal(models.Model):
 
         return total_entradas
 
-    
+    @property
+    def calc_saidas(self):
+        mes_relatorio = self.data_inicio.month
+        ano_relatorio = self.data_inicio.year
+
+        saidas = Saida.objects.filter(data__month=mes_relatorio, data__year=ano_relatorio, igreja=self.igreja)
+
+        total_saidas = Decimal('0')  # Inicializa como um objeto Decimal
+
+        for saida in saidas:
+            total_saidas += saida.valor  # Utiliza a sintaxe de soma para Decimal
+
+        return total_saidas
+
+    @property
+    def calc_saldo(self):
+        saldo = self.total_entradas - self.total_saidas
+
+        return saldo
+
+  
     @property
     def calc_pagamento_obreiro(self):
         total_entradas = self.total_entradas
         pagamento_obreiro = Decimal(total_entradas) * Decimal('0.1')
         pagamento_obreiro = format(pagamento_obreiro, '.2f')
         return pagamento_obreiro
-
 
 
     @property
@@ -378,7 +407,6 @@ class RelatorioMensal(models.Model):
         return missoes_sede
 
     
-
     @property
     def calc_fundo_convencional(self):
         total_entradas = self.total_entradas
