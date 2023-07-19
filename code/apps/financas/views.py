@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
@@ -26,12 +26,12 @@ from datetime import datetime
 @login_required
 @permission_required('accounts.tesoureiro')
 def adicionar_saida(request):
-    user = obterUsuario(request)
+    usuario = obterUsuario(request)
     if request.method == 'POST':
         
         form = SaidaForm(request.POST)
         if form.is_valid():
-            form.instance.igreja = user.igreja
+            form.instance.igreja = usuario.igreja
             saida = form.save()
             saida.save()            
             messages.success(request, 'Saída adicionada com sucesso!')
@@ -43,6 +43,8 @@ def adicionar_saida(request):
         form = SaidaForm()
         
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'form' : form,
     }
     
@@ -53,6 +55,7 @@ def adicionar_saida(request):
 @permission_required('accounts.tesoureiro')
 def editar_saida(request, saida_id):
 
+    usuario = obterUsuario(request)
     saida = Saida.objects.get(id=saida_id)
 
     if request.method == "POST":
@@ -65,6 +68,8 @@ def editar_saida(request, saida_id):
         form = SaidaForm(instance=saida)
 
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'form' : form,
     }
     return render(request, 'financas/saidas/editar.html', context)
@@ -82,9 +87,11 @@ def excluir_saida(request, saida_id):
 @login_required
 @permission_required('accounts.tesoureiro')
 def listar_saida(request):
-    user = obterUsuario(request)
-    saidas = Saida.objects.filter(igreja=user.igreja)
+    usuario = obterUsuario(request)
+    saidas = Saida.objects.filter(igreja=usuario.igreja)
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'saidas': saidas
     }
     return render(request, 'financas/saidas/listar.html', context)
@@ -94,8 +101,11 @@ def listar_saida(request):
 @permission_required('accounts.tesoureiro')
 def detalhar_saida(request, saida_id):
 
+    usuario = obterUsuario(request)
     saida = Saida.objects.get(id=saida_id)
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'saida': saida
     }
     return render(request, 'financas/saidas/detalhar.html', context)
@@ -103,14 +113,14 @@ def detalhar_saida(request, saida_id):
 @login_required
 @permission_required('accounts.tesoureiro')
 def adicionar_dizimo(request):
-    user = obterUsuario(request)
-    print(user.igreja)
-    entrada = Entrada.objects.get(igreja=user.igreja)
+    usuario = obterUsuario(request)
+    print(usuario.igreja)
+    entrada = get_object_or_404(Entrada, igreja=usuario.igreja)
     if request.method == 'POST':
         
         form = DizimoForm(request.POST)
         if form.is_valid():
-            form.instance.igreja = user.igreja
+            form.instance.igreja = usuario.igreja
             dizimo = form.save()
             dizimo.save()            
             messages.success(request, 'Dízimo adicionada com sucesso!')
@@ -124,6 +134,8 @@ def adicionar_dizimo(request):
         form = DizimoForm()
         
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'form' : form,
     }
     
@@ -134,6 +146,7 @@ def adicionar_dizimo(request):
 @permission_required('accounts.tesoureiro')
 def editar_dizimo(request, dizimo_id):
 
+    usuario = obterUsuario(request)
     dizimo = Dizimo.objects.get(id=dizimo_id)
 
     if request.method == "POST":
@@ -146,6 +159,8 @@ def editar_dizimo(request, dizimo_id):
         form = DizimoForm(instance=dizimo)
 
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'form' : form,
     }
     return render(request, 'financas/entradas/dizimos/editar.html', context)
@@ -170,6 +185,8 @@ def listar_dizimos(request):
     dizimos = igreja.dizimos.all()
     
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'dizimos': dizimos
     }
     return render(request, 'financas/entradas/dizimos/listar.html', context)
@@ -179,8 +196,11 @@ def listar_dizimos(request):
 @permission_required('accounts.tesoureiro')
 def detalhar_dizimo(request, dizimo_id):
 
+    usuario = obterUsuario(request)
     dizimo = Dizimo.objects.get(id=dizimo_id)
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'dizimo': dizimo
     }
     return render(request, 'financas/entradas/dizimos/detalhar.html', context)
@@ -205,15 +225,16 @@ def calc_soma_dizimo(oferta):
     return valor_dizimo
 
 def adicionar_oferta(request):
-    user = obterUsuario(request)
-    entrada = Entrada.objects.get(igreja=user.igreja)
+    usuario = obterUsuario(request)
+    entrada, _ = Entrada.objects.get_or_create(igreja=usuario.igreja) # (objeto, se ele existe ou não)
+    
     if request.method == 'POST':
         
         form = OfertaForm(request.POST)
         if form.is_valid():
             
             # Atribui ao atributo 'igreja' da oferta a igreja do usuario que esta criando o relatório de oferta
-            form.instance.igreja = user.igreja
+            form.instance.igreja = usuario.igreja
 
             oferta = form.save()
             oferta.save()     
@@ -239,6 +260,8 @@ def adicionar_oferta(request):
         form = OfertaForm()
         
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'form' : form,
     }
     
@@ -252,12 +275,15 @@ def listar_ofertas(request):
     ofertas = igreja.ofertas_culto.all()
 
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'ofertas': ofertas
     }
     return render(request, 'financas/entradas/ofertas/listar.html', context)
 
 
 def excluir_oferta(request, oferta_id):
+    usuario = obterUsuario(request)
     oferta = OfertaCulto.objects.get(id=oferta_id)
     oferta.delete()
 
@@ -268,12 +294,15 @@ def detalhar_oferta(request, oferta_id):
    
     oferta = OfertaCulto.objects.get(id=oferta_id)
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'oferta': oferta
     }
     return render(request, 'financas/entradas/ofertas/detalhar.html', context)
 
 
 def editar_oferta(request, oferta_id):
+    usuario = obterUsuario(request)
     oferta = OfertaCulto.objects.get(id=oferta_id)
 
     if request.method == "POST":
@@ -286,9 +315,11 @@ def editar_oferta(request, oferta_id):
         form = OfertaForm(instance=oferta)
 
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'form' : form,
     }
-    return render(request, 'financas/entradas/dizimos/editar.html', context)
+    return render(request, 'financas/entradas/ofertas/editar.html', context)
 
 
 
@@ -304,6 +335,8 @@ def listar_relatorios_mensais(request):
     usuario = obterUsuario(request)
     relatorios_mensais = RelatorioMensal.objects.filter(igreja=usuario.igreja)
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'relatorios': relatorios_mensais
     }
     return render(request, 'financas/relatorios/mensal/listar.html', context)
@@ -324,11 +357,44 @@ def detalhar_relatorio_mensal(request, relatorio_id):
     }
     return render(request, 'financas/relatorios/mensal/detalhar.html', context)
 
-
-
+import decimal
+import datetime
 @login_required
 @permission_required('accounts.tesoureiro')
 def gerar_relatorio(request):
+    usuario = obterUsuario(request)
+
+    data_atual = datetime.date.today()
+    data_inicial = datetime.date(data_atual.year, data_atual.month, 1)
+    data_final = data_inicial + datetime.timedelta(days=32)
+    data_final = datetime.date(data_final.year, data_final.month, 1) - datetime.timedelta(days=1)
+    igreja = usuario.igreja
+
+    saidas = Saida.objects.filter(data__range=(data_inicial, data_final), igreja = igreja)
+    ofertas = OfertaCulto.objects.filter(data_culto__range=(data_inicial, data_final), igreja = igreja)
+    dizimos = Dizimo.objects.filter(data_culto__range=(data_inicial, data_final), igreja = igreja)
+    
+    saldo = sum(saidas.values_list('valor', flat=True))
+    missoes_sede = saldo * decimal.Decimal(0.05)
+    fundo_convencional = saldo * decimal.Decimal(0.05)
+
+    relatorio, _ = RelatorioMensal.objects.get_or_create(
+        data_inicio=data_inicial,
+        data_fim=data_final,
+        # entradas=entradas,
+        saidas=saidas,
+        missoes_sede=missoes_sede,
+        # fundo_convencional=fundo_convencional,
+        saldo=saldo,
+        igreja=igreja
+    )
+
+@login_required
+@permission_required('accounts.tesoureiro')
+def baixar_relatorio(request, relatorio):
+    relatorio = RelatorioMensal.objects.get(id = relatorio.id)
+    usuario = obterUsuario(request)
+    total = 0
     data_atual = datetime.now()
     data_atual = data_atual.strftime("%d/%m/%Y às %H:%M")
     tesoureiro = obterUsuario(request)
@@ -343,7 +409,7 @@ def gerar_relatorio(request):
     saidas = Saida.objects.all()
 
     lines = []
-    lines.append(str(tesoureiro.igreja))
+    lines.append(str(usuario.igreja))
     lines.append(" ")
     lines.append("Relatório de Saídas - Mês e ano")
     lines.append(" ")
@@ -355,7 +421,6 @@ def gerar_relatorio(request):
   
        
     if saidas:
-        total = 0
         for saida in saidas:
                 lines.append(str(saida.data) + '                      ' + str(f'{saida.valor:,.2f}') + '                     ' + str(saida.descricao))
                 lines.append("______________________________________________________________")

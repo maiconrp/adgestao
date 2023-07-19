@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import os, sys
+import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,12 +39,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
+
     # Meus apps
     'accounts',
     'igreja',
     'financas',
-    
+
     # Úteis
     'phonenumbers',
     'bootstrapform'
@@ -122,7 +123,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -139,4 +139,13 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, '../apps'))
 LOGIN_REDIRECT_URL = "/accounts/home"
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [ str(BASE_DIR) + "/static"]
+STATICFILES_DIRS = [str(BASE_DIR) + "/static"]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST_USER = 'maiconlk2321@gmail.com'
+EMAIL_HOST_PASSWORD = 'zapkjzxyjvwxmpjo'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+DEFAULT_FROM_EMAIL = 'maiconlk2321@gmail.com'

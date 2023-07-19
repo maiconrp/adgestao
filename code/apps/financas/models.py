@@ -215,15 +215,26 @@ class RelatorioMensal(models.Model):
 
     data_fim = models.CharField(
         max_length=10,
-        default='2023-00-00'
+        default=data_inicio,
+        validators=[validate_data]
+
     )
 
     entradas = models.ForeignKey(
         Entrada,
         related_name='relatorio_mensal_entradas',
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
+        blank=True,
+        null=True
     )
 
+    saidas = models.ForeignKey(
+        Saida,
+        related_name='relatorio_mensal_saida',
+        on_delete=models.DO_NOTHING,
+        blank=True,
+        null=True
+    )
 
     missoes_sede = models.DecimalField(
         max_digits=12,
@@ -273,8 +284,6 @@ class RelatorioMensal(models.Model):
         pagamento_obreiro = Decimal(total_entradas) * Decimal('0.1')
         pagamento_obreiro = format(pagamento_obreiro, '.2f')
         return pagamento_obreiro
-
-
 
     @property
     def missoes_sede(self):

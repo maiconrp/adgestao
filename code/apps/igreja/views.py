@@ -11,10 +11,9 @@ from financas.views import criar_relatorio_mensal
 from financas.models import Entrada
 
 
-
 # Create your views here.
 @login_required
-#@permission_required('accounts.tesoureiro_sede')
+@permission_required('accounts.tesoureiro_sede')
 def cadastrar_igreja(request):
 
     usuario = obterUsuario(request)
@@ -44,24 +43,30 @@ def cadastrar_igreja(request):
     context = {
         'form' : form,
     }
-    
+ 
     return render(request, 'igreja/cadastrar.html', context)
 
-
-
 @login_required
-@permission_required('accounts.tesoureiro')
+@permission_required('accounts.tesoureiro_sede')
 def listar_igrejas(request):
+    usuario = obterUsuario(request)
+    
     igrejas = Igreja.objects.all()
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'igrejas': igrejas
     }
     return render(request, 'igreja/listar.html', context)
 
 @login_required
 @permission_required('accounts.tesoureiro_sede')
-def editar_igreja(request, igreja_id):
-    igreja = Igreja.objects.get(id=igreja_id)
+def editar_igreja(request, igreja_id = ''):
+    usuario = obterUsuario(request)
+    if igreja_id != '':
+        igreja = Igreja.objects.get(id=igreja_id)
+    else:
+        igreja = Igreja.objects.get(id=request.user.igreja)
 
     if request.method == "POST":
         form = IgrejaForm(request.POST, instance=igreja)
@@ -73,17 +78,20 @@ def editar_igreja(request, igreja_id):
         form = IgrejaForm(instance=igreja)
 
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'form' : form,
+        'igreja':igreja
     }
     return render(request, 'igreja/editar.html', context)
 
 @login_required
 def cadastrar_membro(request):
-    user = obterUsuario(request)
+    usuario = obterUsuario(request)
     if request.method == 'POST':
         form = MembroForm(request.POST)
         if form.is_valid():
-            form.instance.igreja = user.igreja
+            form.instance.igreja = usuario.igreja
             membro = form.save()
             membro.save()            
             messages.success(request, 'membro cadastrado com sucesso !')
@@ -95,6 +103,8 @@ def cadastrar_membro(request):
         form = MembroForm()
         
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'form' : form,
     }
     
@@ -102,15 +112,18 @@ def cadastrar_membro(request):
 
 @login_required
 def listar_membros(request):
-    user = obterUsuario(request)
-    membros = Membro.objects.filter(igreja=user.igreja)
+    usuario = obterUsuario(request)
+    membros = Membro.objects.filter(igreja=usuario.igreja)
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'membros': membros
     }
     return render(request, 'igreja/membros/listar.html', context)
 
 @login_required
 def editar_membro(request, membro_id):
+    usuario = obterUsuario(request)
     membro = Membro.objects.get(id=membro_id)
     if request.method == "POST":
         form = MembroForm(request.POST, instance=membro)
@@ -122,6 +135,8 @@ def editar_membro(request, membro_id):
         form = MembroForm(instance=membro)
 
     context = {
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'form' : form,
     }
     return render(request, 'igreja/membros/editar.html', context)

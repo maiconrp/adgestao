@@ -3,6 +3,7 @@ from django.core.validators import (EmailValidator, MaxLengthValidator,
                                     MinLengthValidator)
 from django.db import models
 from igreja.models import Igreja
+import uuid
 from multiselectfield import MultiSelectField
 
 from adgestao.validators import validate_cpf, validate_telefone
@@ -51,6 +52,11 @@ class Usuario(User):
 
 
 class SolicitacaoCadastro(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
 
     usuario = models.ForeignKey(
         Usuario,
@@ -86,4 +92,4 @@ class SolicitacaoCadastro(models.Model):
     )
 
     def __str__(self):
-        return "Solicitação de" + self.usuario.nome
+        return "Solicitação de " + self.usuario.nome
