@@ -33,10 +33,16 @@ class Igreja(models.Model):
 
     saldo = models.DecimalField(
         max_digits=12,
-        decimal_places=3
+        decimal_places=3,
+        default=0,
+        verbose_name='Saldo',
     )
     
     REQUIRED_FIELDS = ['nome', 'localização']
+
+    
+    def save(self, *args, **kwargs):
+            super().save(*args, **kwargs)
 
     def __str__(self):
         return self.nome

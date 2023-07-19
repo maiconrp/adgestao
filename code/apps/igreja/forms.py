@@ -7,7 +7,7 @@ class IgrejaForm(forms.ModelForm):
 
     class Meta:
         model = Igreja
-        fields = ['nome', 'localizacao', 'saldo']
+        fields = ['nome', 'localizacao']
 
 
 class MembroForm(forms.ModelForm):
