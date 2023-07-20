@@ -14,6 +14,7 @@ from datetime import datetime
 
 
 
+
 # Create your views here.
 @login_required
 @permission_required('accounts.tesoureiro_sede')
@@ -31,9 +32,8 @@ def cadastrar_igreja(request):
             #   Ao cadastrar uma nova igreja, uma instância do objeto Entrada é criado. Este objeto é vinculado a uma igreja
             # e contém o registro de todos os dízimos e ofertas da mesma
             entrada_criada = Entrada(igreja=igreja_cad)
-            entrada_criada.save()
 
-            criar_primeiro_relatorio_mensal(igreja_cad, entrada_criada)
+            criar_primeiro_relatorio_mensal(igreja_cad)
            
             messages.success(request, 'Igreja cadastrada com sucesso !')
             context = {
@@ -58,7 +58,7 @@ def cadastrar_igreja(request):
 
 
 @login_required
-@permission_required('accounts.tesoureiro')
+@permission_required('accounts.tesoureiro_sede')
 def listar_igrejas(request):
     igrejas = Igreja.objects.all()
     context = {
@@ -68,12 +68,10 @@ def listar_igrejas(request):
 
 @login_required
 @permission_required('accounts.tesoureiro_sede')
-def editar_igreja(request, igreja_id = ''):
+def editar_igreja(request, igreja_id):
     usuario = obterUsuario(request)
-    if igreja_id != '':
-        igreja = Igreja.objects.get(id=igreja_id)
-    else:
-        igreja = Igreja.objects.get(id=request.user.igreja)
+    
+    igreja = Igreja.objects.get(id=igreja_id)
 
     if request.method == "POST":
         form = IgrejaForm(request.POST, instance=igreja)
@@ -84,11 +82,15 @@ def editar_igreja(request, igreja_id = ''):
     else:
         form = IgrejaForm(instance=igreja)
 
+    membros = Membro.objects.filter(igreja=igreja)
+    print(igreja.membros.count())
+
     context = {
         'usuario': usuario,
         'igreja': usuario.igreja,
         'form' : form,
-        'igreja':igreja
+        'igreja':igreja,
+        'membros': membros
     }
     return render(request, 'igreja/editar.html', context)
 
