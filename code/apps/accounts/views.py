@@ -43,7 +43,7 @@ def home(request):
     variacao_saidas = []
     total = []
     variacao_total = []
-    membros = Membro.objects.all()[:5]
+    membros = Membro.objects.filter(igreja=usuario.igreja)[:5]
     igrejas = Igreja.objects.all()[:5]
 
     for i, data in enumerate(datas):
