@@ -39,8 +39,51 @@ Igrejas
           </form>
         </div>
       </section>
+      
+
     </div>
   </div>
 </div>
+
+<div class="card">
+  
+  <div class="card-body">
+    {% if membros.count > 0 %}
+    <table class="table">
+      <thead class="bg-light">
+        <tr><h4>Lista de membros</h4></tr>
+        <tr class="border-0">
+          <th>Nome</th>
+          <th>Data de nascimento</th>
+          <th>CPF</th>
+          <th>Dizimista</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for membro in membros %}
+            <tr>
+              <td>{{ membro.nome }}</td>
+              <td>{{ membro.data_nasc|date:"d/m/y" }}</td>
+              <td>{{ membro.cpf }}</td>
+              {% if membro.dizimos.count > 0 %}
+                  <td>Sim</td>
+                  {% else %}
+                  <td>Não</td>
+              {% endif %}
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  
+    {% else %}
+    <p>Nenhum membro cadastrado.</p>
+    {% endif %}
+  
+  </div>
+  
+</div>
+
+
+
 
 {% endblock %}
