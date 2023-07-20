@@ -18,6 +18,9 @@ class MembroForm(forms.ModelForm):
 
 
 class DizimoForm(forms.ModelForm):
+    def __init__(self, usuario, *args, **kwargs):
+        super(DizimoForm, self).__init__(*args, **kwargs)
+        self.fields['membro'].queryset = usuario.igreja.membros.all()
 
     class Meta:
         model = Dizimo
