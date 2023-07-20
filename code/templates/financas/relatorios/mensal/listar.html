@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-<<<<<<< HEAD
-<!-- ============================================================== -->
+===================================================== -->
+
 <!-- pageheader  -->
 <!-- ============================================================== -->
 
@@ -8,7 +8,7 @@
 
 
 {% block 'breadcump_title' %} 
-    Relatórios
+    Relatórios Mensais
 {% endblock %}
 
 {% block 'breadcump1' %}
@@ -21,39 +21,15 @@
 {% endblock %}
 
 {% block 'content' %}
-<!-- =================================================== -->
-<!-- pageheader  -->
-<!-- ============================================================== -->
-=======
-{% block 'content' %}
-<!-- ============================================================== -->
-<!-- pageheader  -->
-<!-- ============================================================== -->
-<div class="row">
-  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-      <div class="page-header">
-          <h2 class="mb-2">  Relatórios mensais</h2>
-          <div class="page-breadcrumb">
-              <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                      <li class="breadcrumb-item">Accounts</li>
-                      <li class="breadcrumb-item">Cadastros</li>
-                      <li class="breadcrumb-item active" aria-current="page">Listar</li>
-                  </ol>
-              </nav>
-          </div>
-      </div>
-  </div>
-</div>
->>>>>>> origin/feat/relatorio-geral
-<!-- ============================================================== -->
+
 <!-- end pageheader  -->
+
 <!-- ============================================================== -->
 <!-- ============================================================== -->
 <!-- pendentes responsive table -->
 <!-- ============================================================== -->
 {% if messages %}
-<<<<<<< HEAD
+
 <div class="messages">
   {% for message in messages %}
   <br>
@@ -61,114 +37,177 @@
   {% endfor %}
 </div>
 {% endif %}
+
+{% if relatorios_tesoureiro %}
+<h3>Relatórios da igreja {{ usuario.igreja }} </h3>
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
   <div class="card">
     <div class="card-body">
       <div class="table-responsive ">
-        {% if relatorios %}
         <table class="table">
           <thead>
+            <tr><h4>Ativos</h4></tr>
             <tr>
               <th scope="col">Data de início: </th>
-              <th scope="col">Data de término: </th>
+              <th scope="col">Saldo: </th>
+              <th scope="col">Total de entradas: </th>
+              <th scope="col">Ação</th>
+
+            </tr>
+          </thead>
+          {% for relatorio in relatorios_tesoureiro %}
+          {% if relatorio.status == 'ativo' %}
+          <tbody>
+              <tr>
+                <th scope="col">{{ relatorio.data_inicio }}</th>
+                <td>{{ relatorio.saldo }}</td>
+                <td>{{ relatorio.total_entradas }}</td>
+
+                <td>
+                  <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i
+                      class="fas fa-external-link-alt"></i></a>
+                  <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i
+                      class="fas fa-trash-alt"></i></a>
+                </td>
+              </tr>
+
+              {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+           
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive ">            
+              <table class="table">
+                <thead>
+                  <tr><h4>Finalizados</h4></tr>
+                  <tr>
+
+                    <th scope="col">Data de início: </th>
+                    <th scope="col">Saldo: </th>
+                    <th scope="col">Total de entradas: </th>
+                    <th scope="col">Ação</th>
+      
+                  </tr>
+                </thead>
+
+                {% for relatorio in relatorios_tesoureiro %}
+                {% if relatorio.status == 'finalizado' %}
+                <tbody>
+      
+                    <tr>
+                      <th scope="col">{{ relatorio.data_inicio }}</th>
+                      <td>{{ relatorio.saldo }}</td>
+                      <td>{{ relatorio.total_entradas }}</td>
+
+                      <td>
+                        <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i
+                            class="fas fa-external-link-alt"></i></a>
+                        <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i
+                            class="fas fa-trash-alt"></i></a>
+                      </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+      
+                </tbody>
+              </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if relatorios %}
+<h3>Relatórios das demais igrejas </h3>
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive ">
+        <table class="table">
+          <thead>
+            <tr><h4>Ativos</h4></tr>
+            <tr>
+              <th scope="col">Igreja: </th>
+              <th scope="col">Data de início: </th>
               <th scope="col">Saldo: </th>
               <th scope="col">Ação</th>
 
             </tr>
           </thead>
+          {% for relatorio in relatorios %}
+          {% if relatorio.status == 'ativo' %}
           <tbody>
+              <tr>
+                <th>{{ relatorio.igreja }}</th>
+                <th scope="col">{{ relatorio.data_inicio }}</th>
+                <td>{{ relatorio.saldo }}</td>
 
-            {% for relatorio in relatorios %}
-            <tr>
-              <th scope="col">{{ relatorio.data_inicio }}</th>
-              <td>{{ relatorio.data_fim }}</td>
-              <td>{{ relatorio.saldo }}</td>
+                <td>
+                  <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i
+                      class="fas fa-external-link-alt"></i></a>
+                  <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i
+                      class="fas fa-trash-alt"></i></a>
+                </td>
+              </tr>
 
-
-
-              <td>
-                <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i
-                    class="fas fa-external-link-alt"></i></a>
-                <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i
-                    class="fas fa-trash-alt"></i></a>
-              </td>
-            </tr>
-            {% endfor %}
-
-          </tbody>
-        </table>
-        {% else %}
-        <p>Nenhum relatório criado</p>
-        {% endif %}
+              {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
-
-
     </div>
   </div>
-
-</div>
-
-=======
-      <div class="messages">
-        {% for message in messages %}
-          <br>
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
-<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-  <div class="card">
+           
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card">
       <div class="card-body">
-          <div class="table-responsive ">
-              {% if relatorios %}
+        <div class="table-responsive ">            
               <table class="table">
-                  <thead>
-                      <tr>
-                        <th scope="col">Data de início: </th>
-                        <th scope="col">Data de término: </th>
-                        <th scope="col">Saldo: </th>
+                <thead>
+                  <tr><h4>Finalizados</h4></tr>
+                  <tr>
+                    <th scope="col">Igreja: </th>
+                    <th scope="col">Data de início: </th>
+                    <th scope="col">Saldo: </th>
+                    <th scope="col">Ação</th>
+                  </tr>
+                </thead>
 
-                      </tr>
-                  </thead>
-                  <tbody>
-                    
-                    {% for relatorio in relatorios %}
+                {% for relatorio in relatorios %}
+                {% if relatorio.status == 'finalizado' %}
+                <tbody>
+      
                     <tr>
+                      <th>{{ relatorio.igreja}}</th>
                       <th scope="col">{{ relatorio.data_inicio }}</th>
-                      <td>{{ relatorio.data_fim }}</td>
                       <td>{{ relatorio.saldo }}</td>
-                      
 
-                      
                       <td>
-                        <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                        <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i
+                            class="fas fa-external-link-alt"></i></a>
+                        <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i
+                            class="fas fa-trash-alt"></i></a>
                       </td>
                     </tr>
-                  {% endfor %}
-                      
-                  </tbody>
+                    {% endif %}
+                {% endfor %}
+      
+                </tbody>
               </table>
-              {% else %}
-    <p>Nenhum relatório criado</p>
-    {% endif %}
-          </div>
-
-          
       </div>
+    </div>
   </div>
-  <a href="{% url 'gerar_relatorio'%}" class="btn btn-success">Gerar novo relatório</a>
-    
 </div>
-    
->>>>>>> origin/feat/relatorio-geral
+{% endif %}
 
-
-<!-- ============================================================== -->
-<!-- end responsive table -->
-<!-- ============================================================== -->
-<<<<<<< HEAD
 {%endblock%}
-=======
-  {%endblock%}
->>>>>>> origin/feat/relatorio-geral
+
+

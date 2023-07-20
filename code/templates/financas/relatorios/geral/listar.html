@@ -1,85 +1,121 @@
 {% extends 'base.html' %}
-{% block 'content' %}
-<!-- ============================================================== -->
+===================================================== -->
+
 <!-- pageheader  -->
 <!-- ============================================================== -->
-<div class="row">
-  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-      <div class="page-header">
-          <h2 class="mb-2">  Relatórios gerais</h2>
-          <div class="page-breadcrumb">
-              <nav aria-label="breadcrumb">
-                  <ol class="breadcrumb">
-                      <li class="breadcrumb-item">Accounts</li>
-                      <li class="breadcrumb-item">Cadastros</li>
-                      <li class="breadcrumb-item active" aria-current="page">Listar</li>
-                  </ol>
-              </nav>
-          </div>
-      </div>
-  </div>
-</div>
-<!-- ============================================================== -->
+
+{%block title%} | Relatórios {%endblock%}
+
+
+{% block 'breadcump_title' %} 
+    Relatórios Gerais
+{% endblock %}
+
+{% block 'breadcump1' %}
+    <li class="breadcrumb-item"><a href="{% url 'listar_relatorios_mensais' %}" class="breadcrumb-link">Finanças</a></li>
+
+{% endblock %}
+
+{% block 'breadcump2' %}
+    <li class="breadcrumb-item active" aria-current="page">Relatório Mensal</li>
+{% endblock %}
+
+{% block 'content' %}
+
 <!-- end pageheader  -->
+
 <!-- ============================================================== -->
 <!-- ============================================================== -->
 <!-- pendentes responsive table -->
 <!-- ============================================================== -->
 {% if messages %}
-      <div class="messages">
-        {% for message in messages %}
-          <br>
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
+
+<div class="messages">
+  {% for message in messages %}
+  <br>
+  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+{% if relatorios %}
+{% for relatorio in relatorios %}
+{% if relatorio.status == 'ativo' %}
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
   <div class="card">
-      <div class="card-body">
-          <div class="table-responsive ">
-              {% if relatorios %}
-              <table class="table">
-                  <thead>
-                      <tr>
-                        <th scope="col">Data de início: </th>
-                        <th scope="col">Data de término: </th>
-                        <th scope="col">Total entradas: </th>
+    <div class="card-body">
+      <div class="table-responsive ">
+        <table class="table">
+          <thead>
+            <tr><h4>Ativos</h4></tr>
+            <tr>
+              <th scope="col">Data de início: </th>
+              <th scope="col">Saldo: </th>
+              <th scope="col">Status: </th>
+              <th scope="col">Ação</th>
 
-                      </tr>
-                  </thead>
-                  <tbody>
-                    
-                    {% for relatorio in relatorios %}
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <th scope="col">{{ relatorio.data_inicio }}</th>
+                <td>{{ relatorio.saldo }}</td>
+                <td>{{ relatorio.status }}</td>
+
+                <td>
+                  <a href="{% url 'detalhar_relatorio_geral' relatorio.id %}" class="btn btn-info"><i
+                      class="fas fa-external-link-alt"></i></a>
+                </td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+           
+{% for relatorio in relatorios %}
+{% if relatorio.status == 'finalizado' %}
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive ">            
+              <table class="table">
+                <thead>
+                  <tr><h4>Finalizados</h4></tr>
+                  <tr>
+
+                    <th scope="col">Data de início: </th>
+                    <th scope="col">Saldo: </th>
+                    <th scope="col">Status: </th>
+                    <th scope="col">Ação</th>
+      
+                  </tr>
+                </thead>
+                <tbody>
+      
                     <tr>
                       <th scope="col">{{ relatorio.data_inicio }}</th>
-                      <td>{{ relatorio.data_fim }}</td>
-                      <td>{{ relatorio.entradas_sede }}</td>
-                      
+                      <td>{{ relatorio.saldo }}</td>
+                      <td>{{ relatorio.status }}</td>
 
-                      
                       <td>
-                        <a href="{% url 'detalhar_relatorio_geral' relatorio.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="{% url 'detalhar_relatorio_geral' relatorio.id %}" class="btn btn-info"><i
+                            class="fas fa-external-link-alt"></i></a>
                       </td>
                     </tr>
-                  {% endfor %}
-                      
-                  </tbody>
+                    {% endif %}
+                {% endfor %}
+      
+                </tbody>
               </table>
-              {% else %}
-    <p>Cadastre igrejas para que um relatório geral seja criado !</p>
-    {% endif %}
-          </div>
-
-          
       </div>
+    </div>
   </div>
-  <a href="{% url 'gerar_relatorio'%}" class="btn btn-success">Gerar novo relatório</a>
-    
 </div>
-    
+{% endif %}
+
+{%endblock%}
 
 
-<!-- ============================================================== -->
-<!-- end responsive table -->
-<!-- ============================================================== -->
-  {%endblock%}
