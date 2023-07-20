@@ -8,7 +8,7 @@
 
 
 {% block 'breadcump_title' %} 
-    Relatórios Mensais
+Informações do Relatório Mensal
 {% endblock %}
 
 {% block 'breadcump1' %}
@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block 'breadcump2' %}
-    <li class="breadcrumb-item active" aria-current="page">Relatório Mensal</li>
+    <li class="breadcrumb-item active" aria-current="page">Informações do Relatório Mensal</li>
 {% endblock %}
 
 {% block 'content' %}
@@ -29,11 +29,7 @@
 
 {% if relatorio_mensal %}
     <table class="table">
-        <thead>
-            <tr>
-                <th colspan="2">Informações do Relatório Mensal</th>
-            </tr>
-        </thead>
+       
         <tbody>
             <tr>
                 <td>Status</td>
@@ -80,7 +76,7 @@
     </div>
   <a href="{% url 'gerar_relatorio'%}" class="btn btn-success">Baixar</a>
   <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-danger">Excluir</a>
-  <input type="submit" class="btn btn-success" value="Finalizar" onclick="window.location.href='{% url 'finalizar_relatorio_mensal' relatorio_mensal.id %}'" />
+  {% if relatorio.status == 'ativo' %}<input type="submit" class="btn btn-success" value="Finalizar" onclick="window.location.href='{% url 'finalizar_relatorio_mensal' relatorio_mensal.id %}'" />{%endif%}
 </div>
 {% endif %}
 {% endblock %}

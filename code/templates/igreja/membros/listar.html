@@ -20,16 +20,16 @@ Membros
     {% endfor %}
   </div>
   {% endif %}
-
+  {% if membros %}
   <form class="form-inline" method="POST" action="{% url 'filtrar_membro' %}">
     {% csrf_token %}
     <div class="form-group mb-2">
-      <input type="text" class="form-control" id="membro-input" name="membro" placeholder="Digite o nome do membro">
+      <input type="text" class="form-control" id="membro-input" name="nome" placeholder="Digite o nome do membro" required>
     </div>
     <button type="submit" class="btn btn-primary btn-sm mb-2">Filtrar</button>
   </form>
   <br>
-
+{%endif%}
   {% if membros_filtrados %}
   <div class="card">
     <div class="card-body">
@@ -74,11 +74,11 @@ Membros
       <table class="table">
         <thead class="bg-light">
           <tr class="border-0">
-            <th class="border-0 scope=">Nome</th>
-            <th class="border-0 scope=">Data de nascimento</th>
-            <th class="border-0 scope=">CPF</th>
-            <th class="border-0 scope=">Dizimista</th>
-            <th class="border-0 scope=">Ação</th>
+            <th class="border-0" scope="col">Nome</th>
+             <th class="border-0" scope="col">Data de nascimento</th>
+             <th class="border-0" scope="col">CPF</th>
+             <th class="border-0" scope="col">Dizimista</th>
+             <th class="border-0" scope="col">Ação</th>
           </tr>
         </thead>
         <tbody>

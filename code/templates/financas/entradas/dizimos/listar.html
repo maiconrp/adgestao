@@ -27,14 +27,16 @@ Dízimos
   </div>
   {% endif %}
 
+  {% if dizimos%}
   <form class="form-inline" method="POST" action="{% url 'filtrar_dizimos' %}">
     {% csrf_token %}
     <div class="form-group mb-2">
-      <input type="text" class="form-control" id="membro-input" name="membro" placeholder="Digite o nome do membro">
+      <input type="text" class="form-control" id="membro-input" name="membro" placeholder="Digite o nome do membro" required>
     </div>
     <button type="submit" class="btn btn-primary btn-sm mb-2">Filtrar</button>
   </form>
   <br>
+  {%endif%}
 
   {% if dizimos_filtrados%}
   <div class="card">
@@ -120,8 +122,4 @@ Dízimos
 </div>
 
 
-
-<!-- ============================================================== -->
-<!-- end responsive table -->
-<!-- ============================================================== -->
 {%endblock%}

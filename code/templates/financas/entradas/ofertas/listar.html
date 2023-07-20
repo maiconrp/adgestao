@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-<<<<<<< HEAD
 {% load static %}
 
 {%block title%} | Ofertas{%endblock%}
@@ -14,69 +13,69 @@
 {% endblock %}
 
 {% block 'content' %}
-<!-- ============================================================== -->
-<!-- end pageheader  -->
-<!-- ============================================================== -->
-<!-- ============================================================== -->
-<!-- pendentes responsive table -->
-<!-- ============================================================== -->
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-  {% if messages %}
-
-<div class="messages">
-  {% for message in messages %}
-  <br>
-  <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-  {% endfor %}
-</div>
+{% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+    <br>
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
 {% endif %}
 
-<form method="POST" action="{% url 'filtrar_ofertas' %}">
-  {% csrf_token %}
-  <input type="date" name="date_input">
-  <button type="submit">Filtrar</button>                    
-</form>
+
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  {% if ofertas %}
+  <form class="form-inline" method="POST" action="{% url 'filtrar_ofertas' %}">
+    {% csrf_token %}
+    <div class="form-group mb-2">
+      <input type="date" class="form-control" id="membro-input" name="date_input" placeholder="Digite o nome do membro"
+        required>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm mb-2">Filtrar</button>
+  </form>
+  <br>
+  {%endif%}
+
+  {% if ofertas_filtradas %}
   <div class="card">
     <div class="card-body">
       <div class="table-responsive ">
-{% if ofertas_filtradas %}
-          <table class="table">
-              <thead>
-                  <tr>
-                    <th scope="col">Data</th>
-                    <th scope="col">Culto</th>
-                    <th scope="col">Total arrecadado</th>
-                  </tr>
-              </thead>
-              <tbody>
-                
-                {% for oferta in ofertas_filtradas %}
-                <tr>
-                  <th scope="col">{{ oferta.data_culto }}</th>
-                  <td>{{ oferta.tipo_culto }}</td>
-                  <td>{{ oferta.total }}</td>
-                  
-                  <td>
-                    <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
-                    <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                  </td>
-                </tr>
-              {% endfor %}
-                  
-              </tbody>
-          </table>
-          {% else %}
-          <p>Nenhuma oferta adicionada.</p>
-  {% endif %}
+
+        <table class="table">
+          <thead class="bg-light">
+            <tr class="border-0">
+              <th class="border-0" scope="col">Data</th>
+              <th class="border-0" scope="col">Culto</th>
+              <th class="border-0" scope="col">Total arrecadado</th>
+              <th class="border-0" scope="col">Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for oferta in ofertas_filtradas %}
+            <tr>
+              <th scope="col">{{ oferta.data_culto }}</th>
+              <td>{{ oferta.tipo_culto }}</td>
+              <td>{{ oferta.total }}</td>
+
+              <td>
+                <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i
+                    class="fas fa-external-link-alt"></i></a>
+                <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-</div>
+  {%else%}
 
-<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
   <div class="card">
     <div class="card-body">
@@ -86,45 +85,47 @@
         <table class="table">
 
           <thead class="bg-light">
-          <tr class="border-0">
-              <th class="border-0 scope="col">Data</th>
-              <th class="border-0 scope="col">Culto</th>
-              <th class="border-0 scope="col">Total</th>
-              <th class="border-0 scope="col">Ação</th>
-
-          </tr>
+            <tr class="border-0">
+              <th class="border-0 scope=" col">Data</th>
+              <th class="border-0 scope=" col">Culto</th>
+              <th class="border-0 scope=" col">Total</th>
+              <th class="border-0 scope=" col">Ação</th>
+          
+            </tr>
           </thead>
           <tbody>
-
+          
             {% for oferta in ofertas %}
             <tr>
-
+          
               <th scope="col">{{ oferta.data_culto|date:"d/M" }}</th>
               <td>{{ oferta.tipo_culto }}</td>
               <td>{{ oferta.total }}</td>
-
+          
               <td>
-                <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i
-                    class="fas fa-external-link-alt"></i></a>
-
-                <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i
-                    class="fas fa-trash-alt"></i></a>
+                <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
+          
+                <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
               </td>
             </tr>
             {% endfor %}
-
+          
           </tbody>
+
         </table>
+
         {% else %}
         <p>Nenhuma oferta adicionada.</p>
         {% endif %}
       </div>
-
-
     </div>
   </div>
+
+  {%endif%}
+
   <a href="{% url 'adicionar_oferta'%}" class="btn btn-success">Adicionar</a>
 
+  </div>
 </div>
 
 

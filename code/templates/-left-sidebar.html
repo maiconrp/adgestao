@@ -26,7 +26,7 @@
                                 class="far fa-money-bill-alt"></i>Saidas</a>
                     </li>
 
-                    {% if usuario.funcao == 'Tesoureiro Sede' %}
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
                             data-target="#submenu-2" aria-controls="submenu-2"><i
@@ -43,12 +43,9 @@
                             </ul>
                         </div>
                     </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'listar_relatorios_mensais'%}"><i
-                                class="fas fa-regular fa-file"></i>Relatórios Mensais</a>
-                    </li>
-                    {% endif %}
+                    
+                   
+                   
                     <li class="nav-item">
                         <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
                             data-target="#submenu-3" aria-controls="submenu-3"><i
@@ -66,7 +63,7 @@
                         </div>
                     </li>
 
-                    {% if usuario.funcao == 'Tesoureiro Sede' %}
+                    
                
                         <li class="nav-divider">
                             Administração
@@ -77,7 +74,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'listar_igrejas'%}"><i class="fa fa-fw fa-rocket"></i>Igrejas</a>
                         </li>
-                    {% endif %}
+                  
                        
            
 
