@@ -16,15 +16,29 @@ class MembroForm(forms.ModelForm):
         model = Membro
         fields = ['nome', 'data_nasc', 'sexo', 'cpf']
 
-
 class DizimoForm(forms.ModelForm):
-    def __init__(self, usuario, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        usuario = kwargs.pop('usuario', None)
         super(DizimoForm, self).__init__(*args, **kwargs)
-        self.fields['membro'].queryset = usuario.igreja.membros.all()
+        if usuario:
+            self.fields['membro'].queryset = usuario.igreja.membros.all()
 
     class Meta:
-        model = Dizimo
-        fields = ['valor', 'membro', 'tipo_culto', 'data_culto']
+            model = Dizimo
+            fields = ['valor', 'membro', 'tipo_culto', 'data_culto']
+
+
+class DizimoFormWithUser(DizimoForm):
+    def __init__(self, *args, **kwargs):
+        usuario = kwargs.pop('usuario', None)
+        super(DizimoFormWithUser, self).__init__(*args, **kwargs)
+        if usuario:
+            self.fields['membro'].queryset = usuario.igreja.membros.all()
+
+    class Meta:
+            model = Dizimo
+            fields = ['valor', 'membro', 'tipo_culto', 'data_culto']
+   
 
 
 class OfertaForm(forms.ModelForm):
