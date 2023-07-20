@@ -31,9 +31,11 @@ Membros
       <table class="table">
         <thead class="bg-light">
           <tr class="border-0">
-            <th class="border-0 scope=" col">Nome</th>
-            <th class="border-0 scope=" col">Data de nascimento</th>
-            <th class="border-0 scope=" col">Ação</th>
+            <th class="border-0 scope=" >Nome</th>
+            <th class="border-0 scope=" >Data de nascimento</th>
+            <th class="border-0 scope=" >CPF</th>
+            <th class="border-0 scope=" >Dizimista</th>
+            <th class="border-0 scope=" >Ação</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +43,12 @@ Membros
           <tr>
             <td>{{ membro.nome }}</td>
             <td>{{ membro.data_nasc|date:"d/m/y" }}</td>
+            <td>{{ membro.cpf }}</td>
+            {% if membro.dizimos.count > 0 %}
+            <td>Sim</td>
+            {% else %}
+            <td>Não</td>
+            {% endif %}
             <td>
               <a href="{% url 'editar_membro' membro.id %}" class="btn btn-info"><i
                   class="fas fa-external-link-alt"></i></a>
