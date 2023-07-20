@@ -65,10 +65,10 @@ class Saida(models.Model):
         saldo = total_entradas - total_saidas
 
         return saldo
+        
 
     def save(self, *args, **kwargs):
             super().save(*args, **kwargs)
-
 
     def __str__(self):
         return "Saída -" + self.data.strftime('%d/%m/%Y')
@@ -381,7 +381,7 @@ class RelatorioMensal(models.Model):
         mes_relatorio = self.data_inicio.month
         ano_relatorio = self.data_inicio.year
         
-        ofertas_mes = self.entradas.ofertas.filter(Q(data_culto__month=mes_relatorio) & Q(data_culto__year=ano_relatorio))
+        ofertas_mes = OfertaCulto.objects.filter(Q(data_culto__month=mes_relatorio) & Q(data_culto__year=ano_relatorio))
         
         total_entradas = 0
 
