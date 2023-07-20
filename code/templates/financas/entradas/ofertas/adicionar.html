@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 {%load bootstrap%}
-<<<<<<< HEAD
 
 {%block title%} | Ofertas | Adicionar{%endblock%}
 
+{% block 'breadcump_title' %}
+Ofertas
+{% endblock %}
 
-=======
->>>>>>> origin/feat/relatorio-geral
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Ofertas</li>
+<li class="breadcrumb-item active" aria-current="page">Adicionar</li>
+{% endblock %}
+
 {% block 'content' %}
 
 <section>
@@ -22,13 +27,11 @@
       <input type="submit" class="btn btn-success"value="Cadastrar" />
     </form>
   </div>
-<<<<<<< HEAD
-  {{usuario.igreja}}<br><br>
+
   {%for e in entradas%}
   {{e.igreja}}<br>
 {%endfor%}
-=======
->>>>>>> origin/feat/relatorio-geral
+
 </section>
 
 {% endblock %}
