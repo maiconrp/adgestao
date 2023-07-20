@@ -48,6 +48,26 @@ class Igreja(models.Model):
         return self.nome
 
 
+class SaldoMes(models.Model):
+    valor = models.DecimalField(
+        max_digits=12,
+        decimal_places=3,  
+    )
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+
+    mes = models.CharField(
+        max_length=100,
+    )
+
+    def save(self, *args, **kwargs):
+        self.total = self.valor_oferta + self.valor_dizimo
+        super().save(*args, **kwargs)
+
 class Membro(models.Model):
     """
     Classe que representa um membro da igreja.
