@@ -38,94 +38,97 @@
 </div>
 {% endif %}
 
-{% if relatorios_tesoureiro %}
-<h3>Relatórios da igreja {{ usuario.igreja }} </h3>
-<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-  <div class="card">
-    <div class="card-body">
-      <div class="table-responsive ">
-        <table class="table">
-          <thead>
-            <tr><h4>Ativos</h4></tr>
-            <tr>
-              <th scope="col">Data de início: </th>
-              <th scope="col">Saldo: </th>
-              <th scope="col">Total de entradas: </th>
-              <th scope="col">Ação</th>
+{% if usuario.funcao == 'Tesoureiro Sede' %}
+    {% if relatorios %}
+    <h3>Relatórios da igreja {{ usuario.igreja }} </h3>
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive ">
+            <table class="table">
+              <thead>
+                <tr><h4>Ativos</h4></tr>
+                <tr>
+                  <th scope="col">Data de início: </th>
+                  <th scope="col">Saldo: </th>
+                  <th scope="col">Total de entradas: </th>
+                  <th scope="col">Ação</th>
 
-            </tr>
-          </thead>
-          {% for relatorio in relatorios_tesoureiro %}
-          {% if relatorio.status == 'ativo' %}
-          <tbody>
-              <tr>
-                <th scope="col">{{ relatorio.data_inicio }}</th>
-                <td>{{ relatorio.saldo }}</td>
-                <td>{{ relatorio.total_entradas }}</td>
+                </tr>
+              </thead>
+              {% for relatorio in relatorios %}
+              {% if relatorio.status == 'ativo' %}
+              <tbody>
+                  <tr>
+                    <th scope="col">{{ relatorio.data_inicio }}</th>
+                    <td>{{ relatorio.saldo }}</td>
+                    <td>{{ relatorio.total_entradas }}</td>
 
-                <td>
-                  <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i
-                      class="fas fa-external-link-alt"></i></a>
-                  <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i
-                      class="fas fa-trash-alt"></i></a>
-                </td>
-              </tr>
+                    <td>
+                      <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i
+                          class="fas fa-external-link-alt"></i></a>
+                      <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i
+                          class="fas fa-trash-alt"></i></a>
+                    </td>
+                  </tr>
 
-              {% endif %}
-              {% endfor %}
-            </tbody>
-          </table>
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+              
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive ">            
+                  <table class="table">
+                    <thead>
+                      <tr><h4>Finalizados</h4></tr>
+                      <tr>
+
+                        <th scope="col">Data de início: </th>
+                        <th scope="col">Saldo: </th>
+                        <th scope="col">Total de entradas: </th>
+                        <th scope="col">Ação</th>
+          
+                      </tr>
+                    </thead>
+
+                    {% for relatorio in relatorios_tesoureiro %}
+                    {% if relatorio.status == 'finalizado' %}
+                    <tbody>
+          
+                        <tr>
+                          <th scope="col">{{ relatorio.data_inicio }}</th>
+                          <td>{{ relatorio.saldo }}</td>
+                          <td>{{ relatorio.total_entradas }}</td>
+
+                          <td>
+                            <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i
+                                class="fas fa-external-link-alt"></i></a>
+                            <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i
+                                class="fas fa-trash-alt"></i></a>
+                          </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+          
+                    </tbody>
+                  </table>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-           
-  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="table-responsive ">            
-              <table class="table">
-                <thead>
-                  <tr><h4>Finalizados</h4></tr>
-                  <tr>
+    {% endif %}
 
-                    <th scope="col">Data de início: </th>
-                    <th scope="col">Saldo: </th>
-                    <th scope="col">Total de entradas: </th>
-                    <th scope="col">Ação</th>
-      
-                  </tr>
-                </thead>
 
-                {% for relatorio in relatorios_tesoureiro %}
-                {% if relatorio.status == 'finalizado' %}
-                <tbody>
-      
-                    <tr>
-                      <th scope="col">{{ relatorio.data_inicio }}</th>
-                      <td>{{ relatorio.saldo }}</td>
-                      <td>{{ relatorio.total_entradas }}</td>
+{% else %}
 
-                      <td>
-                        <a href="{% url 'detalhar_relatorio_mensal' relatorio.id %}" class="btn btn-info"><i
-                            class="fas fa-external-link-alt"></i></a>
-                        <a href="{% url 'excluir_relatorio_mensal' relatorio.id %}" class="btn btn-danger"><i
-                            class="fas fa-trash-alt"></i></a>
-                      </td>
-                    </tr>
-                    {% endif %}
-                {% endfor %}
-      
-                </tbody>
-              </table>
-      </div>
-    </div>
-  </div>
-</div>
-{% endif %}
-
-{% if relatorios %}
-<h3>Relatórios das demais igrejas </h3>
+{% if relatorios_TS %}
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
   <div class="card">
     <div class="card-body">
@@ -141,7 +144,7 @@
 
             </tr>
           </thead>
-          {% for relatorio in relatorios %}
+          {% for relatorio in relatorios_TS %}
           {% if relatorio.status == 'ativo' %}
           <tbody>
               <tr>
@@ -181,7 +184,7 @@
                   </tr>
                 </thead>
 
-                {% for relatorio in relatorios %}
+                {% for relatorio in relatorios_TS %}
                 {% if relatorio.status == 'finalizado' %}
                 <tbody>
       
@@ -208,6 +211,8 @@
 </div>
 {% endif %}
 
-{%endblock%}
+{% endif %}
 
+
+{%endblock%}
 
