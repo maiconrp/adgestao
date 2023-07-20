@@ -130,7 +130,7 @@ Paz do Senhor, {{usuario_nome}}
                 {% endif %}
             </div>
         </div>
-        {% if perms.accounts.tesoureiro_sede %}
+        {% if usuario.funcao == 'Tesoureiro Sede' %}
         <div class="card">
             <h4 class="card-header">Igrejas</h4>
             <div class="card-body">
