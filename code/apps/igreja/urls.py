@@ -9,5 +9,6 @@ urlpatterns = [
     path('membros/listar/', listar_membros, name='listar_membros'),  
     path('membros/editar/<uuid:membro_id>/', editar_membro, name='editar_membro'), 
     path('membros/excluir/<uuid:membro_id>/', excluir_membro, name='excluir_membro'), 
-
+    path('filtrar-membro/', filtrar_membro, name='filtrar_membro'),
+    path('filtrar-igreja/', filtrar_igreja, name='filtrar_igreja'),
 ]

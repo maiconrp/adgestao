@@ -1,3 +1,6 @@
+from functools import partial
+import calendar
+from datetime import datetime
 import io
 
 from accounts.views import obterUsuario
@@ -18,14 +21,15 @@ from .forms import SaidaForm, RelatorioGeralForm
 from .models import Entrada, RelatorioGeral, RelatorioMensal, Saida
 
 pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
-from datetime import datetime
-import calendar
-from functools import partial
+
 
 def atualizar_registro_model(financa, user):
     # Setando objetos
-    relatorio_geral = RelatorioGeral.objects.get(status='ativo')
-    relatorio_mensal = RelatorioMensal.objects.get(igreja=user.igreja, status='ativo')
+    relatorio_geral = RelatorioGeral.objects.last()
+    relatorio_mensal = RelatorioMensal.objects.get(
+        igreja=user.igreja,
+        status='ativo'
+    )
     igreja = user.igreja
     saida = Saida.objects.last()
 
@@ -36,7 +40,7 @@ def atualizar_registro_model(financa, user):
         relatorio_geral.saidas_locais = relatorio_geral.calc_saidas_locais
         relatorio_geral.saldo = relatorio_geral.calc_saldo
 
-        relatorio_geral.save() 
+        relatorio_geral.save()
 
         # Atualizando registros no model de RealatórioMensal
         relatorio_mensal.total_saidas = relatorio_mensal.calc_saidas
@@ -45,13 +49,12 @@ def atualizar_registro_model(financa, user):
         relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
         relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
 
-        relatorio_mensal.save() 
+        relatorio_mensal.save()
 
         # Atualizando registro de saldo no model de Igreja
         igreja.saldo = saida.calc_saldo
         print('saldo att')
         igreja.save()
-
 
     else:
         # Atualizando registros no model de RealatórioGeral
@@ -59,7 +62,7 @@ def atualizar_registro_model(financa, user):
         relatorio_geral.entradas_locais = relatorio_geral.calc_entradas_locais
         relatorio_geral.saldo = relatorio_geral.calc_saldo
 
-        relatorio_geral.save()  
+        relatorio_geral.save()
 
         # Atualizando registros no model de RealatórioMensal
         relatorio_mensal.total_entradas = relatorio_mensal.calc_total_entradas
@@ -68,7 +71,7 @@ def atualizar_registro_model(financa, user):
         relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
         relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
 
-        relatorio_mensal.save() 
+        relatorio_mensal.save()
 
         # Atualizando registro de saldo no model de Igreja
         igreja.saldo = saida.calc_saldo
@@ -76,40 +79,40 @@ def atualizar_registro_model(financa, user):
         igreja.save()
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+# @login_required
+# @permission_required('accounts.tesoureiro')
 def adicionar_saida(request):
     user = obterUsuario(request)
     if request.method == 'POST':
-        
+
         form = SaidaForm(request.POST)
         if form.is_valid():
             form.instance.igreja = user.igreja
             saida = form.save()
-            saida.save()     
+            saida.save()
 
             atualizar_registro_model('saida', user)
 
             messages.success(request, 'Saída adicionada com sucesso!')
 
             context = {
-                    'form': form,
-                }
+                'form': form,
+            }
             return HttpResponseRedirect(reverse('listar_saida'))
     else:
         form = SaidaForm()
-        
+
     context = {
         'usuario': user,
         'igreja': user.igreja,
-        'form' : form,
+        'form': form,
     }
-    
+
     return render(request, 'financas/saidas/adicionar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+# @login_required
+# @permission_required('accounts.tesoureiro')
 def editar_saida(request, saida_id):
 
     user = obterUsuario(request)
@@ -117,7 +120,7 @@ def editar_saida(request, saida_id):
 
     if request.method == "POST":
         form = SaidaForm(request.POST, instance=saida)
-        
+
         if form.is_valid():
             form.save()
 
@@ -130,13 +133,13 @@ def editar_saida(request, saida_id):
     context = {
         'usuario': user,
         'igreja': user.igreja,
-        'form' : form,
+        'form': form,
     }
     return render(request, 'financas/saidas/editar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+# @login_required
+# @permission_required('accounts.tesoureiro')
 def excluir_saida(request, saida_id):
     user = obterUsuario(request)
 
@@ -148,8 +151,8 @@ def excluir_saida(request, saida_id):
     return HttpResponseRedirect(reverse('listar_saida'))
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+# @login_required
+# @permission_required('accounts.tesoureiro')
 def listar_saida(request):
     usuario = obterUsuario(request)
     saidas = Saida.objects.filter(igreja=usuario.igreja)
@@ -161,8 +164,8 @@ def listar_saida(request):
     return render(request, 'financas/saidas/listar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+# @login_required
+# @permission_required('accounts.tesoureiro')
 def detalhar_saida(request, saida_id):
 
     usuario = obterUsuario(request)
@@ -174,8 +177,10 @@ def detalhar_saida(request, saida_id):
     }
     return render(request, 'financas/saidas/detalhar.html', context)
 
-@login_required
-@permission_required('accounts.tesoureiro')
+# @login_required
+# @permission_required('accounts.tesoureiro')
+
+
 def adicionar_dizimo(request):
     user = obterUsuario(request)
     print(user.igreja)
@@ -188,7 +193,7 @@ def adicionar_dizimo(request):
         if form.is_valid():
             form.instance.igreja = user.igreja
             dizimo = form.save()
-            dizimo.save()            
+            dizimo.save()
             messages.success(request, 'Dízimo adicionada com sucesso!')
 
             entrada.dizimos.add(dizimo)
@@ -197,10 +202,10 @@ def adicionar_dizimo(request):
                 oferta = OfertaCulto.objects.get(
                     Q(data_culto=dizimo.data_culto) & Q(igreja=dizimo.igreja)
                 )
-            except ObjectDoesNotExist:
+            except:
                 oferta = None
-           
-            ####### Verifica se um relatório de oferta com o mesmo dia e tipo de culto já foi criado
+
+            # Verifica se um relatório de oferta com o mesmo dia e tipo de culto já foi criado
             if oferta:
                 print('oferta existe')
                 # Chama a função que calcula a soma dos valores dos dizimos daquele culto
@@ -212,31 +217,31 @@ def adicionar_dizimo(request):
                 # Salva os valores dos dízimos criados após o relatório de culto
                 oferta.save()
 
-                atualizar_registro_model('entrada', user)
+                atualizar_registro_model('entrada', user)[0]
 
                 context = {
-                        'form': form,
-                    }
+                    'form': form,
+                }
                 return HttpResponseRedirect(reverse('listar_dizimos'))
 
             else:
                 context = {
-                        'form': form,
-                    }
+                    'form': form,
+                }
                 return HttpResponseRedirect(reverse('listar_dizimos'))
 
     else:
         form = DizimoForm()
-        
+
     context = {
-        'form' : form,
+        'form': form,
     }
-    
+
     return render(request, 'financas/entradas/dizimos/adicionar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+# @login_required
+# @permission_required('accounts.tesoureiro')
 def editar_dizimo(request, dizimo_id):
 
     user = obterUsuario(request)
@@ -244,7 +249,7 @@ def editar_dizimo(request, dizimo_id):
 
     if request.method == "POST":
         form = DizimoForm(request.POST, instance=dizimo)
-        
+
         if form.is_valid():
             form.save()
 
@@ -257,13 +262,13 @@ def editar_dizimo(request, dizimo_id):
     context = {
         'usuario': user,
         'igreja': user.igreja,
-        'form' : form,
+        'form': form,
     }
     return render(request, 'financas/entradas/dizimos/editar.html', context)
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+# @login_required
+# @permission_required('accounts.tesoureiro')
 def excluir_dizimo(request, dizimo_id):
     user = obterUsuario(request)
 
@@ -275,15 +280,15 @@ def excluir_dizimo(request, dizimo_id):
     return HttpResponseRedirect(reverse('listar_dizimos'))
 
 
-@login_required
-@permission_required('accounts.tesoureiro')
+# @login_required
+# @permission_required('accounts.tesoureiro')
 def listar_dizimos(request):
     usuario = obterUsuario(request)
 
     igreja = Igreja.objects.get(nome=usuario.igreja.nome)
-  
+
     dizimos = igreja.dizimos.all()
-    
+
     context = {
         'usuario': usuario,
         'igreja': usuario.igreja,
@@ -293,7 +298,7 @@ def listar_dizimos(request):
 
 
 @login_required
-@permission_required('accounts.tesoureiro')
+# @permission_required('accounts.tesoureiro')
 def detalhar_dizimo(request, dizimo_id):
 
     usuario = obterUsuario(request)
@@ -309,9 +314,9 @@ def detalhar_dizimo(request, dizimo_id):
 
 # Esta função soma os valores dos dízimos de um culto, considerando o dia e tipo de culto do dízimo
 def calc_soma_dizimo(oferta):
-    # Busca todos os dízimos cuja data é a mesma do relatório de culto 
+    # Busca todos os dízimos cuja data é a mesma do relatório de culto
     dizimos = Dizimo.objects.filter(
-    Q(data_culto=oferta.data_culto) & Q(igreja=oferta.igreja)
+        Q(data_culto=oferta.data_culto) & Q(igreja=oferta.igreja)
     )
 
     # Cria a variável "valor_dizimo"
@@ -320,7 +325,7 @@ def calc_soma_dizimo(oferta):
     # Loop que irá percorrer todos os objetos filtrados, contidos em 'dizimos'
     for dizimo in dizimos:
 
-        #verifica se o dizimo em questão possui tanto a mesma data quanto o tipo de culto do relatório criado
+        # verifica se o dizimo em questão possui tanto a mesma data quanto o tipo de culto do relatório criado
         if dizimo.tipo_culto == oferta.tipo_culto and dizimo.data_culto == oferta.data_culto:
             valor_dizimo = valor_dizimo + dizimo.valor
 
@@ -329,17 +334,18 @@ def calc_soma_dizimo(oferta):
 
 def adicionar_oferta(request):
     user = obterUsuario(request)
-    entrada, _ = Entrada.objects.get_or_create(igreja=user.igreja) # (objeto, se ele existe ou não)
-    
+    entrada, _ = Entrada.objects.get_or_create(
+        igreja=user.igreja)  # (objeto, se ele existe ou não)
+
     if request.method == 'POST':
-        
+
         form = OfertaForm(request.POST)
         if form.is_valid():
-            
+
             # Atribui ao atributo 'igreja' da oferta a igreja do usuario que esta criando o relatório de oferta
             form.instance.igreja = user.igreja
             oferta = form.save()
-              
+
             # Chama a função que calcula a soma dos valores dos dizimos daquele culto
             valor_dizimo = calc_soma_dizimo(oferta=oferta)
 
@@ -356,18 +362,18 @@ def adicionar_oferta(request):
             atualizar_registro_model('entrada', user)
 
             context = {
-                    'form': form,
-                }
+                'form': form,
+            }
             return HttpResponseRedirect(reverse('listar_ofertas'))
     else:
         form = OfertaForm()
-        
+
     context = {
         'usuario': user,
         'igreja': user.igreja,
-        'form' : form,
+        'form': form,
     }
-    
+
     return render(request, 'financas/entradas/ofertas/adicionar.html', context)
 
 
@@ -375,7 +381,7 @@ def listar_ofertas(request):
     usuario = obterUsuario(request)
 
     igreja = Igreja.objects.get(nome=usuario.igreja.nome)
-  
+
     ofertas = igreja.ofertas_culto.all()
 
     context = {
@@ -391,14 +397,14 @@ def excluir_oferta(request, oferta_id):
     oferta = OfertaCulto.objects.get(id=oferta_id)
     oferta.delete()
 
-    atualizar_registro_model('entrada', user)
-    
+    atualizar_registro_model('entrada', user)[0]
+
     return HttpResponseRedirect(reverse('listar_ofertas'))
 
 
 def detalhar_oferta(request, oferta_id):
     usuario = obterUsuario(request)
-   
+
     oferta = OfertaCulto.objects.get(id=oferta_id)
     context = {
         'usuario': usuario,
@@ -414,7 +420,7 @@ def editar_oferta(request, oferta_id):
 
     if request.method == "POST":
         form = OfertaForm(request.POST, instance=oferta)
-        
+
         if form.is_valid():
             form.save()
 
@@ -427,16 +433,15 @@ def editar_oferta(request, oferta_id):
     context = {
         'usuario': user,
         'igreja': user.igreja,
-        'form' : form,
+        'form': form,
     }
     return render(request, 'financas/entradas/ofertas/editar.html', context)
-
 
 
 ####################### - - - - - - RELATÓRIO MENSAL - - - - - -  ############################
 
 def criar_primeiro_relatorio_mensal(igreja):
-    ############ obtendo a data que contém o último dia do mês
+    # obtendo a data que contém o último dia do mês
     data_atual = datetime.now()
 
     # Obtém o último dia do mês
@@ -447,10 +452,11 @@ def criar_primeiro_relatorio_mensal(igreja):
 
     # Formata a data no formato "dd/mm/aaaa"
     data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
-    
+
     data_criacao = datetime.now()
     data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_mensal = RelatorioMensal(igreja=igreja, data_inicio=data_criacao, data_fim=data_fim)
+    relatorio_mensal = RelatorioMensal(
+        igreja=igreja, data_inicio=data_criacao, data_fim=data_fim)
     relatorio_mensal.save()
 
 
@@ -458,7 +464,7 @@ def criar_novo_relatorio_mensal(request):
     user = obterUsuario(request)
     igreja = Igreja.objects.get(nome=user.igreja.nome)
     entrada = Entrada.objects.get(igreja=user.igreja)
-    ############ obtendo a data que contém o último dia do mês
+    # obtendo a data que contém o último dia do mês
     data_atual = datetime.now()
 
     # Obtém o último dia do mês
@@ -469,10 +475,11 @@ def criar_novo_relatorio_mensal(request):
 
     # Formata a data no formato "dd/mm/aaaa"
     data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
-    
+
     data_criacao = datetime.now()
     data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_mensal = RelatorioMensal(igreja=igreja, data_inicio=data_criacao, data_fim=data_fim)
+    relatorio_mensal = RelatorioMensal(
+        igreja=igreja, data_inicio=data_criacao, data_fim=data_fim)
     relatorio_mensal.save()
 
     return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
@@ -481,28 +488,18 @@ def criar_novo_relatorio_mensal(request):
 def listar_relatorios_mensais(request):
     usuario = obterUsuario(request)
     print(usuario.funcao)
-    
-    if usuario.funcao == 'Tesoureiro':
-        relatorios_particulares = RelatorioMensal.objects.filter(igreja=usuario.igreja)
 
-        context = {
-            'relatorios': relatorios_particulares,
-            'usuario': usuario,
-            'igreja': usuario.igreja,
+    relatorios = RelatorioMensal.objects.filter(igreja=usuario.igreja)
 
-        }
-        
-        return render(request, 'financas/relatorios/mensal/listar.html', context)
+    context = {
+        'relatorios': relatorios,
+        'usuario': usuario,
+        'igreja': usuario.igreja,
 
-    else:
-        relatorios_mensais = RelatorioMensal.objects.all
+    }
 
-        context = {
-            'relatorios_TS': relatorios_mensais,
-            'usuario': usuario,
-            'igreja': usuario.igreja,
-        }
-        return render(request, 'financas/relatorios/mensal/listar.html', context)
+    return render(request, 'financas/relatorios/mensal/listar.html', context)
+
 
 def excluir_relatorio_mensal(request, relatorio_id):
     relatorio_mensal = RelatorioMensal.objects.get(id=relatorio_id)
@@ -533,8 +530,9 @@ def finalizar_relatorio_mensal(request, relatorio_id):
 
 ####################### - - - RELATÓRIO GERAL - - - ######################
 
+
 def criar_primeiro_relatorio_geral(tesoureiro):
-    ############ obtendo a data que contém o último dia do mês
+    # obtendo a data que contém o último dia do mês
     data_atual = datetime.now()
 
     # Obtém o último dia do mês
@@ -545,11 +543,12 @@ def criar_primeiro_relatorio_geral(tesoureiro):
 
     # Formata a data no formato "dd/mm/aaaa"
     data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
-    
+
     print('chamou a funcao')
     data_criacao = datetime.now()
     data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_geral = RelatorioGeral(tesoureiro_sede=tesoureiro, data_inicio=data_criacao,  data_fim=data_fim)
+    relatorio_geral = RelatorioGeral(
+        tesoureiro_sede=tesoureiro, data_inicio=data_criacao,  data_fim=data_fim)
     relatorio_geral.save()
     print('criou o relatorio')
 
@@ -558,7 +557,7 @@ def criar_novo_relatorio_geral(request):
     user = obterUsuario(request)
     entrada = Entrada.objects.get(igreja=user.igreja)
 
-    ############ obtendo a data que contém o último dia do mês
+    # obtendo a data que contém o último dia do mês
     data_atual = datetime.now()
 
     # Obtém o último dia do mês
@@ -569,11 +568,12 @@ def criar_novo_relatorio_geral(request):
 
     # Formata a data no formato "dd/mm/aaaa"
     data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
-    
+
     print('chamou a funcao')
     data_criacao = datetime.now()
     data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_geral = RelatorioGeral(tesoureiro_sede=user, data_inicio=data_criacao,  data_fim=data_fim)
+    relatorio_geral = RelatorioGeral(
+        tesoureiro_sede=user, data_inicio=data_criacao,  data_fim=data_fim)
     relatorio_geral.save()
     print('criou o relatorio')
 
@@ -602,21 +602,19 @@ def detalhar_relatorio_geral(request, relatorio_id):
 
     if request.method == "POST":
         form = RelatorioGeralForm(request.POST, instance=relatorio_geral)
-        
+
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('detalhar_relatorio_geral', args=[relatorio_geral.id]))
     else:
         form = RelatorioGeralForm(instance=relatorio_geral)
-   
-    
+
     context = {
         'relatorio_geral': relatorio_geral,
-        'form' : form,
+        'form': form,
     }
     return render(request, 'financas/relatorios/geral/detalhar.html', context)
 
-   
 
 def finalizar_relatorio_geral(request, relatorio_id):
     relatorio = RelatorioGeral.objects.get(id=relatorio_id)
@@ -637,11 +635,11 @@ def gerar_relatorio(request):
     print(tesoureiro.igreja)
     naoBaixar = 0
     buf = io.BytesIO()
-    c= canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
     textob = c.beginText()
     textob.setTextOrigin(inch, inch)
     textob.setFont("Arial", 14)
-    
+
     saidas = Saida.objects.all()
 
     lines = []
@@ -651,18 +649,19 @@ def gerar_relatorio(request):
     lines.append(" ")
     lines.append(" ")
     lines.append(" ")
-    lines.append("       Data                         Valor(R$)                        Descrição")
+    lines.append(
+        "       Data                         Valor(R$)                        Descrição")
     lines.append(" ")
 
-  
-       
     if saidas:
         total = 0
         for saida in saidas:
-                lines.append(str(saida.data) + '                      ' + str(f'{saida.valor:,.2f}') + '                     ' + str(saida.descricao))
-                lines.append("______________________________________________________________")
-                lines.append(" ")
-                total = total + saida.valor
+            lines.append(str(saida.data) + '                      ' + str(
+                f'{saida.valor:,.2f}') + '                     ' + str(saida.descricao))
+            lines.append(
+                "______________________________________________________________")
+            lines.append(" ")
+            total = total + saida.valor
         naoBaixar = naoBaixar+1
 
     lines.append(" ")
@@ -671,9 +670,6 @@ def gerar_relatorio(request):
     lines.append(" ")
     lines.append("Emitido em: " + str(data_atual))
 
-    
-
-           
     for line in lines:
         textob.textLine(line)
 
@@ -681,95 +677,45 @@ def gerar_relatorio(request):
     c.showPage()
     c.save()
     buf.seek(0)
-    return FileResponse(buf, as_attachment=True, filename= 'lista.pdf')
+    return FileResponse(buf, as_attachment=True, filename='lista.pdf')
 
-####################### FILTROS ######################
+
+###############################################  FILTROS  ##################################################################
 
 
 def filtrar_ofertas(request):
-    user = obterUsuario(request)
-
-    igreja = Igreja.objects.get(nome=user.igreja.nome)
-    ofertas = igreja.ofertas_culto.all()
-
     if request.method == 'POST':
-        date_input = request.POST.get('date_input')  # Obtém o valor do input do template
-        ofertas_filtradas = OfertaCulto.objects.filter(data_culto=date_input)  # Realiza a filtragem do modelo
+        # Obtém o valor do input do template
+        date_input = request.POST.get('date_input')
+        ofertas_filtradas = OfertaCulto.objects.filter(
+            data_culto=date_input)  # Realiza a filtragem do modelo
 
-        # Remove as ofertas presentes em ofertas_filtradas da lista de ofertas
-        ofertas = ofertas.exclude(pk__in=ofertas_filtradas)
+        return render(request, 'financas/entradas/ofertas/listar.html', {'ofertas_filtradas': ofertas_filtradas})
 
-        context = {
-            'usuario': user,
-            'igreja': user.igreja,
-            'ofertas_filtradas': ofertas_filtradas,
-            'ofertas': ofertas,
-        }
-
-        return render(request, 'financas/entradas/ofertas/listar.html', context)
-
-    context = {
-        'usuario': user,
-        'igreja': user.igreja,
-    }
-
-    return render(request, 'financas/entradas/ofertas/listar.html', context)
+    return render(request, 'financas/entradas/ofertas/listar.html')
 
 
 def filtrar_saidas(request):
-    user = obterUsuario(request)
-
     if request.method == 'POST':
-        date_input = request.POST.get('date_input')  # Obtém o valor do input do template
-        saidas_filtradas = Saida.objects.filter(data=date_input)  # Realiza a filtragem do modelo
+        # Obtém o valor do input do template
+        date_input = request.POST.get('date_input')
+        saidas_filtradas = Saida.objects.filter(
+            data=date_input)  # Realiza a filtragem do modelo
 
-        context = {
-            'usuario': user,
-            'igreja': user.igreja,
-            'saidas_filtradas': saidas_filtradas,
-        }
+        return render(request, 'financas/saidas/listar.html', {'saidas_filtradas': saidas_filtradas})
 
-        return render(request, 'financas/saidas/listar.html', context)
-
-    context = {
-            'usuario': user,
-            'igreja': user.igreja,
-   
-        }
-
-    return render(request, 'financas/saidas/listar.html', context)
+    return render(request, 'financas/saidas/listar.html')
 
 
 def filtrar_dizimos(request):
-    user = obterUsuario(request)
-
-    igreja = Igreja.objects.get(nome=user.igreja.nome)
-    dizimos = igreja.dizimos.all()
-
     if request.method == 'POST':
-        membro = request.POST.get('membro', '')  # Obtém o nome do membro do formulário
-        dizimos_filtrados = Dizimo.objects.filter(membro__nome__icontains=membro)  # Filtra os dizimos com base no nome do membro
-        
-        dizimos = dizimos.exclude(pk__in=dizimos_filtrados)
-
+        # Obtém o nome do membro do formulário
+        membro = request.POST.get('membro', '')
+        # Filtra os dizimos com base no nome do membro
+        dizimos = Dizimo.objects.filter(membro__nome__icontains=membro)
         context = {
-            'dizimos_filtrados': dizimos_filtrados,
-            'dizimos': dizimos,
-            'usuario': user,
-            'igreja': user.igreja,
-   
+            'dizimos_filtrados': dizimos
         }
-
         return render(request, 'financas/entradas/dizimos/listar.html', context)
-
     else:
-
-        context = {
-            'usuario': user,
-            'igreja': user.igreja,
-      
-        }
-       
-        return render(request, 'financas/entradas/dizimos/listar.html', context)
-
-
+        return render(request, 'financas/entradas/dizimos/listar.html')
