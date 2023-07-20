@@ -14,13 +14,13 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
-from .forms import SaidaForm
+from .forms import SaidaForm, RelatorioGeralForm
 from .models import Entrada, RelatorioGeral, RelatorioMensal, Saida
 
 pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
 from datetime import datetime
 import calendar
-
+from functools import partial
 
 def atualizar_registro_model(financa, user):
     # Setando objetos
@@ -168,10 +168,13 @@ def detalhar_saida(request, saida_id):
 def adicionar_dizimo(request):
     usuario = obterUsuario(request)
     print(usuario.igreja)
+
     entrada = get_object_or_404(Entrada, igreja=usuario.igreja)
+
+    formWithUser = partial(DizimoForm, usuario=usuario)
     if request.method == 'POST':
         
-        form = DizimoForm(request.POST)
+        form = formWithUser(request.POST)
         if form.is_valid():
             form.instance.igreja = usuario.igreja
             dizimo = form.save()
@@ -184,7 +187,7 @@ def adicionar_dizimo(request):
                 }
             return HttpResponseRedirect(reverse('listar_dizimos'))
     else:
-        form = DizimoForm()
+        form = formWithUser(usuario=usuario)
         
     context = {
         'usuario': usuario,
@@ -416,7 +419,7 @@ def criar_novo_relatorio_mensal(request):
     
     data_criacao = datetime.now()
     data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_mensal = RelatorioMensal(igreja=igreja, entradas=entrada, data_inicio=data_criacao, data_fim=data_fim)
+    relatorio_mensal = RelatorioMensal(igreja=igreja, data_inicio=data_criacao, data_fim=data_fim)
     relatorio_mensal.save()
 
     return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
@@ -424,9 +427,17 @@ def criar_novo_relatorio_mensal(request):
 
 def listar_relatorios_mensais(request):
     usuario = obterUsuario(request)
-    relatorios_mensais = RelatorioMensal.objects.filter(igreja=usuario.igreja)
+    if usuario.funcao == 'Tesoureiro':
+        relatorios_mensais = RelatorioMensal.objects.filter(igreja=usuario.igreja)
+    else:
+        relatorios_mensais = RelatorioMensal.objects.exclude(igreja=usuario.igreja)
+    
+    relatorios_particulares = RelatorioMensal.objects.filter(igreja=usuario.igreja)
+
     context = {
-        'relatorios': relatorios_mensais
+        'relatorios': relatorios_mensais,
+        'relatorios_tesoureiro': relatorios_particulares,
+        'usuario': usuario,
     }
     return render(request, 'financas/relatorios/mensal/listar.html', context)
 
