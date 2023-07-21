@@ -109,7 +109,8 @@ def home(request):
         'mes': [data.strftime('%B %Y') for data in datas],
         'total_meses_data': ['{:,.2f}'.format(t).replace(',', '.') for t in total],
         'total_meses_color': ['green' if t > 0 else 'red' for t in total],
-        'variacao_meses': variacao_total
+        'variacao_meses': variacao_total,
+        'data_atual': data_atual
     }
 
     return render(request, "home/home.html", context)

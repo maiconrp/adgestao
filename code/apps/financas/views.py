@@ -23,61 +23,109 @@ from .models import Entrada, RelatorioGeral, RelatorioMensal, Saida
 pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
 
 
-def atualizar_registro_model(financa, user):
+def atualizar_registro_model(request, financa, user):
     # Setando objetos
-    relatorio_geral = RelatorioGeral.objects.get(status='Ativo')
-    relatorio_mensal = RelatorioMensal.objects.get(
-        igreja=user.igreja,
+    try:
+        relatorio_geral = RelatorioGeral.objects.get(status='Ativo')
+
+    except:
+        relatorio_geral = None
+
+    try:
+        usuario = obterUsuario(request)
+        igreja = usuario.igreja
+        relatorio_mensal = RelatorioMensal.objects.get(
+        igreja=igreja,
         status='Ativo'
-    )
-    igreja = user.igreja
-    saida = Saida.objects.last()
+        )
 
-    if financa == 'saida':
+    except:
+        relatorio_mensal = None 
 
-        # Atualizando registros no model de RealatórioGeral
-        relatorio_geral.saidas_sede = relatorio_geral.calc_saidas_sede
-        relatorio_geral.saidas_locais = relatorio_geral.calc_saidas_locais
-        relatorio_geral.saldo = relatorio_geral.calc_saldo
 
-        relatorio_geral.save()
+    # Verifica se um relatório de oferta com o mesmo dia e tipo de culto já foi criado
+    if relatorio_geral is not None and relatorio_mensal is not None:
+        saida = Saida.objects.last()
+        if financa == 'saida':
 
-        # Atualizando registros no model de RealatórioMensal
-        relatorio_mensal.total_saidas = relatorio_mensal.calc_saidas
-        relatorio_mensal.saldo = relatorio_mensal.calc_saldo
-        relatorio_mensal.pagamento_obreiro = relatorio_mensal.calc_pagamento_obreiro
-        relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
-        relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
+            # Atualizando registros no model de RealatórioGeral
+            relatorio_geral.saidas_sede = relatorio_geral.calc_saidas_sede
+            relatorio_geral.saidas_locais = relatorio_geral.calc_saidas_locais
+            relatorio_geral.saldo = relatorio_geral.calc_saldo
 
-        relatorio_mensal.save()
+            relatorio_geral.save()
 
-        # Atualizando registro de saldo no model de Igreja
-        igreja.saldo = saida.calc_saldo
-        print('saldo att')
-        igreja.save()
+            # Atualizando registros no model de RealatórioMensal
+            relatorio_mensal.total_saidas = relatorio_mensal.calc_saidas
+            relatorio_mensal.saldo = relatorio_mensal.calc_saldo
+            relatorio_mensal.pagamento_obreiro = relatorio_mensal.calc_pagamento_obreiro
+            relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
+            relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
 
+            relatorio_mensal.save()
+
+            # Atualizando registro de saldo no model de Igreja
+            igreja.saldo = saida.calc_saldo
+            print('saldo att')
+            igreja.save()
+        
+        elif financa == 'entrada e saida':
+             # Atualizando registros no model de RealatórioGeral
+             # Saídas
+            relatorio_geral.saidas_sede = relatorio_geral.calc_saidas_sede
+            relatorio_geral.saidas_locais = relatorio_geral.calc_saidas_locais
+            relatorio_geral.saldo = relatorio_geral.calc_saldo
+
+            # Entradas
+            relatorio_geral.entradas_sede = relatorio_geral.calc_entradas_sede
+            relatorio_geral.entradas_locais = relatorio_geral.calc_entradas_locais
+            relatorio_geral.saldo = relatorio_geral.calc_saldo
+
+            relatorio_geral.save()
+
+            # Atualizando registros no model de RealatórioMensal
+            # Saídas
+            relatorio_mensal.total_saidas = relatorio_mensal.calc_saidas
+            relatorio_mensal.saldo = relatorio_mensal.calc_saldo
+            relatorio_mensal.pagamento_obreiro = relatorio_mensal.calc_pagamento_obreiro
+            relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
+            relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
+
+            # Entradas
+            relatorio_mensal.total_entradas = relatorio_mensal.calc_total_entradas
+            relatorio_mensal.saldo = relatorio_mensal.calc_saldo
+            relatorio_mensal.pagamento_obreiro = relatorio_mensal.calc_pagamento_obreiro
+            relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
+            relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
+
+            relatorio_mensal.save()
+        
+        else:
+            # Atualizando registros no model de RealatórioGeral
+            relatorio_geral.entradas_sede = relatorio_geral.calc_entradas_sede
+            relatorio_geral.entradas_locais = relatorio_geral.calc_entradas_locais
+            relatorio_geral.saldo = relatorio_geral.calc_saldo
+
+            relatorio_geral.save()
+
+            # Atualizando registros no model de RealatórioMensal
+            relatorio_mensal.total_entradas = relatorio_mensal.calc_total_entradas
+            relatorio_mensal.saldo = relatorio_mensal.calc_saldo
+            relatorio_mensal.pagamento_obreiro = relatorio_mensal.calc_pagamento_obreiro
+            relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
+            relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
+
+            relatorio_mensal.save()
+
+            # Atualizando registro de saldo no model de Igreja
+            igreja.saldo = saida.calc_saldo
+            print('saldo atualizado')
+            igreja.save()
     else:
-        # Atualizando registros no model de RealatórioGeral
-        relatorio_geral.entradas_sede = relatorio_geral.calc_entradas_sede
-        relatorio_geral.entradas_locais = relatorio_geral.calc_entradas_locais
-        relatorio_geral.saldo = relatorio_geral.calc_saldo
 
-        relatorio_geral.save()
-
-        # Atualizando registros no model de RealatórioMensal
-        relatorio_mensal.total_entradas = relatorio_mensal.calc_total_entradas
-        relatorio_mensal.saldo = relatorio_mensal.calc_saldo
-        relatorio_mensal.pagamento_obreiro = relatorio_mensal.calc_pagamento_obreiro
-        relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
-        relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
-
-        relatorio_mensal.save()
-
-        # Atualizando registro de saldo no model de Igreja
-        igreja.saldo = saida.calc_saldo
-        print('saldo atualizado')
-        igreja.save()
-
+        messages.success(request, 'Crie um relatório mensal e/ou geral!')
+        return HttpResponseRedirect(reverse('listar_relatorios_mensais'))
+       
 
 # @login_required
 # @permission_required('accounts.tesoureiro')
@@ -91,14 +139,14 @@ def adicionar_saida(request):
             saida = form.save()
             saida.save()
 
-            atualizar_registro_model('saida', user)
+            atualizar_registro_model(request, financa='saida', user=user)
 
             messages.success(request, 'Saída adicionada com sucesso!')
 
             context = {
                 'form': form,
             }
-            return HttpResponseRedirect(reverse('listar_saida'))
+            return HttpResponseRedirect(reverse('listar_saidas'))
     else:
         form = SaidaForm()
 
@@ -124,7 +172,7 @@ def editar_saida(request, saida_id):
         if form.is_valid():
             form.save()
 
-            atualizar_registro_model('saida', user)
+            atualizar_registro_model(request, financa='saida', user=user)
 
             return HttpResponseRedirect(reverse('detalhar_saida', args=[saida.id]))
     else:
@@ -146,9 +194,9 @@ def excluir_saida(request, saida_id):
     saida = Saida.objects.get(id=saida_id)
     saida.delete()
 
-    atualizar_registro_model('saida', user)
+    atualizar_registro_model(request, financa='saida', user=user)
 
-    return HttpResponseRedirect(reverse('listar_saida'))
+    return HttpResponseRedirect(reverse('listar_saidas'))
 
 
 # @login_required
@@ -217,7 +265,7 @@ def adicionar_dizimo(request):
                 # Salva os valores dos dízimos criados após o relatório de culto
                 oferta.save()
 
-                atualizar_registro_model('entrada', user)
+                atualizar_registro_model(request, financa='entrada', user=user)
 
                 context = {
                     'form': form,
@@ -255,7 +303,7 @@ def editar_dizimo(request, dizimo_id):
         if form.is_valid():
             form.save()
 
-            atualizar_registro_model('entrada', user)
+            atualizar_registro_model(request, financa='entrada', user=user)
 
             return HttpResponseRedirect(reverse('detalhar_dizimo', args=[dizimo.id]))
     else:
@@ -277,7 +325,7 @@ def excluir_dizimo(request, dizimo_id):
     dizimo = Dizimo.objects.get(id=dizimo_id)
     dizimo.delete()
 
-    atualizar_registro_model('entrada', user)
+    atualizar_registro_model(request, financa='entrada', user=user)
 
     return HttpResponseRedirect(reverse('listar_dizimos'))
 
@@ -361,7 +409,7 @@ def adicionar_oferta(request):
 
             entrada.ofertas.add(oferta)
 
-            atualizar_registro_model('entrada', user)
+            atualizar_registro_model(request, financa='entrada', user=user)
 
             context = {
                 'form': form,
@@ -399,7 +447,7 @@ def excluir_oferta(request, oferta_id):
     oferta = OfertaCulto.objects.get(id=oferta_id)
     oferta.delete()
 
-    atualizar_registro_model('entrada', user)[0]
+    atualizar_registro_model(request, financa='entrada', user=user)
 
     return HttpResponseRedirect(reverse('listar_ofertas'))
 
@@ -426,7 +474,7 @@ def editar_oferta(request, oferta_id):
         if form.is_valid():
             form.save()
 
-            atualizar_registro_model('entrada', user)
+            atualizar_registro_model(request, financa='entrada', user=user)
 
             return HttpResponseRedirect(reverse('detalhar_oferta', args=[oferta.id]))
     else:
@@ -474,6 +522,8 @@ def criar_novo_relatorio_mensal(request):
         relatorio_mensal = RelatorioMensal(
             igreja=igreja, data_inicio=data_criacao, data_fim=data_fim)
         relatorio_mensal.save()
+
+        atualizar_registro_model(request, financa='entrada e saida', user=user)
 
         messages.success(request, 'Um novo Relatório Mensal foi criado com sucesso!')
         

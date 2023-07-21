@@ -3,21 +3,39 @@
 
 {%block title%} | Membros | Cadastrar{%endblock%}
 
+{% block 'breadcump_title' %}
+Membros
+{% endblock %}
+
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Membros</li>
+<li class="breadcrumb-item active" aria-current="page">Cadastrar</li>
+{% endblock %}
+
 {% block 'content' %}
 
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+
+    <div class="card-header">
+      <br>
+      <h3> Cadastrar Memrbo </h3>
+
+    </div>
+    <div class="card-body">
 <section>
-  <h2>
-    Cadastrar membro
-  </h2>
-  <div>
-    <form method="post">
+        <div>
+          <form method="post">
+                  
+            {% csrf_token %}
+            {{ form|bootstrap }}
 
-      {% csrf_token %}
-      {{ form|bootstrap }}
-
-      <input type="submit" class="btn btn-success" value="Cadastrar" />
-    </form>
+        </div>
+      </section>
+    </div>
   </div>
-</section>
+  <input type="submit" class="btn btn-success"value="Cadastrar" />
+  </form>
+</div>
 
 {% endblock %}
