@@ -8,7 +8,7 @@
 
 
 {% block 'breadcump_title' %} 
-    Relatórios
+Informações do Relatório Mensal
 {% endblock %}
 
 {% block 'breadcump1' %}
@@ -17,11 +17,21 @@
 {% endblock %}
 
 {% block 'breadcump2' %}
-    <li class="breadcrumb-item active" aria-current="page">Relatório Mensal</li>
+    <li class="breadcrumb-item active" aria-current="page">Informações do Relatório Mensal</li>
 {% endblock %}
+
 
 {% block 'content' %}
 
+<a href="{% url 'gerar_relatorio'%}" class="btn btn-success">Baixar</a>
+  <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-danger">Excluir</a>
+  {% if relatorio_mensal.status == 'Ativo' %}
+  <a href="{% url 'finalizar_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-success">Finalizar relatório</a>
+ 
+  {% else %}
+  {%endif%}
+  <br>
+  <br>
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
     <div class="card">
       <div class="card-body">
@@ -29,12 +39,12 @@
 
 {% if relatorio_mensal %}
     <table class="table">
-        <thead>
-            <tr>
-                <th colspan="2">Informações do Relatório Mensal</th>
-            </tr>
-        </thead>
+       
         <tbody>
+            <tr>
+                <td>Status</td>
+                <td>{{ relatorio_mensal.status }}</td>
+            </tr>
             <tr>
                 <td>Data de início</td>
                 <td>{{ relatorio_mensal.data_inicio }}</td>
@@ -42,6 +52,14 @@
             <tr>
                 <td>Data de término</td>
                 <td>{{ relatorio_mensal.data_fim }}</td>
+            </tr>
+            <tr>
+                <td>Total de entradas</td>
+                <td>{{ relatorio_mensal.total_entradas }}</td>
+            </tr>
+            <tr>
+                <td>Total de saídas</td>
+                <td>{{ relatorio_mensal.total_saidas }}</td>
             </tr>
             <tr>
                 <td>Pagamento para obreiros</td>
@@ -57,42 +75,62 @@
             </tr>
             <tr>
                 <td>Saldo</td>
-                <td>{{ relatorio_mensal.igreja.ofertas }}</td>
-            </tr>
-            
+                <td>{{ relatorio_mensal.saldo }}</td>
+            </tr> 
         </tbody>
     </table>
     </div>
+    </div>
+</div>
     
+<div class="card">
+    <div class="card-body">
+      <div class="table-responsive ">
+  
+        {% if entradas_relatorio %}
+        <h3>Ofertas arrecadadas</h3>
+        <table class="table">
+  
+          <thead class="bg-light">
+            <tr class="border-0">
+              <th class="border-0 scope=" col">Data</th>
+              <th class="border-0 scope=" col">Ofertas</th>
+              <th class="border-0 scope=" col">Dízimos</th>
+              <th class="border-0 scope=" col">Total</th>
+          
+            </tr>
+          </thead>
+          <tbody>
+          
+            {% for oferta in entradas_relatorio %}
+            <tr>
+          
+              <th scope="col">{{ oferta.data_culto|date:"d/M" }}</th>
+              <td>{{ oferta.valor_oferta }}</td>
+              <td>{{ oferta.valor_dizimo }}</td>
+              <td>{{ oferta.total }}</td>
+          
+              <td>
+                <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
+          
+                <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+          
+          </tbody>
+  
+        </table>
+  
+        {% else %}
+        <p>Ainda não foi adicionada nenhuma oferta neste mês.</p>
+        {% endif %}
+      </div>
     </div>
-    </div>
-  <a href="{% url 'gerar_relatorio'%}" class="btn btn-success">Baixar</a>
-  <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-danger">Excluir</a>
+  </div>
+
 </div>
 {% endif %}
 {% endblock %}
-=======
-{%load bootstrap%}
-
-{% block 'content' %}
-
-{% if relatorio_mensal %}
-    <h2>Informações do Relatório mensal</h2>
-    <p>Status: {{ relatorio_mensal.status }}</p>
-    <p>Data de início: {{ relatorio_mensal.data_inicio }}</p>
-    <p>Data de término: {{ relatorio_mensal.data_fim }}</p>
-    <p>Pagamento para obreiros: {{ relatorio_mensal.calc_pagamento_obreiro }}</p>
-    <p>Fundo convencional: {{ relatorio_mensal.calc_fundo_convencional }}</p>
-    <p>Missões sede: {{ relatorio_mensal.calc_missoes_sede }}</p>
-    <p>Total entradas: {{ relatorio_mensal.total_entradas }}</p>
 
 
-    <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-success">Excluir</a>
-
-    <input type="submit" class="btn btn-success" value="Finalizar" onclick="window.location.href='{% url 'finalizar_relatorio_mensal' relatorio_mensal.id %}'" />
-
-{% endif %}
-
-{% endblock %}
-
->>>>>>> origin/feat/relatorio-geral

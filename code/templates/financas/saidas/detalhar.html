@@ -1,7 +1,17 @@
-<<<<<<< HEAD
 {% extends 'base.html' %}
 
 {%block title%} | Saídas | Detalhar{%endblock%}
+
+
+{% block 'breadcump_title' %}
+Saídas 
+{% endblock %}
+
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Saidas</li>
+<li class="breadcrumb-item active" aria-current="page">Detalhar</li>
+
+{% endblock %}
 
 {% block 'content' %}
 
@@ -24,15 +34,4 @@
 
 {% endif %}
 {% endblock %}
-=======
-{% if saida %}
-    <h2>Informações da Saida</h2>
-    <p>Data: {{ saida.data }}</p>
-    <p>Descrição: {{ saida.descricao }}</p>
-    <p>Valor: {{ saida.valor }}</p>
-    <p>Igreja: {{ saida.igreja.nome }}</p>
 
-    <a href="{% url 'editar_saida' saida.id %}" class="btn btn-success">Editar</a>
-    <a href="{% url 'excluir_saida' saida.id %}" class="btn btn-success">Excluir</a>
-{% endif %}
->>>>>>> origin/feat/relatorio-geral

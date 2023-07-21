@@ -1,22 +1,72 @@
 {% extends 'base.html' %}
 {%load bootstrap%}
 
+<<<<<<< HEAD
+<!-- ============================================================== -->
+<!-- pageheader  -->
+<!-- ============================================================== -->
+
+{%block title%} | Relatórios | Detalhar{%endblock%}
+
+
+{% block 'breadcump_title' %} 
+Informações do Relatório Geral
+{% endblock %}
+
+{% block 'breadcump1' %}
+    <li class="breadcrumb-item"><a href="{% url 'listar_relatorios_gerais' %}" class="breadcrumb-link">Finanças</a></li>
+
+{% endblock %}
+
+{% block 'breadcump2' %}
+    <li class="breadcrumb-item active" aria-current="page">Informações do Relatório Geral</li>
+{% endblock %}
+
 {% block 'content' %}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive ">
 
 {% if relatorio_geral %}
-    <p>Tesoureiro Sede: {{ relatorio_geral.tesoureiro_sede.nome }}</p>
-    <h2>Informações do Relatório geral</h2>
-    <p>Status: {{ relatorio_geral.status }}</p>
-    <p>Data de início: {{ relatorio_geral.data_inicio }}</p>
-    <p>Data de término: {{ relatorio_geral.data_fim }}</p>
-    <p>Total entradas da sede: {{ relatorio_geral.calc_entradas_sede }}</p>
-    <p>Total saida da sede: {{ relatorio_geral.calc_saidas_sede }}</p>
-    <p>Total entradas locais: {{ relatorio_geral.calc_entradas_locais }}</p>
-    <p>Total saida locais: {{ relatorio_geral.calc_saidas_locais }}</p>
-    <p>Saldo: {{ relatorio_geral.calc_saldo }}</p>
-
-    
-
+<table class="table">
+        <tbody>
+          <tr>
+              <td>Status</td>
+              <td>{{ relatorio_geral.status }}</td>
+          </tr>
+          <tr>
+              <td>Data de início</td>
+              <td>{{ relatorio_geral.data_inicio }}</td>
+          </tr>
+          <tr>
+              <td>Data de término</td>
+              <td>{{ relatorio_geral.data_fim }}</td>
+          </tr>
+          <tr>
+              <td>Total de entradas da sede</td>
+              <td>{{ relatorio_geral.calc_entradas_sede }}</td>
+          </tr>
+          <tr>
+              <td>Total de saídas da sede</td>
+              <td>{{ relatorio_geral.calc_saidas_sede }}</td>
+          </tr>
+          <tr>
+              <td>Total de entradas locais</td>
+              <td>{{ relatorio_geral.calc_entradas_locais }}</td>
+          </tr>
+          <tr>
+              <td>Total de saídas locais</td>
+              <td>{{ relatorio_geral.calc_saidas_locais }}</td>
+          </tr>
+          <tr>
+              <td>Saldo</td>
+              <td>{{ relatorio_geral.calc_saldo }}</td>
+          </tr>
+          
+        </tbody>
+        </table>
+        <br>
     <section>
         <h2>
           Adicionar despesas
@@ -26,16 +76,23 @@
                   
             {% csrf_token %}
             {{ form|bootstrap }}
-      
-            <input type="submit" class="btn btn-success" value="Salvar" />
-           
+            <br>
+
+            {% if relatorio_geral.status == 'Ativo' %}
+            <input type="submit" class="btn btn-success" value="Salvar" /> 
+            <a href="{% url 'finalizar_relatorio_geral' relatorio_geral.id %}" class="btn btn-success">Finalizar relatório</a>
+            {% else %}
+            {% endif %}
           </form>
         </div>
       </section>
-
-      <input type="submit" class="btn btn-success" value="Finalizar" onclick="window.location.href='{% url 'finalizar_relatorio_geral' relatorio_geral.id %}'" />
-
+          <br>
+    </div>   
+  </div>
+</div>
+</div>
 {% endif %}
+
 {% endblock %}
 
 

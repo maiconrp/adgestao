@@ -1,27 +1,44 @@
 {% extends 'base.html' %}
 {%load bootstrap%}
-<<<<<<< HEAD
 
 {%block title%} | Saídas | Adicionar{%endblock%}
 
+{% block 'breadcump_title' %}
+Saídas
+{% endblock %}
 
-=======
->>>>>>> origin/feat/relatorio-geral
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Saídas</li>
+<li class="breadcrumb-item active" aria-current="page">Adicionar</li>
+{% endblock %}
+
 {% block 'content' %}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
 
+    <div class="card-header">
+      <br>
+      <h3> Adicionar Saída </h3>
+
+    </div>
+    <div class="card-body">
 <section>
-  <h2>
-    Adicionar Saidas
-  </h2> 
-  <div>
-    <form method="post">
-            
-      {% csrf_token %}
-      {{ form|bootstrap }}
+        <div>
+          <form method="post">
+                  
+            {% csrf_token %}
+            {{ form|bootstrap }}
 
-      <input type="submit" class="btn btn-success"value="Cadastrar" />
-    </form>
+        </div>
+      </section>
+    </div>
   </div>
-</section>
+  <input type="submit" class="btn btn-success"value="Adicionar" />
+  </form>
+</div>
 
 {% endblock %}
+
+
+
+

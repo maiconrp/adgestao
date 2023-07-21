@@ -20,27 +20,40 @@ Membros
     {% endfor %}
   </div>
   {% endif %}
-  <div class="card">
-
-    <div class="card-header">
-      Total
-
+  {% if membros %}
+  <form class="form-inline" method="POST" action="{% url 'filtrar_membro' %}">
+    {% csrf_token %}
+    <div class="form-group mb-2">
+      <input type="text" class="form-control" id="membro-input" name="nome" placeholder="Nome do membro" required>
     </div>
+    <button type="submit" class="btn btn-primary btn-sm mb-2">Filtrar</button>
+  </form>
+  <br>
+{%endif%}
+  {% if membros_filtrados %}
+  <div class="card">
     <div class="card-body">
-      {% if membros %}
       <table class="table">
         <thead class="bg-light">
           <tr class="border-0">
-            <th class="border-0 scope=" col">Nome</th>
-            <th class="border-0 scope=" col">Data de nascimento</th>
-            <th class="border-0 scope=" col">Ação</th>
+            <th class="border-0 scope=">Nome</th>
+            <th class="border-0 scope=">Data de nascimento</th>
+            <th class="border-0 scope=">CPF</th>
+            <th class="border-0 scope=">Dizimista</th>
+            <th class="border-0 scope=">Ação</th>
           </tr>
         </thead>
         <tbody>
-          {% for membro in membros %}
+          {% for membro in membros_filtrados %}
           <tr>
             <td>{{ membro.nome }}</td>
             <td>{{ membro.data_nasc|date:"d/m/y" }}</td>
+            <td>{{ membro.cpf }}</td>
+            {% if membro.dizimos.count > 0 %}
+            <td>Sim</td>
+            {% else %}
+            <td>Não</td>
+            {% endif %}
             <td>
               <a href="{% url 'editar_membro' membro.id %}" class="btn btn-info"><i
                   class="fas fa-external-link-alt"></i></a>
@@ -51,12 +64,52 @@ Membros
         </tbody>
       </table>
 
+    </div>
+  </div>
+  {% else %}
+
+  <div class="card">
+    <div class="card-body">
+      {% if membros %}
+      <table class="table">
+        <thead class="bg-light">
+          <tr class="border-0">
+            <th class="border-0" scope="col">Nome</th>
+             <th class="border-0" scope="col">Data de nascimento</th>
+             <th class="border-0" scope="col">CPF</th>
+             <th class="border-0" scope="col">Dizimista</th>
+             <th class="border-0" scope="col">Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for membro in membros %}
+          <tr>
+            <td>{{ membro.nome }}</td>
+            <td>{{ membro.data_nasc|date:"d/m/y" }}</td>
+            <td>{{ membro.cpf }}</td>
+            {% if membro.dizimos.count > 0 %}
+            <td>Sim</td>
+            {% else %}
+            <td>Não</td>
+            {% endif %}
+            <td>
+              <a href="{% url 'editar_membro' membro.id %}" class="btn btn-info"><i
+                  class="fas fa-external-link-alt"></i></a>
+              <a href="{% url 'excluir_membro' membro.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
       {% else %}
+
       <p>Nenhum membro cadastrado.</p>
       {% endif %}
 
     </div>
   </div>
+  {% endif %}
+
   <a href="{% url 'cadastrar_membro'%}" class="btn btn-success">Adicionar</a>
 </div>
 

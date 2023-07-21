@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block 'breadcump_title' %}
-Paz do Senhor, {{usuario_nome}}
+Paz do Senhor, {{usuario_nome  }} | {{  data_atual }}
 {% endblock %}
 
 {% block 'breadcump1' %}
@@ -130,7 +130,6 @@ Paz do Senhor, {{usuario_nome}}
                 {% endif %}
             </div>
         </div>
-        {% if perms.accounts.tesoureiro_sede %}
         <div class="card">
             <h4 class="card-header">Igrejas</h4>
             <div class="card-body">
@@ -169,7 +168,6 @@ Paz do Senhor, {{usuario_nome}}
             </div>
         </div>
 
-        {%endif%}
     </div>
 
     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
@@ -180,11 +178,8 @@ Paz do Senhor, {{usuario_nome}}
             </div>
             <div class="card-footer"></div>
         </div>
+
     </div>
-
-
-
-
 
 </div>
 

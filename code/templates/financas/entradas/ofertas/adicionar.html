@@ -1,34 +1,42 @@
 {% extends 'base.html' %}
 {%load bootstrap%}
-<<<<<<< HEAD
 
 {%block title%} | Ofertas | Adicionar{%endblock%}
 
+{% block 'breadcump_title' %}
+Ofertas
+{% endblock %}
 
-=======
->>>>>>> origin/feat/relatorio-geral
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Ofertas</li>
+<li class="breadcrumb-item active" aria-current="page">Adicionar</li>
+{% endblock %}
+
 {% block 'content' %}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
 
-<section>
-  <h2>
-    Adicionar Oferta
-  </h2> 
-  <div>
-    <form method="post">
-            
-      {% csrf_token %}
-      {{ form|bootstrap }}
+    <div class="card-header">
+      <br>
+      <h3> Adicionar Oferta </h3>
 
-      <input type="submit" class="btn btn-success"value="Cadastrar" />
-    </form>
-  </div>
-<<<<<<< HEAD
-  {{usuario.igreja}}<br><br>
-  {%for e in entradas%}
-  {{e.igreja}}<br>
-{%endfor%}
-=======
->>>>>>> origin/feat/relatorio-geral
-</section>
+    </div>
+    <div class="card-body">
+        <section>
+ 
+          <div>
+            <form method="post">
+                    
+              {% csrf_token %}
+              {{ form|bootstrap }}
+
+          </div>
+
+        </section>
+      </div>
+    </div>
+<input type="submit" class="btn btn-success"value="Adicionar" />
+</form>
+</div>
 
 {% endblock %}

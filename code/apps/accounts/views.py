@@ -9,7 +9,7 @@ from django.contrib import messages
 
 
 from financas.models import Saida, Entrada
-from igreja.models import Dizimo, OfertaCulto, Membro, Igreja
+from igreja.models import Dizimo, OfertaCulto, Membro, Igreja, SaldoMes
 
 @login_required
 def obterUsuario(request):
@@ -43,8 +43,9 @@ def home(request):
     variacao_saidas = []
     total = []
     variacao_total = []
-    membros = Membro.objects.all()[:5]
+    membros = Membro.objects.filter(igreja=usuario.igreja)[:5]
     igrejas = Igreja.objects.all()[:5]
+    saldos = SaldoMes.objects.all()[:5]
 
     for i, data in enumerate(datas):
         proximo_mes = data.replace(day=28) + timedelta(days=4)
@@ -91,6 +92,7 @@ def home(request):
         'usuario': usuario,
         'igreja': usuario.igreja,
         'usuario_nome': usuario.nome.split()[0],
+        'saldos': saldos,
         # Formatação com duas casas decimais e separador de milhares
         'total_dizimos': '{:,.2f}'.format(total_dizimos[-1]),
         'variacao_dizimos': variacao_dizimos[-1],
@@ -107,7 +109,8 @@ def home(request):
         'mes': [data.strftime('%B %Y') for data in datas],
         'total_meses_data': ['{:,.2f}'.format(t).replace(',', '.') for t in total],
         'total_meses_color': ['green' if t > 0 else 'red' for t in total],
-        'variacao_meses': variacao_total
+        'variacao_meses': variacao_total,
+        'data_atual': data_atual
     }
 
     return render(request, "home/home.html", context)
@@ -189,6 +192,7 @@ def listar_cadastros(request):
 @login_required
 @permission_required('accounts.tesoureiro_sede')
 def detalhar_cadastro(request, solicitacao_id):
+    user = obterUsuario(request)
     """
     View para detalhar cadastros.
 
@@ -197,7 +201,10 @@ def detalhar_cadastro(request, solicitacao_id):
     solicitacao = SolicitacaoCadastro.objects.get(id=solicitacao_id)
     context = {
         'solicitacao': solicitacao,
+        'usuario': user,
+        'igreja': user.igreja, 
     }
+    
 
     return render(request, 'solicitacoes/detalhar.html', context)
 
