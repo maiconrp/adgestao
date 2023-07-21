@@ -96,7 +96,7 @@
                   </tr>
                 </thead>
                 {% for relatorio in relatorios %}
-                {% if relatorio.status == 'finalizado' %}
+                {% if relatorio.status == 'Finalizado' %}
                 <tbody>
       
                     <tr>
@@ -114,6 +114,17 @@
       
                 </tbody>
               </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive ">
+        <p>Nenhum Relatório geral criado.</p>
+        <a href="{% url 'criar_novo_relatorio_geral'%}" class="btn btn-success">Criar relatório</a>
       </div>
     </div>
   </div>

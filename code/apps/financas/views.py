@@ -440,49 +440,42 @@ def editar_oferta(request, oferta_id):
 
 ####################### - - - - - - RELATÓRIO MENSAL - - - - - -  ############################
 
-def criar_primeiro_relatorio_mensal(igreja):
-    # obtendo a data que contém o último dia do mês
-    data_atual = datetime.now()
-
-    # Obtém o último dia do mês
-    ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
-
-    # Cria a data do último dia do mês
-    data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
-
-    # Formata a data no formato "dd/mm/aaaa"
-    data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
-
-    data_criacao = datetime.now()
-    data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_mensal = RelatorioMensal(
-        igreja=igreja, data_inicio=data_criacao, data_fim=data_fim)
-    relatorio_mensal.save()
-
-
 def criar_novo_relatorio_mensal(request):
     user = obterUsuario(request)
     igreja = Igreja.objects.get(nome=user.igreja.nome)
-    entrada = Entrada.objects.get(igreja=user.igreja)
-    # obtendo a data que contém o último dia do mês
-    data_atual = datetime.now()
 
-    # Obtém o último dia do mês
-    ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
+    try:
+        relatorio_ativo = RelatorioMensal.objects.get(status='Ativo')
+    except:
+        relatorio_ativo = None
 
-    # Cria a data do último dia do mês
-    data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
+    if relatorio_ativo:
+        messages.error(request, 'Já existe um relatório ativo !')
+        return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
 
-    # Formata a data no formato "dd/mm/aaaa"
-    data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
+    else:
+        # obtendo a data que contém o último dia do mês
+        data_atual = datetime.now()
 
-    data_criacao = datetime.now()
-    data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_mensal = RelatorioMensal(
-        igreja=igreja, data_inicio=data_criacao, data_fim=data_fim)
-    relatorio_mensal.save()
+        # Obtém o último dia do mês
+        ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
 
-    return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
+        # Cria a data do último dia do mês
+        data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
+
+        # Formata a data no formato "dd/mm/aaaa"
+        data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
+        
+
+        data_criacao = datetime.now()
+        data_criacao = data_criacao.strftime("%Y-%m-%d")
+        relatorio_mensal = RelatorioMensal(
+            igreja=igreja, data_inicio=data_criacao, data_fim=data_fim)
+        relatorio_mensal.save()
+
+        messages.success(request, 'Um novo Relatório Mensal foi criado com sucesso!')
+        
+        return HttpResponseRedirect(reverse('listar_relatorios_mensais'))
 
 
 def listar_relatorios_mensais(request):
@@ -512,10 +505,18 @@ def detalhar_relatorio_mensal(request, relatorio_id):
     usuario = obterUsuario(request)
     relatorio_mensal = RelatorioMensal.objects.get(id=relatorio_id)
 
+    mes_relatorio = relatorio_mensal.data_inicio.month
+    ano_relatorio = relatorio_mensal.data_inicio.year
+        
+    entradas_relatorio = OfertaCulto.objects.filter(
+    data_culto__month=mes_relatorio, data_culto__year=ano_relatorio, igreja=relatorio_mensal.igreja)
+    
+
     context = {
         'relatorio_mensal': relatorio_mensal,
         'usuario': usuario,
         'igreja': usuario.igreja,
+        'entradas_relatorio': entradas_relatorio,
     }
 
     return render(request, 'financas/relatorios/mensal/detalhar.html', context)
@@ -531,53 +532,40 @@ def finalizar_relatorio_mensal(request, relatorio_id):
 ####################### - - - RELATÓRIO GERAL - - - ######################
 
 
-def criar_primeiro_relatorio_geral(tesoureiro):
-    # obtendo a data que contém o último dia do mês
-    data_atual = datetime.now()
-
-    # Obtém o último dia do mês
-    ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
-
-    # Cria a data do último dia do mês
-    data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
-
-    # Formata a data no formato "dd/mm/aaaa"
-    data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
-
-    print('chamou a funcao')
-    data_criacao = datetime.now()
-    data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_geral = RelatorioGeral(
-        tesoureiro_sede=tesoureiro, data_inicio=data_criacao,  data_fim=data_fim)
-    relatorio_geral.save()
-    print('criou o relatorio')
-
-
 def criar_novo_relatorio_geral(request):
     user = obterUsuario(request)
-    entrada = Entrada.objects.get(igreja=user.igreja)
+    
+    try:
+        relatorio_ativo = RelatorioGeral.objects.get(status='Ativo')
+    except:
+        relatorio_ativo = None
 
-    # obtendo a data que contém o último dia do mês
-    data_atual = datetime.now()
+    if relatorio_ativo:
+        messages.error(request, 'Já existe um relatório ativo !')
+        return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
+    else:
+        # obtendo a data que contém o último dia do mês
+        data_atual = datetime.now()
 
-    # Obtém o último dia do mês
-    ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
+        # Obtém o último dia do mês
+        ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
 
-    # Cria a data do último dia do mês
-    data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
+        # Cria a data do último dia do mês
+        data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
 
-    # Formata a data no formato "dd/mm/aaaa"
-    data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
+        # Formata a data no formato "dd/mm/aaaa"
+        data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
 
-    print('chamou a funcao')
-    data_criacao = datetime.now()
-    data_criacao = data_criacao.strftime("%Y-%m-%d")
-    relatorio_geral = RelatorioGeral(
-        tesoureiro_sede=user, data_inicio=data_criacao,  data_fim=data_fim)
-    relatorio_geral.save()
-    print('criou o relatorio')
+        
+        data_criacao = datetime.now()
+        data_criacao = data_criacao.strftime("%Y-%m-%d")
+        relatorio_geral = RelatorioGeral(
+            tesoureiro_sede=user, data_inicio=data_criacao,  data_fim=data_fim)
+        relatorio_geral.save()
+        messages.success(request, 'Um novo Relatório Geral foi criado com sucesso!')
+        
 
-    return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
+        return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
 
 
 def listar_relatorios_gerais(request):
@@ -599,7 +587,7 @@ def excluir_relatorio_geral(request, relatorio_id):
 
 
 def detalhar_relatorio_geral(request, relatorio_id):
-
+    usuario = obterUsuario(request)
     relatorio_geral = RelatorioGeral.objects.get(id=relatorio_id)
 
     if request.method == "POST":
@@ -613,6 +601,8 @@ def detalhar_relatorio_geral(request, relatorio_id):
 
     context = {
         'relatorio_geral': relatorio_geral,
+        'usuario': usuario,
+        'igreja': usuario.igreja,
         'form': form,
     }
     return render(request, 'financas/relatorios/geral/detalhar.html', context)

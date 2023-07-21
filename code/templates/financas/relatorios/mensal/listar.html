@@ -36,7 +36,7 @@ Relatórios Mensais
 {% endif %}
 
 
-
+{% if relatorios %}
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
   <div class="card">
@@ -120,7 +120,17 @@ Relatórios Mensais
 </div>
 </div>
 
-
-
+{% else %}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive ">
+        <p>Nenhum Relatório Mensal criado.</p>
+        <a href="{% url 'criar_novo_relatorio_mensal'%}" class="btn btn-success">Criar relatório</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 
 {%endblock%}

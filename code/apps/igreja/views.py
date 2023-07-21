@@ -7,7 +7,6 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, reverse
 from accounts.views import obterUsuario
-from financas.views import criar_primeiro_relatorio_mensal, criar_primeiro_relatorio_geral
 from financas.models import Entrada, RelatorioGeral
 import calendar
 from datetime import datetime
@@ -32,7 +31,6 @@ def cadastrar_igreja(request):
 
             entrada_criada.save()
 
-            criar_primeiro_relatorio_mensal(igreja_cad)
 
             messages.success(request, 'Igreja cadastrada com sucesso !')
             context = {

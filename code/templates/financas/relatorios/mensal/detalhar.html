@@ -20,8 +20,18 @@ Informações do Relatório Mensal
     <li class="breadcrumb-item active" aria-current="page">Informações do Relatório Mensal</li>
 {% endblock %}
 
+
 {% block 'content' %}
 
+<a href="{% url 'gerar_relatorio'%}" class="btn btn-success">Baixar</a>
+  <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-danger">Excluir</a>
+  {% if relatorio_mensal.status == 'Ativo' %}
+  <a href="{% url 'finalizar_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-success">Finalizar relatório</a>
+ 
+  {% else %}
+  {%endif%}
+  <br>
+  <br>
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
     <div class="card">
       <div class="card-body">
@@ -66,19 +76,61 @@ Informações do Relatório Mensal
             <tr>
                 <td>Saldo</td>
                 <td>{{ relatorio_mensal.saldo }}</td>
-            </tr>
-            
+            </tr> 
         </tbody>
     </table>
     </div>
+    </div>
+</div>
     
+<div class="card">
+    <div class="card-body">
+      <div class="table-responsive ">
+  
+        {% if entradas_relatorio %}
+        <h3>Ofertas arrecadadas</h3>
+        <table class="table">
+  
+          <thead class="bg-light">
+            <tr class="border-0">
+              <th class="border-0 scope=" col">Data</th>
+              <th class="border-0 scope=" col">Ofertas</th>
+              <th class="border-0 scope=" col">Dízimos</th>
+              <th class="border-0 scope=" col">Total</th>
+          
+            </tr>
+          </thead>
+          <tbody>
+          
+            {% for oferta in entradas_relatorio %}
+            <tr>
+          
+              <th scope="col">{{ oferta.data_culto|date:"d/M" }}</th>
+              <td>{{ oferta.valor_oferta }}</td>
+              <td>{{ oferta.valor_dizimo }}</td>
+              <td>{{ oferta.total }}</td>
+          
+              <td>
+                <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
+          
+                <a href="{% url 'excluir_oferta' oferta.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+          
+          </tbody>
+  
+        </table>
+  
+        {% else %}
+        <p>Ainda não foi adicionada nenhuma oferta neste mês.</p>
+        {% endif %}
+      </div>
     </div>
-    </div>
-  <a href="{% url 'gerar_relatorio'%}" class="btn btn-success">Baixar</a>
-  <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-danger">Excluir</a>
-  {% if relatorio.status == 'ativo' %}<input type="submit" class="btn btn-success" value="Finalizar" onclick="window.location.href='{% url 'finalizar_relatorio_mensal' relatorio_mensal.id %}'" />{%endif%}
+  </div>
+
 </div>
 {% endif %}
 {% endblock %}
-=======
+
 
