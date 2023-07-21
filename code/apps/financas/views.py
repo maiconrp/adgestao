@@ -234,6 +234,8 @@ def adicionar_dizimo(request):
         form = DizimoForm()
 
     context = {
+        'usuario': user,
+        'igreja': user.igreja,
         'form': form,
     }
 
