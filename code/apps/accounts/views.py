@@ -192,6 +192,7 @@ def listar_cadastros(request):
 @login_required
 @permission_required('accounts.tesoureiro_sede')
 def detalhar_cadastro(request, solicitacao_id):
+    user = obterUsuario(request)
     """
     View para detalhar cadastros.
 
@@ -200,7 +201,10 @@ def detalhar_cadastro(request, solicitacao_id):
     solicitacao = SolicitacaoCadastro.objects.get(id=solicitacao_id)
     context = {
         'solicitacao': solicitacao,
+        'usuario': user,
+        'igreja': user.igreja, 
     }
+    
 
     return render(request, 'solicitacoes/detalhar.html', context)
 
