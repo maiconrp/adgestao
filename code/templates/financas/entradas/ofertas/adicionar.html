@@ -22,25 +22,21 @@ Ofertas
 
     </div>
     <div class="card-body">
-<section>
+        <section>
  
-  <div>
-    <form method="post">
-            
-      {% csrf_token %}
-      {{ form|bootstrap }}
+          <div>
+            <form method="post">
+                    
+              {% csrf_token %}
+              {{ form|bootstrap }}
 
-      <input type="submit" class="btn btn-success"value="Cadastrar" />
-    </form>
-  </div>
+          </div>
 
-  {%for e in entradas%}
-  {{e.igreja}}<br>
-{%endfor%}
-
-</section>
-</div>
-</div>
+        </section>
+      </div>
+    </div>
+<input type="submit" class="btn btn-success"value="Adicionar" />
+</form>
 </div>
 
 {% endblock %}

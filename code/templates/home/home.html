@@ -179,42 +179,7 @@ Paz do Senhor, {{usuario_nome}}
             <div class="card-footer"></div>
         </div>
 
-        <div class="card">
-            <h4 class="card-header">Histórico de saldos ( Sede + Locais )</h4>
-            <div class="card-body">
-                {% if saldos %}
-    
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead class="bg-light">
-                            <tr class="border-0">
-                                <th class="border-0">Mês</th>
-                                <th class="border-0">Valor</th>
-                            
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for saldo in saldos %}
-                            <tr>
-                                <td>{{ saldo.mes }}</td>
-                                <td>{{ saldo.valor }}</td>
-                            </tr>
-                            {% endfor %}
-                      
-                        </tbody>
-                    </table>
-                </div>
-                {% else %}
-                <p>Ainda não foi calculado nenhum saldo mensal</p>
-                {% endif %}
-            </div>
-        </div>
-
     </div>
-
-
-
-
 
 </div>
 

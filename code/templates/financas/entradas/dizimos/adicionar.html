@@ -23,19 +23,18 @@ Dízimos
     </div>
     <div class="card-body">
 <section>
-  
-  <div>
-    <form method="post">
-            
-      {% csrf_token %}
-      {{ form|bootstrap }}
+        <div>
+          <form method="post">
+                  
+            {% csrf_token %}
+            {{ form|bootstrap }}
 
-      <input type="submit" class="btn btn-success"value="Cadastrar" />
-    </form>
+        </div>
+      </section>
+    </div>
   </div>
-</section>
-</div>
-</div>
+  <input type="submit" class="btn btn-success"value="Adicionar" />
+  </form>
 </div>
 
 {% endblock %}
