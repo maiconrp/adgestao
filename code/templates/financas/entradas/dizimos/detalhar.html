@@ -1,21 +1,27 @@
 {% extends 'base.html' %}
-{%load bootstrap%}
 
-{%block title%} | Dízimo | Adicionar {%endblock%}
+{%block title%} | Ofertas | Detalhar{%endblock%}
+
 
 {% block 'breadcump_title' %}
-Informações do Dízimo
+Dízimos
 {% endblock %}
 
 {% block 'breadcump1' %}
-<li class="breadcrumb-item active" aria-current="page">Dízimos</li>
+<li class="breadcrumb-item active" aria-current="page">Dízimo</li>
+<li class="breadcrumb-item active" aria-current="page">Detalhar</li>
+
 {% endblock %}
 
 {% block 'content' %}
 
+{% if dizimo %}
+
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-    <div class="card">
+    <div class="card border-3 border-top border-top-primary">
         <div class="card-body">
+
+            <h2>Informações da Dízimo</h2>
             {% if dizimo %}
             <p>Data: {{ dizimo.data_culto }}</p>
             <p>Valor: {{ dizimo.valor }}</p>
@@ -25,8 +31,9 @@ Informações do Dízimo
         </div>
     </div>
     <a href="{% url 'editar_dizimo' dizimo.id %}" class="btn btn-info">Editar</a>
-    <a href="{% url 'excluir_dizimo' dizimo.id %}" class="btn btn-danger"><i
-        class="fas fa-trash-alt"></i></a>
+    <a href="{% url 'excluir_dizimo' dizimo.id %}" class="btn btn-danger">Excluir</a>
 </div>
 
-{%endblock%}
+{% endif %}
+{% endblock %}
+

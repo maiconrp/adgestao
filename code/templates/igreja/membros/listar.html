@@ -24,7 +24,7 @@ Membros
   <form class="form-inline" method="POST" action="{% url 'filtrar_membro' %}">
     {% csrf_token %}
     <div class="form-group mb-2">
-      <input type="text" class="form-control" id="membro-input" name="nome" placeholder="Digite o nome do membro" required>
+      <input type="text" class="form-control" id="membro-input" name="nome" placeholder="Nome do membro" required>
     </div>
     <button type="submit" class="btn btn-primary btn-sm mb-2">Filtrar</button>
   </form>

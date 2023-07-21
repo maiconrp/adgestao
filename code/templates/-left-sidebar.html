@@ -15,14 +15,17 @@
                         <a class="nav-link" href="{% url 'home'%}"><i class="fas fa-chart-pie"></i>Dashboard</a>
                     </li>
 
-                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'editar_igreja' igreja.id %}"><i
+                                class="fas fa-address-book"></i>Igreja local</a>
+                    </li>
                    
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'listar_membros'%}"><i
                                 class="fas fa-address-book"></i>Membros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'listar_saida'%}"><i
+                        <a class="nav-link" href="{% url 'listar_saidas'%}"><i
                                 class="far fa-money-bill-alt"></i>Saidas</a>
                     </li>
 

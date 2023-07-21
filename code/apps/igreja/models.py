@@ -65,8 +65,9 @@ class SaldoMes(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        self.total = self.valor_oferta + self.valor_dizimo
         super().save(*args, **kwargs)
+    
+
 
 class Membro(models.Model):
     """

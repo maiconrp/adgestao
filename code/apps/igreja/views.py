@@ -17,7 +17,6 @@ from datetime import datetime
 @login_required
 @permission_required('accounts.tesoureiro_sede')
 def cadastrar_igreja(request):
-    numero_igrejas_criadas = Igreja.objects.count()
     usuario = obterUsuario(request)
 
     if request.method == 'POST':
@@ -38,19 +37,18 @@ def cadastrar_igreja(request):
             messages.success(request, 'Igreja cadastrada com sucesso !')
             context = {
                 'form': form,
+                'usuario': usuario,
+                'igreja': usuario.igreja,
             }
             return HttpResponseRedirect(reverse('listar_igrejas'))
     else:
         form = IgrejaForm()
 
-    if numero_igrejas_criadas == 1:
-        criar_primeiro_relatorio_geral(usuario)
-
-    else:
-        print('Mais de uma igreja foi criada, o relatorio geral ja foi criado !')
 
     context = {
         'form': form,
+        'usuario': usuario,
+        'igreja': usuario.igreja,
     }
 
     return render(request, 'igreja/cadastrar.html', context)
@@ -59,9 +57,14 @@ def cadastrar_igreja(request):
 @login_required
 @permission_required('accounts.tesoureiro_sede')
 def listar_igrejas(request):
+    usuario = obterUsuario(request)
+
     igrejas = Igreja.objects.all()
+
     context = {
-        'igrejas': igrejas
+        'igrejas': igrejas,
+        'usuario': usuario,
+        'igreja': usuario.igreja,
     }
     return render(request, 'igreja/listar.html', context)
 
@@ -138,6 +141,7 @@ def listar_membros(request):
 def editar_membro(request, membro_id):
     usuario = obterUsuario(request)
     membro = Membro.objects.get(id=membro_id)
+    dizimos = Dizimo.objects.filter(membro=membro)
     if request.method == "POST":
         form = MembroForm(request.POST, instance=membro)
 
@@ -148,9 +152,11 @@ def editar_membro(request, membro_id):
         form = MembroForm(instance=membro)
 
     context = {
+        'membro': membro,
         'usuario': usuario,
         'igreja': usuario.igreja,
         'form': form,
+        'dizimos': dizimos,
     }
     return render(request, 'igreja/membros/editar.html', context)
 

@@ -31,7 +31,7 @@ Dízimos
   <form class="form-inline" method="POST" action="{% url 'filtrar_dizimos' %}">
     {% csrf_token %}
     <div class="form-group mb-2">
-      <input type="text" class="form-control" id="membro-input" name="membro" placeholder="Digite o nome do membro" required>
+      <input type="text" class="form-control" id="membro-input" name="membro" placeholder="Nome do membro" required>
     </div>
     <button type="submit" class="btn btn-primary btn-sm mb-2">Filtrar</button>
   </form>
@@ -93,7 +93,7 @@ Dízimos
 
             {% for dizimo in dizimos %}
             <tr>
-              <td>{{ dizimo.data_culto|date:"d/M" }}</th>
+              <th>{{ dizimo.data_culto|date:"d/M" }}</th>
               <td>{{ dizimo.valor }}</td>
               <td><a href="{% url 'editar_membro' dizimo.membro.id %}">{{ dizimo.membro }}</a></td>
 

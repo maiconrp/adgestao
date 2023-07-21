@@ -124,7 +124,7 @@ class RelatorioGeral(models.Model):
     
     status = models.CharField(
         max_length=10,
-        default='ativo'
+        default='Ativo'
     )
 
     saldo = models.DecimalField(
@@ -317,7 +317,7 @@ class RelatorioMensal(models.Model):
 
     status = models.CharField(
         max_length=10,
-        default='ativo'
+        default='Ativo'
     )
 
     data_inicio = models.DateField(

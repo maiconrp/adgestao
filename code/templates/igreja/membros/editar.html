@@ -1,23 +1,81 @@
 {% extends 'base.html' %}
-
 {%load bootstrap%}
-{%block title%} | Membros | Editar{%endblock%}
 
+
+{% block 'breadcump_title' %}
+Memrbos
+{% endblock %}
+
+{% block 'breadcump1' %}
+<li class="breadcrumb-item active" aria-current="page">Membro</li>
+<li class="breadcrumb-item active" aria-current="page">Editar</li>
+
+{% endblock %}
+
+{% block 'breadcump2' %}
+<li class="breadcrumb-item active" aria-current="page">{{membro.id}}</li>
+{% endblock %}
 {% block 'content' %}
 
-<section>
-  <h2>
-    Editar membro
-  </h2>
-  <div>
-    <form method="post">
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+  <div class="card">
+    <div class="card-body">
+      <section>
+        <h2>
+          Perfil | {{ membro.nome }}
+        </h2>
+        
+          <form method="post">
 
-      {% csrf_token %}
-      {{ form|bootstrap }}
+            {% csrf_token %}
+            {{ form|bootstrap }}
+          </div>
+        </div>
+            <input type="submit" class="btn btn-success" value="Editar" />
+            <a href="{%url 'listar_membros' %}"><input class="btn btn-outline-info" value="Cancelar" /></a>
+          </form>
+      </section>
+    
+</div>
+<br>
 
-      <input type="submit" class="btn btn-success" value="Salvar" />
-    </form>
+{% if membro.dizimos.count > 0 %}
+<div class="card">
+  <div class="card-header"> <h3>Histórico de dízimos</h3> </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table">
+        <thead class="bg-light">
+          <tr class="border-0">
+            <th class="border-0" scope="col">Data</th>
+            <th class="border-0" scope="col">Valor</th>
+            <th class="border-0" scope="col">Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for dizimo in dizimos %}
+          <tr>
+            <th>{{ dizimo.data_culto|date:"d/M" }}</th>
+            <td>{{ dizimo.valor }}</td>
+
+            <td>
+              <a href="{% url 'detalhar_dizimo' dizimo.id %}" class="btn btn-info"><i
+                  class="fas fa-external-link-alt"></i></a>
+
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
   </div>
-</section>
+</div>
+</div>
+{% else %}
+<p>Nenhum dízimo encontrado</p>
+{% endif %}
+
 
 {% endblock %}

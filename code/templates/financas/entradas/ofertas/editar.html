@@ -1,57 +1,39 @@
 {% extends 'base.html' %}
-<<<<<<< HEAD
-{% load static %}
 {%load bootstrap%}
 
-{%block title%} | Ofertas | Editar{%endblock%}
 
 {% block 'breadcump_title' %}
-Informações da oferta
+Ofertas
 {% endblock %}
 
 {% block 'breadcump1' %}
-<li class="breadcrumb-item active" aria-current="page">Ofertas</li>
+<li class="breadcrumb-item active" aria-current="page">Oferta</li>
+<li class="breadcrumb-item active" aria-current="page">Editar</li>
 {% endblock %}
 
+{% block 'breadcump2' %}
+<li class="breadcrumb-item active" aria-current="page">{{oferta.id}}</li>
+{% endblock %}
 {% block 'content' %}
 
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-  <form method="post">
-    <div class="card border-3 border-top border-top-primary">
+  <div class="card">
     <div class="card-body">
+      <section>
+        <h2>
+          Editar Oferta
+        </h2>
+        
+          <form method="post">
 
-     
-        {% csrf_token %}
-        {{ form|bootstrap }}
-      </div>
-    </div>
-        <input type="submit" class="btn btn-success" value="Salvar" />
-        <a href="{%url 'listar_dizimos' %}"><input class="btn btn-outline-info" value="Cancelar" /></a>
-      </form>
-
+            {% csrf_token %}
+            {{ form|bootstrap }}
+          </div>
+        </div>
+            <input type="submit" class="btn btn-success" value="Salvar" />
+            <a href="{%url 'listar_ofertas' %}"><input class="btn btn-outline-info" value="Cancelar" /></a>
+          </form>
+      </section>
     
-
 </div>
-=======
-{%load bootstrap%}
-
-{% block 'content' %}
-
-<section>
-  <h2>
-    Editar oferta
-  </h2> 
-  <div>
-    <form method="post">
-            
-      {% csrf_token %}
-      {{ form|bootstrap }}
-
-      <input type="submit" class="btn btn-success" value="Salvar" />
-      <a href="{%url 'listar_dizimos' %}"><input class="btn btn-outline-info" value="Cancelar" /></a>
-    </form>
-  </div>
-</section>
-
->>>>>>> origin/feat/relatorio-geral
 {% endblock %}

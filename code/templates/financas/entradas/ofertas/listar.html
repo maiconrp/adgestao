@@ -14,7 +14,7 @@
 
 {% block 'content' %}
 
-<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
 {% if messages %}
   <div class="messages">
     {% for message in messages %}
@@ -31,7 +31,7 @@
   <form class="form-inline" method="POST" action="{% url 'filtrar_ofertas' %}">
     {% csrf_token %}
     <div class="form-group mb-2">
-      <input type="date" class="form-control" id="membro-input" name="date_input" placeholder="Digite o nome do membro"
+      <input type="date" class="form-control" id="membro-input" name="date_input" 
         required>
     </div>
     <button type="submit" class="btn btn-primary btn-sm mb-2">Filtrar</button>
@@ -126,7 +126,7 @@
   <a href="{% url 'adicionar_oferta'%}" class="btn btn-success">Adicionar</a>
 
   </div>
-</div>
+
 
 
 

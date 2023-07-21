@@ -53,7 +53,7 @@ Relatórios Mensais
           </tr>
         </thead>
         {% for relatorio in relatorios%}
-        {% if relatorio.status == 'ativo' %}
+        {% if relatorio.status == 'Ativo' %}
         <tbody>
           <tr>
             <th scope="col">{{ relatorio.data_inicio }}</th>
@@ -95,7 +95,7 @@ Relatórios Mensais
         </thead>
 
         {% for relatorio in relatorios %}
-        {% if relatorio.status == 'finalizado' %}
+        {% if relatorio.status == 'Finalizado' %}
         <tbody>
 
           <tr>

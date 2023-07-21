@@ -25,10 +25,10 @@ pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
 
 def atualizar_registro_model(financa, user):
     # Setando objetos
-    relatorio_geral = RelatorioGeral.objects.last()
+    relatorio_geral = RelatorioGeral.objects.get(status='Ativo')
     relatorio_mensal = RelatorioMensal.objects.get(
         igreja=user.igreja,
-        status='ativo'
+        status='Ativo'
     )
     igreja = user.igreja
     saida = Saida.objects.last()
@@ -153,7 +153,7 @@ def excluir_saida(request, saida_id):
 
 # @login_required
 # @permission_required('accounts.tesoureiro')
-def listar_saida(request):
+def listar_saidas(request):
     usuario = obterUsuario(request)
     saidas = Saida.objects.filter(igreja=usuario.igreja)
     context = {
@@ -217,7 +217,7 @@ def adicionar_dizimo(request):
                 # Salva os valores dos dízimos criados após o relatório de culto
                 oferta.save()
 
-                atualizar_registro_model('entrada', user)[0]
+                atualizar_registro_model('entrada', user)
 
                 context = {
                     'form': form,
@@ -523,7 +523,7 @@ def detalhar_relatorio_mensal(request, relatorio_id):
 
 def finalizar_relatorio_mensal(request, relatorio_id):
     relatorio = RelatorioMensal.objects.get(id=relatorio_id)
-    relatorio.status = 'finalizado'
+    relatorio.status = 'Finalizado'
     relatorio.save()
     criar_novo_relatorio_mensal(request)
     return HttpResponseRedirect(reverse('listar_relatorios_mensais'))
@@ -584,7 +584,9 @@ def listar_relatorios_gerais(request):
     usuario = obterUsuario(request)
     relatorios_gerais = RelatorioGeral.objects.filter(tesoureiro_sede=usuario)
     context = {
-        'relatorios': relatorios_gerais
+        'relatorios': relatorios_gerais,
+        'usuario': usuario,
+        'igreja': usuario.igreja,
     }
     return render(request, 'financas/relatorios/geral/listar.html', context)
 
@@ -618,7 +620,7 @@ def detalhar_relatorio_geral(request, relatorio_id):
 
 def finalizar_relatorio_geral(request, relatorio_id):
     relatorio = RelatorioGeral.objects.get(id=relatorio_id)
-    relatorio.status = 'finalizado'
+    relatorio.status = 'Finalizado'
     relatorio.save()
 
     criar_novo_relatorio_geral(request)

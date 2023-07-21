@@ -37,9 +37,9 @@
   {% endfor %}
 </div>
 {% endif %}
+
 {% if relatorios %}
-{% for relatorio in relatorios %}
-{% if relatorio.status == 'ativo' %}
+
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
   <div class="card">
     <div class="card-body">
@@ -47,6 +47,7 @@
         <table class="table">
           <thead>
             <tr><h4>Ativos</h4></tr>
+            
             <tr>
               <th scope="col">Data de início: </th>
               <th scope="col">Saldo: </th>
@@ -55,6 +56,8 @@
 
             </tr>
           </thead>
+          {% for relatorio in relatorios %}
+            {% if relatorio.status == 'Ativo' %}
           <tbody>
               <tr>
                 <th scope="col">{{ relatorio.data_inicio }}</th>
@@ -75,8 +78,7 @@
     </div>
   </div>
            
-{% for relatorio in relatorios %}
-{% if relatorio.status == 'finalizado' %}
+
   <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
     <div class="card">
       <div class="card-body">
@@ -93,6 +95,8 @@
       
                   </tr>
                 </thead>
+                {% for relatorio in relatorios %}
+                {% if relatorio.status == 'finalizado' %}
                 <tbody>
       
                     <tr>
