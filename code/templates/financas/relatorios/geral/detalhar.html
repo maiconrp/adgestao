@@ -78,7 +78,7 @@ Informações do Relatório Geral
             {{ form|bootstrap }}
             <br>
 
-            {% if relatorio_mensal.status == 'Ativo' %}
+            {% if relatorio_geral.status == 'Ativo' %}
             <input type="submit" class="btn btn-success" value="Salvar" /> 
             <a href="{% url 'finalizar_relatorio_geral' relatorio_geral.id %}" class="btn btn-success">Finalizar relatório</a>
             {% else %}
