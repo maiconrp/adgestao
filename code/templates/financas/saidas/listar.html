@@ -65,7 +65,7 @@ Saídas
             <tr>
               <th scope="col">{{ saida.data|date:"d/M" }}</th>
               <td>{{ saida.descricao }}</td>
-              <td>{{ saida.valor }}</td>
+              <td>R$ {{ saida.valor }}</td>
 
               <td>
                 <a href="{% url 'detalhar_saida' saida.id %}" class="btn btn-info"><i
@@ -106,7 +106,7 @@ Saídas
           
               <th scope="col">{{ saida.data|date:"d/M" }}</th>
               <td>{{ saida.descricao }}</td>
-              <td>{{ saida.valor }}</td>
+              <td>R$ {{ saida.valor }}</td>
           
               <td>
                 <a href="{% url 'detalhar_saida' saida.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>

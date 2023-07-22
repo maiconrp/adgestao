@@ -23,7 +23,7 @@ Informações do Relatório Mensal
 
 {% block 'content' %}
 
-<a href="{% url 'gerar_relatorio'%}" class="btn btn-success">Baixar</a>
+<a href="{% url 'gerar_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-success">Baixar</a>
   <a href="{% url 'excluir_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-danger">Excluir</a>
   {% if relatorio_mensal.status == 'Ativo' %}
   <a href="{% url 'finalizar_relatorio_mensal' relatorio_mensal.id %}" class="btn btn-success">Finalizar relatório</a>
@@ -41,41 +41,58 @@ Informações do Relatório Mensal
     <table class="table">
        
         <tbody>
+          <tr>
+            <br>
+            <th><h3>Igreja</h3></th>
+            <td>{{ igreja.nome }}</td>
+            <td></td>
+            <td></td>
+          </tr>
             <tr>
-                <td>Status</td>
-                <td>{{ relatorio_mensal.status }}</td>
+                <th>Status</th>
+                <td class='green-cell'>{{ relatorio_mensal.status }}</td>
+                <td></td>
+                <td></td>
             </tr>
             <tr>
-                <td>Data de início</td>
+                <th>Data de início</th>
                 <td>{{ relatorio_mensal.data_inicio }}</td>
-            </tr>
-            <tr>
-                <td>Data de término</td>
+                <th>Data de término</th>
                 <td>{{ relatorio_mensal.data_fim }}</td>
             </tr>
+            
             <tr>
-                <td>Total de entradas</td>
-                <td>{{ relatorio_mensal.total_entradas }}</td>
+                <th>Total de entradas</th>
+                <td>R$ {{ relatorio_mensal.total_entradas }}</td>
+                <th>Total de saídas</th>
+                <td>R$ {{ relatorio_mensal.total_saidas }}</td>
+            </tr>
+
+          
+            <tr>
+                <th>Pagamento para obreiros</th>
+                <td>R$ {{ relatorio_mensal.pagamento_obreiro }}</td>
+                <td></td>
+                <td></td>
+
             </tr>
             <tr>
-                <td>Total de saídas</td>
-                <td>{{ relatorio_mensal.total_saidas }}</td>
+                <th>Fundo convencional</th>
+                <td>R$ {{ relatorio_mensal.fundo_convencional }}</td>
+                <td></td>
+                <td></td>
             </tr>
             <tr>
-                <td>Pagamento para obreiros</td>
-                <td>{{ relatorio_mensal.pagamento_obreiro }}</td>
+                <th>Missões sede</th>
+                <td>R$ {{ relatorio_mensal.missoes_sede }}</td>
+                <td></td>
+                <td></td>
             </tr>
             <tr>
-                <td>Fundo convencional</td>
-                <td>{{ relatorio_mensal.fundo_convencional }}</td>
-            </tr>
-            <tr>
-                <td>Missões sede</td>
-                <td>{{ relatorio_mensal.missoes_sede }}</td>
-            </tr>
-            <tr>
-                <td>Saldo</td>
-                <td>{{ relatorio_mensal.saldo }}</td>
+                <th>Saldo</th>
+                <td class='green-cell'>R$ {{ relatorio_mensal.saldo }}</td>
+                <td></td>
+                <td></td>
             </tr> 
         </tbody>
     </table>
@@ -106,9 +123,9 @@ Informações do Relatório Mensal
             <tr>
           
               <th scope="col">{{ oferta.data_culto|date:"d/M" }}</th>
-              <td>{{ oferta.valor_oferta }}</td>
-              <td>{{ oferta.valor_dizimo }}</td>
-              <td>{{ oferta.total }}</td>
+              <td>R$ {{ oferta.valor_oferta }}</td>
+              <td>R$ {{ oferta.valor_dizimo }}</td>
+              <td>R$ {{ oferta.total }}</td>
           
               <td>
                 <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
@@ -131,6 +148,11 @@ Informações do Relatório Mensal
 
 </div>
 {% endif %}
+<style>
+  .green-cell {
+      color: rgb(45, 173, 77); /* Substitua "red" pela cor desejada */
+  }
+</style>
 {% endblock %}
 
 

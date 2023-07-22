@@ -56,7 +56,7 @@ Dízimos
             {% for dizimo in dizimos_filtrados %}
             <tr>
               <td>{{ dizimo.data_culto }}</td>
-              <td>{{ dizimo.valor }}</td>
+              <td>R$ {{ dizimo.valor }}</td>
               <td>{{ dizimo.membro }}</td>
               <td>
                 <a href="{% url 'detalhar_dizimo' dizimo.id %}" class="btn btn-info"><i
@@ -94,7 +94,7 @@ Dízimos
             {% for dizimo in dizimos %}
             <tr>
               <th>{{ dizimo.data_culto|date:"d/M" }}</th>
-              <td>{{ dizimo.valor }}</td>
+              <td>R$ {{ dizimo.valor }}</td>
               <td><a href="{% url 'editar_membro' dizimo.membro.id %}">{{ dizimo.membro }}</a></td>
 
               <td>

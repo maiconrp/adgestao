@@ -23,76 +23,128 @@ Informações do Relatório Geral
 {% endblock %}
 
 {% block 'content' %}
+
+{% if relatorio_geral %}
 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
   <div class="card">
     <div class="card-body">
       <div class="table-responsive ">
-
-{% if relatorio_geral %}
-<table class="table">
-        <tbody>
+  <table class="table">
+     
+      <tbody>
+        <h3>Igreja {{ igreja.nome }}   |   Tesoureiro sede - {{usuario.nome}} </h3>
+        
           <tr>
-              <td>Status</td>
-              <td>{{ relatorio_geral.status }}</td>
+              <th>Status</th>
+              <td class="green-cell">{{ relatorio_geral.status }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
           </tr>
           <tr>
-              <td>Data de início</td>
+              <th>Data de início</th>
               <td>{{ relatorio_geral.data_inicio }}</td>
-          </tr>
-          <tr>
-              <td>Data de término</td>
+              <th>Data de término</th>
               <td>{{ relatorio_geral.data_fim }}</td>
+              <td></td>
+              <td></td>
           </tr>
-          <tr>
-              <td>Total de entradas da sede</td>
-              <td>{{ relatorio_geral.calc_entradas_sede }}</td>
-          </tr>
-          <tr>
-              <td>Total de saídas da sede</td>
-              <td>{{ relatorio_geral.calc_saidas_sede }}</td>
-          </tr>
-          <tr>
-              <td>Total de entradas locais</td>
-              <td>{{ relatorio_geral.calc_entradas_locais }}</td>
-          </tr>
-          <tr>
-              <td>Total de saídas locais</td>
-              <td>{{ relatorio_geral.calc_saidas_locais }}</td>
-          </tr>
-          <tr>
-              <td>Saldo</td>
-              <td>{{ relatorio_geral.calc_saldo }}</td>
-          </tr>
-          
-        </tbody>
-        </table>
-        <br>
-    <section>
-        <h2>
-          Adicionar despesas
-        </h2> 
-        <div>
-          <form method="post">
-                  
-            {% csrf_token %}
-            {{ form|bootstrap }}
-            <br>
 
-            {% if relatorio_geral.status == 'Ativo' %}
-            <input type="submit" class="btn btn-success" value="Salvar" /> 
-            <a href="{% url 'finalizar_relatorio_geral' relatorio_geral.id %}" class="btn btn-success">Finalizar relatório</a>
-            {% else %}
-            {% endif %}
-          </form>
-        </div>
-      </section>
+          <tr>
+            <th>Entradas sede</th>
+            <td>R$ {{ relatorio_geral.calc_entradas_sede }}</td>
+            <th>Entradas locais</th>
+            <td>R$ {{ relatorio_geral.calc_entradas_locais }}</td>
+            <th>Total</th>
+            <td>R$ {{ relatorio_geral.calc_total_entradas }}</td>
+        </tr>
+
+        <tr>
+          <th>Saídas sede</th>
+          <td>R$ {{ relatorio_geral.calc_saidas_sede }}</td>
+          <th>Saídas locais</th>
+          <td>R$ {{ relatorio_geral.calc_saidas_locais }}</td>
+          <th>Total</th>
+          <td>R$ {{ relatorio_geral.calc_total_saidas }}</td>
+      </tr>
+        
+          <tr>
+              <th>Aluguel de obreiros</th>
+              <td>{{ relatorio_geral.aluguel_obreiros }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+
+          </tr>
+          <tr>
+              <th>INSS</th>
+              <td>{{ relatorio_geral.inss }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr>
+              <th>Costruções</th>
+              <td>R$ {{ relatorio_geral.construcoes }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr>
+          <tr>
+            <th>Assistência social</th>
+            <td>R$ {{ relatorio_geral.assis_social }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+          <tr>
+              <th>Saldo</th>
+              <td class="green-cell">R$ {{ relatorio_geral.saldo }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+          </tr> 
+      </tbody>
+  </table>
+
+  {% if relatorio_geral.status == 'Ativo' %}
+  <section>
+    <br>
+      <h2>
+        Adicionar despesas
+      </h2> 
+      <div>
+        <form method="post">
+                
+          {% csrf_token %}
+          {{ form|bootstrap }}
           <br>
-    </div>   
+          <input type="submit" class="btn btn-success" value="Salvar"/> 
+          <a href="{% url 'finalizar_relatorio_geral' relatorio_geral.id %}" class="btn btn-success">Finalizar relatório</a>
+          <a href="{% url 'gerar_relatorio_geral' relatorio_geral.id %}" class="btn btn-success">Baixar</a>
+
+          {% else %}
+          {% endif %}
+        </form>
+
+      </div>
+    </section>
   </div>
-</div>
-</div>
+  </div> 
+</div>        
+</div>   
 {% endif %}
+<style>
+  .green-cell {
+      color: rgb(45, 173, 77); /* Substitua "red" pela cor desejada */
+  }
+</style>
 
 {% endblock %}
-
 

@@ -58,7 +58,7 @@
             <tr>
               <th scope="col">{{ oferta.data_culto }}</th>
               <td>{{ oferta.tipo_culto }}</td>
-              <td>{{ oferta.total }}</td>
+              <td>R$ {{ oferta.total }}</td>
 
               <td>
                 <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i
@@ -99,7 +99,7 @@
           
               <th scope="col">{{ oferta.data_culto|date:"d/M" }}</th>
               <td>{{ oferta.tipo_culto }}</td>
-              <td>{{ oferta.total }}</td>
+              <td>R$ {{ oferta.total }}</td>
           
               <td>
                 <a href="{% url 'detalhar_oferta' oferta.id %}" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a>
