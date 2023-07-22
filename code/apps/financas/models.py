@@ -47,15 +47,15 @@ class Saida(models.Model):
 
 
     @property
-    def calc_saldo(self):
-        saidas = Saida.objects.all()
+    def calc_saldo(user):
+        saidas = Saida.objects.filter(igreja = user.igreja)
 
         total_saidas = Decimal('0')  # Inicializa como um objeto Decimal
 
         for saida in saidas:
             total_saidas += saida.valor  # Utiliza a sintaxe de soma para Decimal
 
-        entradas = OfertaCulto.objects.all()
+        entradas = OfertaCulto.objects.filter(igreja = user.igreja)
 
         total_entradas = Decimal('0')  # Inicializa como um objeto Decimal
 
@@ -180,40 +180,35 @@ class RelatorioGeral(models.Model):
     pgto_obreiros = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        blank=True,
-        null=True,
+        default=0,
         verbose_name='Pagamento de Obreiros',
     )
 
     inss = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        blank=True,
-        null=True,
+        default=0,
         verbose_name='INSS',
     )
 
     aluguel_obreiros = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        blank=True,
-        null=True,
+        default=0,
         verbose_name='Aluguel de Obreiros',
     )
 
     construcoes = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        blank=True,
-        null=True,
+        default=0,
         verbose_name='Construções',
     )
 
     assis_social = models.DecimalField(
         max_digits=12,
         decimal_places=3,
-        blank=True,
-        null=True,
+        default=0,
         verbose_name='Assistência Social',
     )
 
@@ -238,6 +233,21 @@ class RelatorioGeral(models.Model):
 
         return total_entradas
 
+    @property
+    def calc_total_entradas(self):
+        
+        total_entradas = self.entradas_locais + self.entradas_sede
+
+        return total_entradas
+
+    @property
+    def calc_total_saidas(self):
+        
+        total_saidas = self.saidas_locais + self.saidas_sede
+
+        return total_saidas
+
+        
     @property
     def calc_entradas_locais(self):
         mes_relatorio = self.data_inicio.month
@@ -288,7 +298,10 @@ class RelatorioGeral(models.Model):
         total_saidas = self.saidas_locais + self.saidas_sede
         total_entradas = self.entradas_locais + self.entradas_sede
 
-        saldo = total_entradas - total_saidas
+        despesas = self.pgto_obreiros + self.construcoes + self.inss + self.aluguel_obreiros + self.assis_social + total_saidas
+
+
+        saldo = total_entradas - despesas
         return saldo
 
     def save(self, *args, **kwargs):
@@ -381,7 +394,8 @@ class RelatorioMensal(models.Model):
         mes_relatorio = self.data_inicio.month
         ano_relatorio = self.data_inicio.year
         
-        ofertas_mes = OfertaCulto.objects.filter(Q(data_culto__month=mes_relatorio) & Q(data_culto__year=ano_relatorio))
+        ofertas_mes = OfertaCulto.objects.filter(Q(data_culto__month=mes_relatorio) & Q(data_culto__year=ano_relatorio) 
+        &Q(igreja=self.igreja))
         
         total_entradas = 0
 

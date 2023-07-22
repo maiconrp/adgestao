@@ -16,14 +16,40 @@ from reportlab.lib.units import inch
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
+from decimal import Decimal
 
 from .forms import SaidaForm, RelatorioGeralForm
 from .models import Entrada, RelatorioGeral, RelatorioMensal, Saida
 
 pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
 
+          
+def atualizar_saldo(request, user):
+    igreja = user.igreja
+
+    saidas = Saida.objects.filter(igreja = user.igreja)
+
+    total_saidas = Decimal('0')  # Inicializa como um objeto Decimal
+
+    for saida in saidas:
+        total_saidas += saida.valor  # Utiliza a sintaxe de soma para Decimal
+
+    entradas = OfertaCulto.objects.filter(igreja = user.igreja)
+
+    total_entradas = Decimal('0')  # Inicializa como um objeto Decimal
+
+    for entrada in entradas:
+        total_entradas += entrada.total  # Utiliza a sintaxe de soma para Decimal
+
+    saldo = total_entradas - total_saidas
+
+    # Atualizando registro de saldo no model de Igreja
+    igreja.saldo = saldo
+    print('saldo atualizado')
+    igreja.save()
 
 def atualizar_registro_model(request, financa, user):
+    usuario = obterUsuario(request)
     # Setando objetos
     try:
         relatorio_geral = RelatorioGeral.objects.get(status='Ativo')
@@ -45,9 +71,9 @@ def atualizar_registro_model(request, financa, user):
 
     # Verifica se um relatório de oferta com o mesmo dia e tipo de culto já foi criado
     if relatorio_geral is not None and relatorio_mensal is not None:
-        saida = Saida.objects.last()
+        
         if financa == 'saida':
-
+            atualizar_saldo(request, usuario)
             # Atualizando registros no model de RealatórioGeral
             relatorio_geral.saidas_sede = relatorio_geral.calc_saidas_sede
             relatorio_geral.saidas_locais = relatorio_geral.calc_saidas_locais
@@ -64,10 +90,7 @@ def atualizar_registro_model(request, financa, user):
 
             relatorio_mensal.save()
 
-            # Atualizando registro de saldo no model de Igreja
-            igreja.saldo = saida.calc_saldo
-            print('saldo att')
-            igreja.save()
+         
         
         elif financa == 'entrada e saida':
              # Atualizando registros no model de RealatórioGeral
@@ -101,6 +124,8 @@ def atualizar_registro_model(request, financa, user):
             relatorio_mensal.save()
         
         else:
+            atualizar_saldo(request, usuario)
+
             # Atualizando registros no model de RealatórioGeral
             relatorio_geral.entradas_sede = relatorio_geral.calc_entradas_sede
             relatorio_geral.entradas_locais = relatorio_geral.calc_entradas_locais
@@ -117,10 +142,7 @@ def atualizar_registro_model(request, financa, user):
 
             relatorio_mensal.save()
 
-            # Atualizando registro de saldo no model de Igreja
-            igreja.saldo = saida.calc_saldo
-            print('saldo atualizado')
-            igreja.save()
+          
     else:
 
         messages.success(request, 'Crie um relatório mensal e/ou geral!')
@@ -495,13 +517,41 @@ def criar_novo_relatorio_mensal(request):
     igreja = Igreja.objects.get(nome=user.igreja.nome)
 
     try:
-        relatorio_ativo = RelatorioMensal.objects.get(status='Ativo')
+        relatorios = RelatorioMensal.objects.filter(igreja=ugreja)
     except:
-        relatorio_ativo = None
+        relatorios = None
 
-    if relatorio_ativo:
-        messages.error(request, 'Já existe um relatório ativo !')
-        return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
+    if relatorios is not None:
+        for relatorio in relatorios:
+            if relatorio.status == 'Ativo':
+                messages.error(request, 'Já existe um relatório ativo !')
+                return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
+            break
+            
+        # obtendo a data que contém o último dia do mês
+        data_atual = datetime.now()
+
+        # Obtém o último dia do mês
+        ultimo_dia = calendar.monthrange(data_atual.year, data_atual.month)[1]
+
+        # Cria a data do último dia do mês
+        data_ultimo_dia = datetime(data_atual.year, data_atual.month, ultimo_dia)
+
+        # Formata a data no formato "dd/mm/aaaa"
+        data_fim = data_ultimo_dia.strftime("%Y-%m-%d")
+        
+
+        data_criacao = datetime.now()
+        data_criacao = data_criacao.strftime("%Y-%m-%d")
+        relatorio_mensal = RelatorioMensal(
+            igreja=igreja, data_inicio=data_criacao, data_fim=data_fim)
+        relatorio_mensal.save()
+
+        atualizar_registro_model(request, financa='entrada e saida', user=user)
+
+        messages.success(request, 'Um novo Relatório Mensal foi criado com sucesso!')
+        
+        return HttpResponseRedirect(reverse('listar_relatorios_mensais'))
 
     else:
         # obtendo a data que contém o último dia do mês
@@ -589,6 +639,7 @@ def criar_novo_relatorio_geral(request):
     
     try:
         relatorio_ativo = RelatorioGeral.objects.get(status='Ativo')
+        
     except:
         relatorio_ativo = None
 
@@ -669,10 +720,88 @@ def finalizar_relatorio_geral(request, relatorio_id):
     return HttpResponseRedirect(reverse('listar_relatorios_gerais'))
 
 
+
 ############################ Gerar PDF  #######################
 @login_required
 @permission_required('accounts.tesoureiro')
-def gerar_relatorio(request):
+def gerar_relatorio_geral(request, relatorio_id):
+    relatorio_geral = RelatorioGeral.objects.get(id=relatorio_id)
+    data_atual = datetime.now()
+    data_atual = data_atual.strftime("%d/%m/%Y às %H:%M")
+    tesoureiro = obterUsuario(request)
+ 
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    textob = c.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont("Arial", 12)
+
+    saidas = Saida.objects.all()
+
+    lines = []
+    lines.append('                                      Igreja ' + str(tesoureiro.igreja) )
+    lines.append("                                      Rua 01 N° 408 - Bairro Brindes")
+    lines.append(" ")
+    lines.append("                              Departamento administrativo - Guanambi/BA")
+    lines.append(" ")
+    lines.append(" ")
+    lines.append(" ")
+    lines.append("Relatório Geral Financeiro            " + 'Período: ' + str(relatorio_geral.data_inicio) + ' à ' + str(relatorio_geral.data_fim))
+    lines.append(" ")
+    lines.append(" ")
+    lines.append("Entradas da sede " + 'R$ ' + str(relatorio_geral.calc_entradas_sede) + '                     Entradas locais ' + 'R$ ' + str(relatorio_geral.calc_entradas_locais))
+    lines.append("______________________________________________________________")
+    lines.append(" ")
+    lines.append("Saídas da sede " + 'R$ ' + str(relatorio_geral.calc_saidas_sede) + '                         Saídas locais ' + 'R$ ' + str(relatorio_geral.calc_saidas_locais))
+    lines.append("______________________________________________________________")
+    lines.append(" ")
+    lines.append("Total de entradas " + 'R$ ' + str(relatorio_geral.calc_total_entradas) + '                    Total de saídas ' + 'R$ ' + str(relatorio_geral.calc_total_saidas))
+    lines.append("______________________________________________________________")
+    lines.append(" ")
+    lines.append("Aluguel de obreiros " + 'R$ ' + str(relatorio_geral.aluguel_obreiros))
+    lines.append("______________________________________________________________")
+    lines.append(" ")
+    lines.append("INSS " + 'R$ ' + str(relatorio_geral.inss))
+    lines.append("______________________________________________________________")
+    lines.append(" ")
+    lines.append("Assistência social " + 'R$ ' + str(relatorio_geral.assis_social) )
+    lines.append("______________________________________________________________")
+    lines.append(" ")
+    lines.append("Construções " + 'R$ ' + str(relatorio_geral.construcoes))
+    lines.append("______________________________________________________________")
+    lines.append(" ")
+    lines.append("Pagamento de obreiros " + 'R$ ' + str(relatorio_geral.pgto_obreiros))
+    lines.append("______________________________________________________________")
+    lines.append(" ")
+    lines.append(" ")
+    lines.append(" ")
+
+    lines.append("Saldo " + 'R$ ' + str(relatorio_geral.calc_saldo))
+
+    lines.append(" ")
+    lines.append(" ")
+    lines.append(" ")
+    lines.append(      '                                                        '         +     str(tesoureiro.nome))
+    lines.append("                     ____________________________________________________")
+    lines.append( '                                                       Tesoureiro Sede ' )
+    lines.append(" ")
+    lines.append(" ")
+    lines.append(" ")
+    lines.append(" ")
+
+    lines.append("Emitido em: " + str(data_atual))
+
+    for line in lines:
+        textob.textLine(line)
+
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+    return FileResponse(buf, as_attachment=True, filename='lista.pdf')
+
+
+def gerar_relatorio_mensal(request):
     data_atual = datetime.now()
     data_atual = data_atual.strftime("%d/%m/%Y às %H:%M")
     tesoureiro = obterUsuario(request)
