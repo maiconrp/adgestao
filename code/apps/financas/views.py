@@ -66,8 +66,8 @@ def atualizar_registro_model(request, financa, user):
         usuario = obterUsuario(request)
         igreja = usuario.igreja
         relatorio_mensal = RelatorioMensal.objects.get(
-        igreja=igreja,
-        status='Ativo'
+            igreja=igreja,
+            status='Ativo'
         )
 
     except:
@@ -95,8 +95,8 @@ def atualizar_registro_model(request, financa, user):
             relatorio_mensal.save()
 
         elif financa == 'entrada e saida':
-             # Atualizando registros no model de RealatórioGeral
-             # Saídas
+            # Atualizando registros no model de RealatórioGeral
+            # Saídas
             relatorio_geral.saidas_sede = relatorio_geral.calc_saidas_sede
             relatorio_geral.saidas_locais = relatorio_geral.calc_saidas_locais
             relatorio_geral.saldo = relatorio_geral.calc_saldo
@@ -614,7 +614,7 @@ def detalhar_relatorio_mensal(request, relatorio_id):
     ano_relatorio = relatorio_mensal.data_inicio.year
 
     entradas_relatorio = OfertaCulto.objects.filter(
-    data_culto__month=mes_relatorio, data_culto__year=ano_relatorio, igreja=relatorio_mensal.igreja)
+        data_culto__month=mes_relatorio, data_culto__year=ano_relatorio, igreja=relatorio_mensal.igreja)
 
     context = {
         'relatorio_mensal': relatorio_mensal,
@@ -734,7 +734,7 @@ def gerar_relatorio_geral(request, relatorio_id):
     buf = io.BytesIO()
     doc = SimpleDocTemplate(buf, pagesize=A4)
     elements = []
-    
+
     # Título e informações da igreja
     igreja = "Igreja Evangélica Assembléia de Deus"
     endereco = "Rua 01, Nº 408 - Bairro Brindes"
@@ -759,14 +759,14 @@ def gerar_relatorio_geral(request, relatorio_id):
     elements.append(Paragraph("<br/><br/>", getSampleStyleSheet()['Normal']))
 
     # Tabela de entradas
-    data_entradas=[
+    data_entradas = [
         ["ENTRADAS"],
         ["SEDE:", 'R$ ' + str(relatorio_geral.calc_entradas_sede)],
         ["CONGREGAÇÕES", 'R$ ' + str(relatorio_geral.calc_entradas_locais)],
         ["TOTAL:", 'R$ ' + str(relatorio_geral.calc_total_entradas)],
     ]
 
-    table_entradas=Table(data_entradas, colWidths=[300, 100])
+    table_entradas = Table(data_entradas, colWidths=[300, 100])
     table_entradas.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         # Header background color
@@ -778,7 +778,7 @@ def gerar_relatorio_geral(request, relatorio_id):
     elements.append(table_entradas)
 
     # Tabela de saídas
-    data_saidas=[
+    data_saidas = [
         ["SAÍDAS", ""],
         ["SEDE:", 'R$ ' + str(relatorio_geral.calc_saidas_sede)],
         ["CONGREGAÇÕES", 'R$ ' + str(relatorio_geral.calc_saidas_locais)],
@@ -790,7 +790,7 @@ def gerar_relatorio_geral(request, relatorio_id):
         ["TOTAL:", 'R$ ' + str(relatorio_geral.calc_total_saidas)],
     ]
 
-    table_saidas=Table(data_saidas, colWidths=[300, 100])
+    table_saidas = Table(data_saidas, colWidths=[300, 100])
     table_saidas.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         # Header background color
@@ -802,12 +802,12 @@ def gerar_relatorio_geral(request, relatorio_id):
     elements.append(table_saidas)
 
     # Saldo Atual (using a table)
-    saldo_atual_data=[
+    saldo_atual_data = [
         ["SALDO ATUAL", ""],
         [f"Gerado em {data_atual}", ""]
     ]
 
-    table_saldo_atual=Table(saldo_atual_data, colWidths=[300, 100])
+    table_saldo_atual = Table(saldo_atual_data, colWidths=[300, 100])
     table_saldo_atual.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
@@ -818,18 +818,18 @@ def gerar_relatorio_geral(request, relatorio_id):
     elements.append(Paragraph("<br/><br/>",
                     getSampleStyleSheet()['Normal']))
     elements.append(table_saldo_atual)
-   
+
     elements.append(Paragraph("<br/><br/><br/><br/>",
                     getSampleStyleSheet()['Normal']))
 
-    signature_data=[
-    ["_"*40],
-    [tesoureiro.nome.upper()],
-    ["Tesoureiro"]
-]
+    signature_data = [
+        ["_"*40],
+        [tesoureiro.nome.upper()],
+        ["Tesoureiro"]
+    ]
 
-    table_signature=Table(signature_data, colWidths=[
-                          400], rowHeights=[15, 15, 15])
+    table_signature = Table(signature_data, colWidths=[
+        400], rowHeights=[15, 15, 15])
     table_signature.setStyle(TableStyle([
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
@@ -838,7 +838,7 @@ def gerar_relatorio_geral(request, relatorio_id):
     elements.append(Paragraph("<br/><br/><br/>",
                     getSampleStyleSheet()['Normal']))
     elements.append(table_signature)
-    
+
     doc.build(elements)
 
     buf.seek(0)
@@ -846,25 +846,26 @@ def gerar_relatorio_geral(request, relatorio_id):
     arquivo = f'Relatorio Geral - {str(datetime.today().strftime("%b %Y"))}.pdf'
     return FileResponse(buf, as_attachment=True, filename=arquivo)
 
-def gerar_relatorio_mensal(request, relatorio_id):
-    relatorio_mensal=RelatorioMensal.objects.get(id=relatorio_id)
-    data_atual=datetime.now()
-    data_atual=data_atual.strftime("%d/%m/%Y às %H:%M")
-    tesoureiro=obterUsuario(request)
 
-    buf=io.BytesIO()
+def gerar_relatorio_mensal(request, relatorio_id):
+    relatorio_mensal = RelatorioMensal.objects.get(id=relatorio_id)
+    data_atual = datetime.now()
+    data_atual = data_atual.strftime("%d/%m/%Y às %H:%M")
+    tesoureiro = obterUsuario(request)
+
+    buf = io.BytesIO()
     doc = SimpleDocTemplate(buf, pagesize=A4)
     elements = []
 
     c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
-    textob=c.beginText()
+    textob = c.beginText()
     textob.setTextOrigin(inch, inch)
     textob.setFont("Arial", 12)
 
-    saidas=Saida.objects.all()
+    saidas = Saida.objects.all()
 
-    lines=[]
-    lines.append('                                      Igreja ' + \
+    lines = []
+    lines.append('                                      Igreja ' +
                  str(tesoureiro.igreja))
     lines.append(
         "                                           Rua 01 N° 408 - Bairro Brindes")
@@ -874,26 +875,26 @@ def gerar_relatorio_mensal(request, relatorio_id):
     lines.append(" ")
     lines.append(" ")
     lines.append(" ")
-    lines.append("Relatório Financeiro  Mensal              " + '                   Período: ' + \
+    lines.append("Relatório Financeiro  Mensal              " + '                   Período: ' +
                  str(relatorio_mensal.data_inicio) + ' à ' + str(relatorio_mensal.data_fim))
     lines.append(" ")
     lines.append(" ")
-    lines.append("Entradas da sede " + 'R$ ' + str(relatorio_geral.calc_entradas_sede) + \
+    lines.append("Entradas da sede " + 'R$ ' + str(relatorio_geral.calc_entradas_sede) +
                  ' '*40 + 'Entradas locais ' + 'R$ ' + str(relatorio_mensal.calc_entradas_locais))
     lines.append(
         "_______________________________________________________________________")
     lines.append(" ")
-    lines.append("Saídas da sede " + 'R$ ' + str(relatorio_geral.calc_saidas_sede) + \
+    lines.append("Saídas da sede " + 'R$ ' + str(relatorio_geral.calc_saidas_sede) +
                  ' '*40 + 'Saídas locais ' + 'R$ ' + str(relatorio_mensal.calc_saidas_locais))
     lines.append(
         "_______________________________________________________________________")
     lines.append(" ")
-    lines.append("Total de entradas " + 'R$ ' + str(relatorio_geral.calc_total_entradas) + \
+    lines.append("Total de entradas " + 'R$ ' + str(relatorio_geral.calc_total_entradas) +
                  ' '*40 + ' Total de saídas ' + 'R$ ' + str(relatorio_geral.calc_total_saidas))
     lines.append(
         "_______________________________________________________________________")
     lines.append(" ")
-    lines.append("Aluguel de obreiros " + 'R$ ' + \
+    lines.append("Aluguel de obreiros " + 'R$ ' +
                  str(relatorio_geral.aluguel_obreiros))
     lines.append(
         "_______________________________________________________________________")
@@ -902,7 +903,7 @@ def gerar_relatorio_mensal(request, relatorio_id):
     lines.append(
         "_______________________________________________________________________")
     lines.append(" ")
-    lines.append("Assistência social " + 'R$ ' + \
+    lines.append("Assistência social " + 'R$ ' +
                  str(relatorio_geral.assis_social))
     lines.append(
         "_______________________________________________________________________")
@@ -911,7 +912,7 @@ def gerar_relatorio_mensal(request, relatorio_id):
     lines.append(
         "_______________________________________________________________________")
     lines.append(" ")
-    lines.append("Pagamento de obreiros " + 'R$ ' + \
+    lines.append("Pagamento de obreiros " + 'R$ ' +
                  str(relatorio_geral.pgto_obreiros))
     lines.append(
         "_______________________________________________________________________")
@@ -954,8 +955,8 @@ def gerar_relatorio_mensal(request, relatorio_id):
 def filtrar_ofertas(request):
     if request.method == 'POST':
         # Obtém o valor do input do template
-        date_input=request.POST.get('date_input')
-        ofertas_filtradas=OfertaCulto.objects.filter(
+        date_input = request.POST.get('date_input')
+        ofertas_filtradas = OfertaCulto.objects.filter(
             data_culto=date_input)  # Realiza a filtragem do modelo
 
         return render(request, 'financas/entradas/ofertas/listar.html', {'ofertas_filtradas': ofertas_filtradas})
@@ -966,8 +967,8 @@ def filtrar_ofertas(request):
 def filtrar_saidas(request):
     if request.method == 'POST':
         # Obtém o valor do input do template
-        date_input=request.POST.get('date_input')
-        saidas_filtradas=Saida.objects.filter(
+        date_input = request.POST.get('date_input')
+        saidas_filtradas = Saida.objects.filter(
             data=date_input)  # Realiza a filtragem do modelo
 
         return render(request, 'financas/saidas/listar.html', {'saidas_filtradas': saidas_filtradas})
@@ -978,10 +979,10 @@ def filtrar_saidas(request):
 def filtrar_dizimos(request):
     if request.method == 'POST':
         # Obtém o nome do membro do formulário
-        membro=request.POST.get('membro', '')
+        membro = request.POST.get('membro', '')
         # Filtra os dizimos com base no nome do membro
-        dizimos=Dizimo.objects.filter(membro__nome__icontains=membro)
-        context={
+        dizimos = Dizimo.objects.filter(membro__nome__icontains=membro)
+        context = {
             'dizimos_filtrados': dizimos
         }
         return render(request, 'financas/entradas/dizimos/listar.html', context)
