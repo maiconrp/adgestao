@@ -1,12 +1,13 @@
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Image
 from reportlab.lib.pagesizes import A4
 from functools import partial
 import calendar
 from datetime import datetime
 import io
-
+import qrcode
+import os
 from accounts.views import obterUsuario
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
@@ -735,15 +736,40 @@ def gerar_relatorio_geral(request, relatorio_id):
     doc = SimpleDocTemplate(buf, pagesize=A4)
     elements = []
 
+    # Gerar o QR code
+    qr_code_link = "http://127.0.0.1:8000/financas/relatorios/geral/detalhar/" + \
+        str(relatorio_id)
+    qr_code = qrcode.make(qr_code_link)
+
+    # Adicionar o QR code ao PDF
+    buf_qr = io.BytesIO()
+    qr_code.save(buf_qr, format="PNG")
+    qr_code_img = buf_qr.getvalue()
+    buf_qr.close()
+    igreja = "Igreja Evangélica Assembléia de Deus<br/>"
+    endereco = "Rua 01, Nº 408 - Bairro Brindes<br/>"
+    departamento = "Departamento Administrativo - Guanambi - BA<br/>"
+
+    # Adicionar a imagem do QR code aos elementos do PDF
+    elements.append(Paragraph("<br/><br/>", getSampleStyleSheet()['Normal']))
+    qr_img = io.BytesIO(qr_code_img)
+    
+    elements.append(Paragraph("<br/>", getSampleStyleSheet()['Normal']))
+    image_path = os.path.abspath('static/assets/images/profile-picture.png')
     # Título e informações da igreja
-    igreja = "Igreja Evangélica Assembléia de Deus"
-    endereco = "Rua 01, Nº 408 - Bairro Brindes"
-    departamento = "Departamento Administrativo - Guanambi - BA"
+    header_data = [
+        [
+            Image(image_path, width=35, height=35),
+            Paragraph(igreja+endereco+departamento, getSampleStyleSheet()['Normal']), 
+            Image(qr_img, width=50, height=50)]
+    ]
+    header_table = Table(header_data, colWidths=[50, 380, 50], rowHeights=[30])
     title_data = [
         ["Relatório Financeiro: Mês de " +
             str(datetime.today().strftime("%b %Y"))],
 
     ]
+    elements.append(header_table)
 
     table_title = Table(title_data, colWidths=[400], rowHeights=[30])
     table_title.setStyle(TableStyle([
@@ -751,10 +777,7 @@ def gerar_relatorio_geral(request, relatorio_id):
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
     ]))
 
-    elements.append(Paragraph(igreja, getSampleStyleSheet()['Normal']))
-    elements.append(Paragraph(endereco, getSampleStyleSheet()['Normal']))
-    elements.append(Paragraph(departamento, getSampleStyleSheet()['Normal']))
-    elements.append(Paragraph("<br/><br/>", getSampleStyleSheet()['Normal']))
+    
     elements.append(table_title)
     elements.append(Paragraph("<br/><br/>", getSampleStyleSheet()['Normal']))
 
