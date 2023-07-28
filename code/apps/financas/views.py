@@ -828,7 +828,7 @@ def gerar_relatorio_geral(request, relatorio_id):
     # Saldo Atual (using a table)
     saldo_atual_data = [
         ["SALDO ATUAL", ""],
-        [f"Gerado em {data_atual}", ""]
+        ["TOTAL:", 'R$ ' + str(relatorio_geral.calc_saldo)],
     ]
 
     table_saldo_atual = Table(saldo_atual_data, colWidths=[300, 100])
@@ -845,6 +845,7 @@ def gerar_relatorio_geral(request, relatorio_id):
 
     elements.append(Paragraph("<br/><br/><br/><br/>",
                     getSampleStyleSheet()['Normal']))
+    elements.append(Paragraph("Gerado em " + data_atual, getSampleStyleSheet()['Normal'])) 
 
     signature_data = [
         ["_"*40],
@@ -877,6 +878,7 @@ def gerar_relatorio_mensal(request, relatorio_id):
     data_atual = data_atual.strftime("%d/%m/%Y às %H:%M")
     tesoureiro = obterUsuario(request)
     igreja = tesoureiro.igreja
+    nome_igreja = igreja.nome
 
     buf = io.BytesIO()
     doc = SimpleDocTemplate(buf, pagesize=A4)
@@ -892,21 +894,20 @@ def gerar_relatorio_mensal(request, relatorio_id):
     qr_code.save(buf_qr, format="PNG")
     qr_code_img = buf_qr.getvalue()
     buf_qr.close()
-    igreja = igreja.nome
     endereco = igreja.localizacao
     departamento = "Departamento Administrativo - Guanambi - BA<br/>"
 
     # Adicionar a imagem do QR code aos elementos do PDF
     elements.append(Paragraph("<br/><br/>", getSampleStyleSheet()['Normal']))
     qr_img = io.BytesIO(qr_code_img)
-    
+
     elements.append(Paragraph("<br/>", getSampleStyleSheet()['Normal']))
     image_path = os.path.abspath('static/assets/images/profile-picture.png')
     # Título e informações da igreja
     header_data = [
         [
             Image(image_path, width=35, height=35),
-            Paragraph(igreja+endereco+departamento, getSampleStyleSheet()['Normal']), 
+            Paragraph(nome_igreja+endereco+departamento, getSampleStyleSheet()['Normal']), 
             Image(qr_img, width=50, height=50)]
     ]
     header_table = Table(header_data, colWidths=[50, 380, 50], rowHeights=[30])
@@ -923,16 +924,14 @@ def gerar_relatorio_mensal(request, relatorio_id):
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
     ]))
 
-    
+
     elements.append(table_title)
     elements.append(Paragraph("<br/><br/>", getSampleStyleSheet()['Normal']))
 
     # Tabela de entradas
     data_entradas = [
         ["ENTRADAS"],
-        ["SEDE:", 'R$ ' + str(relatorio_geral.calc_entradas_sede)],
-        ["CONGREGAÇÕES", 'R$ ' + str(relatorio_geral.calc_entradas_locais)],
-        ["TOTAL:", 'R$ ' + str(relatorio_geral.calc_total_entradas)],
+        ["TOTAL:", 'R$ ' + str(relatorio_mensal.calc_total_entradas)],
     ]
 
     table_entradas = Table(data_entradas, colWidths=[300, 100])
@@ -949,14 +948,10 @@ def gerar_relatorio_mensal(request, relatorio_id):
     # Tabela de saídas
     data_saidas = [
         ["SAÍDAS", ""],
-        ["SEDE:", 'R$ ' + str(relatorio_geral.calc_saidas_sede)],
-        ["CONGREGAÇÕES", 'R$ ' + str(relatorio_geral.calc_saidas_locais)],
-        ["PGTO OBREIROS", 'R$ ' + str(relatorio_geral.pgto_obreiros)],
-        ["INSS", 'R$ ' + str(relatorio_geral.inss)],
-        ["ALUGUEL DE OBREIROS", 'R$ ' + str(relatorio_geral.aluguel_obreiros)],
-        ["REPS/REFMAS/CONST", 'R$ ' + str(relatorio_geral.construcoes)],
-        ["ASSIS. SOCIAL", 'R$ ' + str(relatorio_geral.assis_social)],
-        ["TOTAL:", 'R$ ' + str(relatorio_geral.calc_total_saidas)],
+        ["PGTO OBREIROS", 'R$ ' + str(relatorio_mensal.pagamento_obreiro)],
+        ["MISSÕES SEDE", 'R$ ' + str(relatorio_mensal.missoes_sede)],
+        ["FUNDO CONVENCIONAL", 'R$ ' + str(relatorio_mensal.fundo_convencional)],
+        ["TOTAL:", 'R$ ' + str(relatorio_mensal.calc_saidas)],
     ]
 
     table_saidas = Table(data_saidas, colWidths=[300, 100])
@@ -973,7 +968,7 @@ def gerar_relatorio_mensal(request, relatorio_id):
     # Saldo Atual (using a table)
     saldo_atual_data = [
         ["SALDO ATUAL", ""],
-        [f"Gerado em {data_atual}", ""]
+        ["TOTAL:", 'R$ ' + str(relatorio_mensal.calc_saldo)],
     ]
 
     table_saldo_atual = Table(saldo_atual_data, colWidths=[300, 100])
@@ -990,6 +985,7 @@ def gerar_relatorio_mensal(request, relatorio_id):
 
     elements.append(Paragraph("<br/><br/><br/><br/>",
                     getSampleStyleSheet()['Normal']))
+    elements.append(Paragraph("Gerado em " + data_atual, getSampleStyleSheet()['Normal'])) 
 
     signature_data = [
         ["_"*40],
@@ -1012,9 +1008,8 @@ def gerar_relatorio_mensal(request, relatorio_id):
 
     buf.seek(0)
 
-    arquivo = f'Relatorio Geral - {str(datetime.today().strftime("%b %Y"))}.pdf'
+    arquivo = f'Relatorio Mensal - {str(datetime.today().strftime("%b %Y"))}.pdf'
     return FileResponse(buf, as_attachment=True, filename=arquivo)
-
 
 
 
