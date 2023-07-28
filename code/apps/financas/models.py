@@ -416,6 +416,8 @@ class RelatorioMensal(models.Model):
         for saida in saidas:
             total_saidas += saida.valor  # Utiliza a sintaxe de soma para Decimal
 
+        total_saidas = total_saidas + self.pagamento_obreiro + self.fundo_convencional + self.missoes_sede    
+
         return total_saidas
 
     @property

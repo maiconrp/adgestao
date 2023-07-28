@@ -111,18 +111,19 @@ def atualizar_registro_model(request, financa, user):
 
             # Atualizando registros no model de RealatórioMensal
             # Saídas
-            relatorio_mensal.total_saidas = relatorio_mensal.calc_saidas
-            relatorio_mensal.saldo = relatorio_mensal.calc_saldo
             relatorio_mensal.pagamento_obreiro = relatorio_mensal.calc_pagamento_obreiro
             relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
             relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
+            relatorio_mensal.total_saidas = relatorio_mensal.calc_saidas
+            relatorio_mensal.saldo = relatorio_mensal.calc_saldo
 
             # Entradas
             relatorio_mensal.total_entradas = relatorio_mensal.calc_total_entradas
-            relatorio_mensal.saldo = relatorio_mensal.calc_saldo
             relatorio_mensal.pagamento_obreiro = relatorio_mensal.calc_pagamento_obreiro
             relatorio_mensal.fundo_convencional = relatorio_mensal.calc_fundo_convencional
             relatorio_mensal.missoes_sede = relatorio_mensal.calc_missoes_sede
+            relatorio_mensal.saldo = relatorio_mensal.calc_saldo
+
 
             relatorio_mensal.save()
 
@@ -871,105 +872,145 @@ def gerar_relatorio_geral(request, relatorio_id):
 
 
 def gerar_relatorio_mensal(request, relatorio_id):
-    relatorio_mensal = RelatorioMensal.objects.get(id=relatorio_id)
+    relatorio_mensal= RelatorioMensal.objects.get(id=relatorio_id)
     data_atual = datetime.now()
     data_atual = data_atual.strftime("%d/%m/%Y às %H:%M")
     tesoureiro = obterUsuario(request)
+    igreja = tesoureiro.igreja
+    nome_igreja = igreja.nome
 
     buf = io.BytesIO()
     doc = SimpleDocTemplate(buf, pagesize=A4)
     elements = []
 
-    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
-    textob = c.beginText()
-    textob.setTextOrigin(inch, inch)
-    textob.setFont("Arial", 12)
+    # Gerar o QR code
+    qr_code_link = "http://127.0.0.1:8000/financas/relatorios/mensal/detalhar/" + \
+        str(relatorio_id)
+    qr_code = qrcode.make(qr_code_link)
 
-    saidas = Saida.objects.all()
+    # Adicionar o QR code ao PDF
+    buf_qr = io.BytesIO()
+    qr_code.save(buf_qr, format="PNG")
+    qr_code_img = buf_qr.getvalue()
+    buf_qr.close()
+    endereco = igreja.localizacao
+    departamento = "Departamento Administrativo - Guanambi - BA<br/>"
 
-    lines = []
-    lines.append('                                      Igreja ' +
-                 str(tesoureiro.igreja))
-    lines.append(
-        "                                           Rua 01 N° 408 - Bairro Brindes")
-    lines.append(" ")
-    lines.append(
-        "                                  Departamento administrativo - Guanambi/BA")
-    lines.append(" ")
-    lines.append(" ")
-    lines.append(" ")
-    lines.append("Relatório Financeiro  Mensal              " + '                   Período: ' +
-                 str(relatorio_mensal.data_inicio) + ' à ' + str(relatorio_mensal.data_fim))
-    lines.append(" ")
-    lines.append(" ")
-    lines.append("Entradas da sede " + 'R$ ' + str(relatorio_geral.calc_entradas_sede) +
-                 ' '*40 + 'Entradas locais ' + 'R$ ' + str(relatorio_mensal.calc_entradas_locais))
-    lines.append(
-        "_______________________________________________________________________")
-    lines.append(" ")
-    lines.append("Saídas da sede " + 'R$ ' + str(relatorio_geral.calc_saidas_sede) +
-                 ' '*40 + 'Saídas locais ' + 'R$ ' + str(relatorio_mensal.calc_saidas_locais))
-    lines.append(
-        "_______________________________________________________________________")
-    lines.append(" ")
-    lines.append("Total de entradas " + 'R$ ' + str(relatorio_geral.calc_total_entradas) +
-                 ' '*40 + ' Total de saídas ' + 'R$ ' + str(relatorio_geral.calc_total_saidas))
-    lines.append(
-        "_______________________________________________________________________")
-    lines.append(" ")
-    lines.append("Aluguel de obreiros " + 'R$ ' +
-                 str(relatorio_geral.aluguel_obreiros))
-    lines.append(
-        "_______________________________________________________________________")
-    lines.append(" ")
-    lines.append("INSS " + 'R$ ' + str(relatorio_geral.inss))
-    lines.append(
-        "_______________________________________________________________________")
-    lines.append(" ")
-    lines.append("Assistência social " + 'R$ ' +
-                 str(relatorio_geral.assis_social))
-    lines.append(
-        "_______________________________________________________________________")
-    lines.append(" ")
-    lines.append("Construções " + 'R$ ' + str(relatorio_geral.construcoes))
-    lines.append(
-        "_______________________________________________________________________")
-    lines.append(" ")
-    lines.append("Pagamento de obreiros " + 'R$ ' +
-                 str(relatorio_geral.pgto_obreiros))
-    lines.append(
-        "_______________________________________________________________________")
-    lines.append(" ")
-    lines.append(" ")
-    lines.append(" ")
+    # Adicionar a imagem do QR code aos elementos do PDF
+    elements.append(Paragraph("<br/><br/>", getSampleStyleSheet()['Normal']))
+    qr_img = io.BytesIO(qr_code_img)
+    
+    elements.append(Paragraph("<br/>", getSampleStyleSheet()['Normal']))
+    image_path = os.path.abspath('static/assets/images/profile-picture.png')
+    # Título e informações da igreja
+    header_data = [
+        [
+            Image(image_path, width=35, height=35),
+            Paragraph(nome_igreja+endereco+departamento, getSampleStyleSheet()['Normal']), 
+            Image(qr_img, width=50, height=50)]
+    ]
+    header_table = Table(header_data, colWidths=[50, 380, 50], rowHeights=[30])
+    title_data = [
+        ["Relatório Financeiro Mensal: Mês de " +
+            str(datetime.today().strftime("%b %Y"))],
 
-    lines.append("Saldo " + 'R$ ' + str(relatorio_geral.calc_saldo))
+    ]
+    elements.append(header_table)
 
-    lines.append(" ")
-    lines.append(" ")
-    lines.append(" ")
-    lines.append(
-        '                                                      ' + str(tesoureiro.nome))
-    lines.append(
-        "                     ____________________________________________________")
-    lines.append(" ")
-    lines.append(
-        '                                                          Tesoureiro Sede ')
-    lines.append(" ")
-    lines.append(" ")
-    lines.append(" ")
-    lines.append(" ")
+    table_title = Table(title_data, colWidths=[400], rowHeights=[30])
+    table_title.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+    ]))
 
-    lines.append("Emitido em: " + str(data_atual))
+    
+    elements.append(table_title)
+    elements.append(Paragraph("<br/><br/>", getSampleStyleSheet()['Normal']))
 
-    for line in lines:
-        textob.textLine(line)
+    # Tabela de entradas
+    data_entradas = [
+        ["ENTRADAS"],
+        ["TOTAL:", 'R$ ' + str(relatorio_mensal.calc_total_entradas)],
+    ]
 
-    c.drawText(textob)
-    c.showPage()
-    c.save()
+    table_entradas = Table(data_entradas, colWidths=[300, 100])
+    table_entradas.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        # Header background color
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgreen),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+
+    elements.append(Paragraph("<br/>", getSampleStyleSheet()['Normal']))
+    elements.append(table_entradas)
+
+    # Tabela de saídas
+    data_saidas = [
+        ["SAÍDAS", ""],
+        ["PGTO OBREIROS", 'R$ ' + str(relatorio_mensal.pagamento_obreiro)],
+        ["MISSÕES SEDE", 'R$ ' + str(relatorio_mensal.missoes_sede)],
+        ["FUNDO CONVENCIONAL", 'R$ ' + str(relatorio_mensal.fundo_convencional)],
+        ["TOTAL:", 'R$ ' + str(relatorio_mensal.calc_saidas)],
+    ]
+
+    table_saidas = Table(data_saidas, colWidths=[300, 100])
+    table_saidas.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        # Header background color
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgreen),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+
+    elements.append(Paragraph("<br/><br/>", getSampleStyleSheet()['Normal']))
+    elements.append(table_saidas)
+
+    # Saldo Atual (using a table)
+    saldo_atual_data = [
+        ["SALDO ATUAL", ""],
+        ["TOTAL:", 'R$ ' + str(relatorio_mensal.calc_saldo)],
+    ]
+
+    table_saldo_atual = Table(saldo_atual_data, colWidths=[300, 100])
+    table_saldo_atual.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        # Header background color
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgreen),
+    ]))
+
+    elements.append(Paragraph("<br/><br/>",
+                    getSampleStyleSheet()['Normal']))
+    elements.append(table_saldo_atual)
+
+    elements.append(Paragraph("<br/><br/><br/><br/>",
+                    getSampleStyleSheet()['Normal']))
+    elements.append(Paragraph("Gerado em " + data_atual, getSampleStyleSheet()['Normal'])) 
+
+    signature_data = [
+        ["_"*40],
+        [tesoureiro.nome.upper()],
+        ["Tesoureiro"]
+    ]
+
+    table_signature = Table(signature_data, colWidths=[
+        400], rowHeights=[15, 15, 15])
+    table_signature.setStyle(TableStyle([
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+    ]))
+
+    elements.append(Paragraph("<br/><br/><br/>",
+                    getSampleStyleSheet()['Normal']))
+    elements.append(table_signature)
+
+    doc.build(elements)
+
     buf.seek(0)
-    return FileResponse(buf, as_attachment=True, filename='lista.pdf')
+
+    arquivo = f'Relatorio Geral - {str(datetime.today().strftime("%b %Y"))}.pdf'
+    return FileResponse(buf, as_attachment=True, filename=arquivo)
+
+
 
 
 ###############################################  FILTROS  ##################################################################
