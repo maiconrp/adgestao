@@ -12,11 +12,9 @@ class DizimoAdmin(admin.ModelAdmin):
     form = DizimoAdminForm
     list_display = ('membro', 'igreja', 'data_culto', 'valor')
 
-class SaldoAdmin(admin.ModelAdmin):
-    list_display = ('mes', 'valor', 'id') 
+
 
 admin.site.register(Dizimo, DizimoAdmin)
-admin.site.register(SaldoMes, SaldoAdmin)
 admin.site.register(OfertaCulto)
 admin.site.register(Membro)
 admin.site.register(Igreja)

@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.db.models import F
 from multiselectfield import MultiSelectField
+import accounts.models
 
 from adgestao.validators import validate_cpf, validate_data
 
@@ -37,7 +38,7 @@ class Igreja(models.Model):
         default=0,
         verbose_name='Saldo',
     )
-    
+
     REQUIRED_FIELDS = ['nome', 'localização']
 
     
@@ -46,26 +47,6 @@ class Igreja(models.Model):
 
     def __str__(self):
         return self.nome
-
-
-class SaldoMes(models.Model):
-    valor = models.DecimalField(
-        max_digits=12,
-        decimal_places=3,  
-    )
-
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
-    )
-
-    mes = models.CharField(
-        max_length=100,
-    )
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
     
 
 

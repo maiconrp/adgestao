@@ -6,10 +6,8 @@ from .forms import UsuarioForm
 from .permissions import set_permission
 from .models import Usuario, SolicitacaoCadastro
 from django.contrib import messages
-
-
-from financas.models import Saida, Entrada
-from igreja.models import Dizimo, OfertaCulto, Membro, Igreja, SaldoMes
+from financas.models import Saida, Entradas
+from igreja.models import Dizimo, OfertaCulto, Membro, Igreja
 
 @login_required
 def obterUsuario(request):
@@ -45,7 +43,6 @@ def home(request):
     variacao_total = []
     membros = Membro.objects.filter(igreja=usuario.igreja)[:5]
     igrejas = Igreja.objects.all()[:5]
-    saldos = SaldoMes.objects.all()[:5]
 
     for i, data in enumerate(datas):
         proximo_mes = data.replace(day=28) + timedelta(days=4)
@@ -92,7 +89,6 @@ def home(request):
         'usuario': usuario,
         'igreja': usuario.igreja,
         'usuario_nome': usuario.nome.split()[0],
-        'saldos': saldos,
         # Formatação com duas casas decimais e separador de milhares
         'total_dizimos': '{:,.2f}'.format(total_dizimos[-1]),
         'variacao_dizimos': variacao_dizimos[-1],

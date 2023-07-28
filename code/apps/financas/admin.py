@@ -9,5 +9,5 @@ class RMAdmin(admin.ModelAdmin):
 
 admin.site.register(RelatorioMensal, RMAdmin)
 admin.site.register(RelatorioGeral)
-admin.site.register(Entrada, EntradaAdmin)
+admin.site.register(Entradas, EntradaAdmin)
 admin.site.register(Saida)

@@ -77,7 +77,7 @@ class Saida(models.Model):
         return "Gerar Relatorio"
 
 
-class Entrada(models.Model):
+class Entradas(models.Model):
     ofertas = models.ManyToManyField(
         igreja.models.OfertaCulto,
         related_name="entradas_ofertas",

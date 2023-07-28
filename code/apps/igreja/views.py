@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, reverse
 from accounts.views import obterUsuario
-from financas.models import Entrada, RelatorioGeral
+from financas.models import Entradas, RelatorioGeral
 import calendar
 from datetime import datetime
 
@@ -27,7 +27,7 @@ def cadastrar_igreja(request):
 
             #   Ao cadastrar uma nova igreja, uma instância do objeto Entrada é criado. Este objeto é vinculado a uma igreja
             # e contém o registro de todos os dízimos e ofertas da mesma
-            entrada_criada = Entrada(igreja=igreja_cad)
+            entrada_criada = Entradas(igreja=igreja_cad)
 
             entrada_criada.save()
 

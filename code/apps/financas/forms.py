@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
 
-from .models import Saida, Entrada, RelatorioGeral
+from .models import Saida, Entradas, RelatorioGeral
 
 class SaidaForm(forms.ModelForm):
 
@@ -14,7 +14,7 @@ class SaidaForm(forms.ModelForm):
 class EntradaForm(forms.ModelForm):
 
     class Meta:
-        model = Entrada
+        model = Entradas
         fields = ['igreja']
 
 class RelatorioGeralForm(forms.ModelForm):

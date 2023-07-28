@@ -24,7 +24,7 @@ from reportlab.pdfgen import canvas
 from decimal import Decimal
 
 from .forms import SaidaForm, RelatorioGeralForm
-from .models import Entrada, RelatorioGeral, RelatorioMensal, Saida
+from .models import Entradas, RelatorioGeral, RelatorioMensal, Saida
 
 pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
 
@@ -258,7 +258,7 @@ def adicionar_dizimo(request):
     user = obterUsuario(request)
     print(user.igreja)
 
-    entrada = get_object_or_404(Entrada, igreja=user.igreja)
+    entrada = get_object_or_404(Entradas, igreja=user.igreja)
 
     if request.method == 'POST':
         form = DizimoFormWithUser(request.POST, usuario=user)
@@ -409,7 +409,7 @@ def calc_soma_dizimo(oferta):
 
 def adicionar_oferta(request):
     user = obterUsuario(request)
-    entrada, _ = Entrada.objects.get_or_create(
+    entrada, _ = Entradas.objects.get_or_create(
         igreja=user.igreja)  # (objeto, se ele existe ou não)
 
     if request.method == 'POST':
@@ -877,7 +877,6 @@ def gerar_relatorio_mensal(request, relatorio_id):
     data_atual = data_atual.strftime("%d/%m/%Y às %H:%M")
     tesoureiro = obterUsuario(request)
     igreja = tesoureiro.igreja
-    nome_igreja = igreja.nome
 
     buf = io.BytesIO()
     doc = SimpleDocTemplate(buf, pagesize=A4)
@@ -893,6 +892,7 @@ def gerar_relatorio_mensal(request, relatorio_id):
     qr_code.save(buf_qr, format="PNG")
     qr_code_img = buf_qr.getvalue()
     buf_qr.close()
+    igreja = igreja.nome
     endereco = igreja.localizacao
     departamento = "Departamento Administrativo - Guanambi - BA<br/>"
 
@@ -906,7 +906,7 @@ def gerar_relatorio_mensal(request, relatorio_id):
     header_data = [
         [
             Image(image_path, width=35, height=35),
-            Paragraph(nome_igreja+endereco+departamento, getSampleStyleSheet()['Normal']), 
+            Paragraph(igreja+endereco+departamento, getSampleStyleSheet()['Normal']), 
             Image(qr_img, width=50, height=50)]
     ]
     header_table = Table(header_data, colWidths=[50, 380, 50], rowHeights=[30])
@@ -930,7 +930,9 @@ def gerar_relatorio_mensal(request, relatorio_id):
     # Tabela de entradas
     data_entradas = [
         ["ENTRADAS"],
-        ["TOTAL:", 'R$ ' + str(relatorio_mensal.calc_total_entradas)],
+        ["SEDE:", 'R$ ' + str(relatorio_geral.calc_entradas_sede)],
+        ["CONGREGAÇÕES", 'R$ ' + str(relatorio_geral.calc_entradas_locais)],
+        ["TOTAL:", 'R$ ' + str(relatorio_geral.calc_total_entradas)],
     ]
 
     table_entradas = Table(data_entradas, colWidths=[300, 100])
@@ -947,10 +949,14 @@ def gerar_relatorio_mensal(request, relatorio_id):
     # Tabela de saídas
     data_saidas = [
         ["SAÍDAS", ""],
-        ["PGTO OBREIROS", 'R$ ' + str(relatorio_mensal.pagamento_obreiro)],
-        ["MISSÕES SEDE", 'R$ ' + str(relatorio_mensal.missoes_sede)],
-        ["FUNDO CONVENCIONAL", 'R$ ' + str(relatorio_mensal.fundo_convencional)],
-        ["TOTAL:", 'R$ ' + str(relatorio_mensal.calc_saidas)],
+        ["SEDE:", 'R$ ' + str(relatorio_geral.calc_saidas_sede)],
+        ["CONGREGAÇÕES", 'R$ ' + str(relatorio_geral.calc_saidas_locais)],
+        ["PGTO OBREIROS", 'R$ ' + str(relatorio_geral.pgto_obreiros)],
+        ["INSS", 'R$ ' + str(relatorio_geral.inss)],
+        ["ALUGUEL DE OBREIROS", 'R$ ' + str(relatorio_geral.aluguel_obreiros)],
+        ["REPS/REFMAS/CONST", 'R$ ' + str(relatorio_geral.construcoes)],
+        ["ASSIS. SOCIAL", 'R$ ' + str(relatorio_geral.assis_social)],
+        ["TOTAL:", 'R$ ' + str(relatorio_geral.calc_total_saidas)],
     ]
 
     table_saidas = Table(data_saidas, colWidths=[300, 100])
@@ -967,7 +973,7 @@ def gerar_relatorio_mensal(request, relatorio_id):
     # Saldo Atual (using a table)
     saldo_atual_data = [
         ["SALDO ATUAL", ""],
-        ["TOTAL:", 'R$ ' + str(relatorio_mensal.calc_saldo)],
+        [f"Gerado em {data_atual}", ""]
     ]
 
     table_saldo_atual = Table(saldo_atual_data, colWidths=[300, 100])
@@ -984,7 +990,6 @@ def gerar_relatorio_mensal(request, relatorio_id):
 
     elements.append(Paragraph("<br/><br/><br/><br/>",
                     getSampleStyleSheet()['Normal']))
-    elements.append(Paragraph("Gerado em " + data_atual, getSampleStyleSheet()['Normal'])) 
 
     signature_data = [
         ["_"*40],
